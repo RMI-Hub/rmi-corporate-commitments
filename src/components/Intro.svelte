@@ -1,13 +1,20 @@
-<header class="container">
-  <h1>This is the headline</h1>
-  <p>
-    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores tempora quo deserunt est, accusantium error esse placeat iure magnam, aspernatur
-    iusto. Perspiciatis deserunt dicta corrupti vero qui pariatur nobis unde?
-  </p>
-</header>
+<script>
+	export let headline, intro;
+</script>
 
 <style>
-  .container {
-    padding-block: 0;
-  }
+	.header {
+		font-weight: bold;
+		font-size: clamp(2.5rem, 4vw, 3rem);
+	}
+	.container {
+		padding-block: 0;
+	}
 </style>
+
+<header class="container">
+	{#if headline}<h1 class="header">{headline}</h1>{/if}
+	{#if intro}
+		<p>{@html intro}</p>
+	{/if}
+</header>

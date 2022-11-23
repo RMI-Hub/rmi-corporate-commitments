@@ -94,7 +94,7 @@ html body.scroll-lock {
 
 p:not([class]) {
 	/* Any standalone paragraph tag should just get this base styling*/
-	font: var(--font-size) / 1.3em var(--serif-fonts);
+	font: var(--font-size) / 1.3em var(--sans-serif-fonts);
 	color: var(--color-font);
 	margin: 1rem 0;
 }

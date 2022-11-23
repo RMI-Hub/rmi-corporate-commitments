@@ -79,7 +79,7 @@
 		background: var(--color-background);
 
 		position: absolute;
-		/* top: calc(0.5 * var(--gap)); */
+		z-index: 2;
 		left: 0;
 
 		width: var(--tooltip-width);

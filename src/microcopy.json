@@ -1,4 +1,6 @@
 {
+	"headline": "This is the main headline",
+	"intro": "This is the main intro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 	"charts": {
 		"labelEmissionsBaseline": {
 			"header": "Baseline emissions by year",

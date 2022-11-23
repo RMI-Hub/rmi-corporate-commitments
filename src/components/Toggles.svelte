@@ -60,6 +60,11 @@
 		gap: 0.25rem;
 	}
 
+	.toggles__btn {
+		font-size: 1em;
+		accent-color: var(--color-accent);
+	}
+
 	.label {
 		font-size: var(--font-size-small);
 		flex-basis: 100%;
