@@ -3,6 +3,7 @@
 	import PoweredBy from "./components/PoweredBy.svelte";
 	import Toggles from "./components/Toggles.svelte";
 	import Intro from "./components/Intro.svelte";
+	import PickerSector from "./components/PickerSector.svelte";
 
 	export let headline = "";
 	export let intro = "";
@@ -11,16 +12,26 @@
 
 	export let sectors = {
 		sector1: {
-			heading: "Sector 1",
+			heading: "Manufacturing",
 			description:
 				"Lorem ipsum dolor sit amet consectetur adipisicing elit. In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit?",
+		},
+		sector2: {
+			heading: "Pharmaceuticals",
+			description:
+				"In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit? Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
+		},
+		sector3: {
+			heading: "Fancy computer chips",
+			description:
+				"Lorem ipsum dolor adipisicing elit. In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus ullam velit?",
 		},
 	};
 
 	let activeSector = "sector1";
 
 	$: sectorHeader = sectors[activeSector].heading;
-	$: sectorDescrption = sectors[activeSector].description;
+	$: sectorDescription = sectors[activeSector].description;
 </script>
 
 <style>
@@ -37,6 +48,7 @@
 		}
 
 		.sector-heading {
+			position: relative;
 			grid-column: 2 /-1;
 		}
 
@@ -55,10 +67,11 @@
 </style>
 
 <Intro {headline} {intro} />
-<div class="container">
+<section class="container" aria-labelledby="sector-heading">
 	<div class="sector-heading">
-		<h2 class="header">{sectorHeader}</h2>
-		<p>{@html sectorDescrption}</p>
+		<h2 id="sector-heading" class="visually-hidden">About {sectorHeader}</h2>
+		<PickerSector {sectors} {sectorHeader} bind:value={activeSector} />
+		<p>{@html sectorDescription}</p>
 	</div>
 	{#each Object.entries(charts) as [id, data], index}
 		<div class="chart chart--{index}">
@@ -67,4 +80,4 @@
 	{/each}
 	<div class="controls"><Toggles {toggles} /></div>
 	<PoweredBy />
-</div>
+</section>

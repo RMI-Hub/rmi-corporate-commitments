@@ -9,11 +9,13 @@
 
 <style>
 	.chart {
-		--controls-width: 8rem;
+		--controls-width: 5rem;
 		position: relative;
+		height: 100%;
 	}
 
 	.chart__container {
+		margin-top: auto;
 		background-color: #aaa;
 		height: 300px;
 	}
@@ -44,10 +46,16 @@
 	}
 </style>
 
-<div class="chart" aria-labelledby="chart-{id}">
+<div class="chart stack" aria-labelledby="chart-{id}">
 	<div class="chart__controls">
-		<button>Expand</button>
-		<button>Share</button>
+		<button>
+			+
+			<span class="visually-hidden">Expand this chart</span>
+		</button>
+		<button>
+			^
+			<span class="visually-hidden">Expand this chart</span>
+		</button>
 	</div>
 	<h2 id="chart-{id}" class="chart__header">
 		{header}
