@@ -1,0 +1,62 @@
+html body {
+	/* GREY */
+	--grey-slate: #303030;
+	--grey-medium: #666;
+	--grey-medium-light: #909090;
+
+	/* Not accessible over white. */
+	--grey-light: #eeeeee;
+	--grey-very-light: #f3f3f3;
+
+	/* Colors */
+	--color-accent: #009bff;
+	--color-accent-text: #ffffff;
+	--color-background: #ffffff;
+	--color-screen-light: var(--grey-light);
+	--s2-color-ad-wrapper: var(--color-background);
+	--color-font: var(--grey-slate);
+	--color-font-muted: var(--grey-medium);
+	--color-font-very-muted: var(--grey-medium-light);
+
+	/* Scaffoldinfg and spacing */
+	--touch-target: 44px;
+
+	/* Typography */
+	--fonts-sans-serif: "Unify Sans", "Helvetica", "Arial", sans-serif;
+	--fonts-serif: "Georgia Pro", Georgia, "Droid Serif", "Times New Roman", serif;
+
+	--font-size-small: 0.85rem;
+	--font-size: 1rem;
+	--font-size-medium-large: 1.2rem;
+	--font-size-large: 1.4rem;
+	--font-size-very-large: 2rem;
+	--font-line-height: 1.4em;
+
+	/* UW FIX-ITS */
+	--agent-nav-height: 56px;
+	--font-color: var(--color-font) !important;
+	--type-primary: var(--color-font) !important;
+	--background-color: var(--color-background) !important;
+	background-color: var(--background-color) !important;
+}
+
+html body.scroll-lock {
+	overflow: hidden;
+}
+
+.app p:not([class]) {
+	/* All plain vanilla (i.e. unmodified with a class) p tags in the application root */
+	font: 18px/27px var(--fonts-serif); /* Tangent body text */
+	margin: 1rem 0;
+	color: var(--color-font);
+}
+
+/* A valid, accessible method for visually hiding content (such as text labels on icon buttons) while preserving it for screen readers and other sight-assist tools. */
+.visually-hidden:not(:focus) {
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}

@@ -1,0 +1,131 @@
+:root {
+	/* COLORS */
+	--color-white: #f0edee;
+	--color-black: #0a090c;
+	--color-slate: #07393c;
+	--color-gray-dark: #222;
+	--color-gray: #888;
+	--color-gray-light: #eee;
+	--color-apricot-light: #fcd7ad;
+	--color-blue-baby: #90ddf0;
+	--color-blue-dark: #003b63;
+	--color-blue-medium: #87a3b6;
+	--color-green: #2c666e;
+	--color-purple: #7f7caf;
+	--color-red: #b42e34;
+
+	--color-link: var(--color-red);
+	--color-font: var(--color-slate);
+	--color-accent: var(--color-blue-dark);
+
+	/* TYPE */
+
+	--font-size-very-large: 1.8rem;
+	--font-size-large: 1.5rem;
+	--font-size: 1.2rem;
+	--font-size-small: 1rem;
+	--font-size-very-small: 0.8rem;
+
+	--sans-serif-fonts: "Arial", "Helvetica Neue", "Helvetica", sans-serif;
+	--display-fonts: "BreulGroteskBBold", sans-serif;
+	--serif-fonts: "Times New Roman", "Georgia", serif;
+
+	/* // SCAFFOLDING */
+	--gap: 1rem;
+	--container-width: 85rem;
+	--container-padding-h: max(var(--gap), calc((100% - var(--container-width)) / 2));
+	--tap-target: 48px;
+
+	/* OTHER */
+	--speed-transition: 150ms;
+	--speed-transition-fast: 80ms;
+}
+
+/* RELEVANT RESET */
+#rmi * {
+	box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 var(--gap) 0;
+}
+
+/* A valid, accessible method for visually hiding content (such as text labels on icon buttons) while preserving it for screen readers and other sight-assist tools. */
+.visually-hidden:not(:focus) {
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+html body.scroll-lock {
+	overflow: hidden;
+}
+
+.serif {
+	font: var(--font-size) / 1.5em var(--serif-fonts);
+}
+
+.sans-serif {
+	/* The sans font is a little larger-looking, so bump it down a click for visual consistency */
+	font: var(--font-size-small) / 1.3em var(--sans-serif-fonts);
+}
+
+.header {
+	font: bold var(--font-size-large) / 1.2em var(--sans-serif-fonts);
+}
+
+.label {
+	font: bold var(--font-size) / 1.2em var(--sans-serif-fonts);
+}
+.sublabel {
+	font: bold var(--font-size-small) / 1.2em var(--display-fonts);
+}
+
+.agate {
+	font: var(--font-size-small) / 1.3em var(--sans-serif-fonts);
+}
+
+p:not([class]) {
+	/* Any standalone paragraph tag should just get this base styling*/
+	font: var(--font-size) / 1.3em var(--serif-fonts);
+	color: var(--color-font);
+	margin: 1rem 0;
+}
+
+a {
+	color: currentColor;
+	text-decoration-color: var(--color-link);
+}
+
+/* SCAFFOLDING FUN */
+
+.container {
+	padding: 0 var(--container-padding-h);
+}
+
+.stack {
+	display: flex;
+	flex-flow: column nowrap;
+	gap: var(--gap);
+}
+
+.stack > :is(*, p:not([class])) {
+	margin-block: 0;
+}
+
+.stack--margin > * {
+	margin: 0 0 var(--gap) 0;
+}
+@media (pointer: fine) {
+	/* We're using a mouse/This is not a touchscreen */
+	:root {
+		--tap-target: 0;
+	}
+}
