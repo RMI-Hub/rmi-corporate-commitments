@@ -4,12 +4,33 @@
 	import Toggles from "./components/Toggles.svelte";
 	import Intro from "./components/Intro.svelte";
 	import PickerSector from "./components/PickerSector.svelte";
+	import Presets from "./components/Presets.svelte";
 
 	export let headline = "";
 	export let intro = "";
 	export let charts = {};
 	export let toggles = [];
 
+	export let presets = {
+		preset1: {
+			label: "Energy dramatic change",
+		},
+		preset2: {
+			label: "Industrials slow change",
+		},
+		preset3: {
+			label: "Energy dramatic change",
+		},
+		preset4: {
+			label: "Industrials slow change",
+		},
+		preset5: {
+			label: "Energy dramatic change",
+		},
+		preset6: {
+			label: "Industrials slow change",
+		},
+	};
 	export let sectors = {
 		sector1: {
 			heading: "Manufacturing",
@@ -67,6 +88,7 @@
 </style>
 
 <Intro {headline} {intro} />
+<Presets {presets} />
 <section class="container" aria-labelledby="sector-heading">
 	<div class="sector-heading">
 		<h2 id="sector-heading" class="visually-hidden">About {sectorHeader}</h2>

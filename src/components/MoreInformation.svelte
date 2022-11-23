@@ -104,6 +104,16 @@
 		border: none;
 		padding: 0;
 		cursor: pointer;
+		color: white;
+		background-color: transparent;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.more__text__close::after {
+		font-weight: bold;
+		font-size: 16px;
+		content: "\00D7";
 	}
 	/* VISIBLE STATE */
 
@@ -143,7 +153,9 @@
 	</span>
 	{#if visible}
 		<p class="more__text">
-			<button class="more__text__close" on:click|stopPropagation={hide}>X</button>
+			<button class="more__text__close" on:click|stopPropagation={hide}>
+				<span class="visually-hidden">Close this info box.</span>
+			</button>
 			{@html text}
 		</p>
 	{/if}

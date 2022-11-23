@@ -1,4 +1,6 @@
 <script>
+	import Expand from "../icons/Expand.svelte";
+	import Share from "../icons/Share.svelte";
 	import MoreInformation from "./MoreInformation.svelte";
 
 	export let header;
@@ -27,6 +29,7 @@
 
 	.chart__controls {
 		width: var(--controls-width);
+		height: 1rem;
 		display: flex;
 		gap: var(--gap);
 
@@ -43,18 +46,24 @@
 		border: none;
 		background-color: transparent;
 		cursor: pointer;
+		padding: 0;
+	}
+	.chart__controls :global(svg) {
+		fill: var(--color-gray);
+		height: 100%;
+		width: 100%;
 	}
 </style>
 
 <div class="chart stack" aria-labelledby="chart-{id}">
 	<div class="chart__controls">
 		<button>
-			+
 			<span class="visually-hidden">Expand this chart</span>
+			<Expand />
 		</button>
 		<button>
-			^
 			<span class="visually-hidden">Expand this chart</span>
+			<Share />
 		</button>
 	</div>
 	<h2 id="chart-{id}" class="chart__header">

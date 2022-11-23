@@ -40,6 +40,16 @@
 		padding-bottom: 0.25em;
 		border-bottom: 3px solid var(--color-accent);
 	}
+	.picker__label::after {
+		content: "";
+		display: inline-block;
+		width: 0.5rem;
+		height: 0.5rem;
+		margin: 0 0 0 0.75rem;
+		border-left: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+		transform: rotate(-45deg) translate(0, -50%);
+	}
 </style>
 
 <p class="picker header">
