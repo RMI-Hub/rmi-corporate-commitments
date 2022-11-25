@@ -2,19 +2,27 @@
 	"headline": "This is the main headline",
 	"intro": "This is the main intro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 	"charts": {
-		"labelEmissionsBaseline": {
+		"emissionsBaseline": {
 			"header": "Baseline emissions by year",
-			"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium."
+			"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+			"type": "baseline",
+			"cumulative": false
 		},
-		"labelEmissionsCumulative": {
-			"header": "Baseline emissions cumulative",
-			"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium."
-		},
-		"labelTargetBaseline": {
+		"targetBaseline": {
+			"cumulative": false,
+			"type": "target",
 			"header": "Target emissions by year",
 			"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium."
 		},
-		"labelTargetCumulative": {
+		"emissionsCumulative": {
+			"header": "Baseline emissions cumulative",
+			"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+			"cumulative": true,
+			"type": "baseline"
+		},
+		"targetCumulative": {
+			"type": "target",
+			"cumulative": true,
 			"header": "Target emissions cumulative",
 			"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium."
 		}

@@ -1,7 +1,14 @@
 <script>
+	import { createEventDispatcher } from "svelte";
 	export let sectors = {};
 	export let sectorHeader;
 	export let value;
+
+	const dispatch = createEventDispatcher();
+
+	function handleInput(e) {
+		dispatch("sectorChange", { sector: this.value });
+	}
 </script>
 
 <style>
@@ -58,7 +65,7 @@
 		<span class="picker__label">
 			{sectorHeader}
 		</span>
-		<select bind:value>
+		<select bind:value on:input={handleInput}>
 			{#each Object.entries(sectors) as [value, { heading }]}
 				<option label={heading} {value} />
 			{/each}

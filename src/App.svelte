@@ -4,7 +4,10 @@
 	import Toggles from "./components/Toggles.svelte";
 	import Intro from "./components/Intro.svelte";
 	import PickerSector from "./components/PickerSector.svelte";
-	import Presets from "./components/Presets.svelte";
+	import PickerPresets from "./components/PickerPresets.svelte";
+	import * as d3 from "d3";
+	import { activeData } from "./stores.js";
+	import { afterUpdate, onMount } from "svelte";
 
 	export let headline = "";
 	export let intro = "";
@@ -32,32 +35,62 @@
 		},
 	};
 	export let sectors = {
-		sector1: {
+		manufacturing: {
 			heading: "Manufacturing",
 			description:
 				"Lorem ipsum dolor sit amet consectetur adipisicing elit. In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit?",
 		},
-		sector2: {
+		pharma: {
 			heading: "Pharmaceuticals",
 			description:
 				"In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit? Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
 		},
-		sector3: {
+		semi: {
 			heading: "Fancy computer chips",
 			description:
 				"Lorem ipsum dolor adipisicing elit. In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus ullam velit?",
 		},
 	};
 
-	let activeSector = "sector1";
+	let activeSector = "manufacturing";
+
+	// THis is our data cache
+	const data = new Map();
 
 	$: sectorHeader = sectors[activeSector].heading;
 	$: sectorDescription = sectors[activeSector].description;
+
+	async function handleSectorChange(e) {
+		const { sector } = e.detail;
+		console.log("switching to %s", sector);
+
+		// console.log(sectorData);
+	}
+
+	onMount(async () => {
+		$activeData = await fetchData();
+	});
+
+	/**
+	 * Looks at the `activeSector` and loads the appropriate data file from our cache. If the data is not in the cache,
+	 * then it goes and gets it.
+	 */
+	async function fetchData() {
+		if (data.has(activeSector)) {
+			// This data is already fetched and cached. Use it.
+			return data.get(activeSector);
+		} else {
+			// This data is not cached. Get it.
+			const sectorData = await d3.csv(`/data/${activeSector}.csv`).catch(console.error);
+			data.set(activeSector, sectorData);
+			return sectorData;
+		}
+	}
 </script>
 
 <style>
 	.container {
-		--controls-width: 20rem;
+		--controls-width: 17rem;
 		display: grid;
 		gap: var(--gap);
 	}
@@ -88,11 +121,15 @@
 </style>
 
 <Intro {headline} {intro} />
-<Presets {presets} />
+<PickerPresets {presets} />
 <section class="container" aria-labelledby="sector-heading">
 	<div class="sector-heading">
 		<h2 id="sector-heading" class="visually-hidden">About {sectorHeader}</h2>
-		<PickerSector {sectors} {sectorHeader} bind:value={activeSector} />
+		<PickerSector
+			{sectors}
+			{sectorHeader}
+			bind:value={activeSector}
+			on:sectorChange={handleSectorChange} />
 		<p>{@html sectorDescription}</p>
 	</div>
 	{#each Object.entries(charts) as [id, data], index}

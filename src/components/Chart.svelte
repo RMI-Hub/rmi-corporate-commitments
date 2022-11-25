@@ -2,11 +2,54 @@
 	import Expand from "../icons/Expand.svelte";
 	import Share from "../icons/Share.svelte";
 	import MoreInformation from "./MoreInformation.svelte";
+	import { activeData } from "../stores.js";
+	import { afterUpdate } from "svelte";
+	import groupBy from "lodash.groupby";
 
 	export let header;
 	export let id;
 	export let definition;
 	export let index;
+	export let type;
+	export let cumulative;
+	let container;
+
+	$: $activeData && buildChart();
+
+	function buildChart() {
+		if (!$activeData) return;
+		if (cumulative) {
+			buildCumulativeChart();
+		} else {
+			buildAnnualChart();
+		}
+	}
+
+	function buildCumulativeChart() {
+		console.log("Builing cumulative chart for ", type);
+
+		// Revenue Growth (Historic)
+		// Scope 1 Intensity (Sector Min)
+		const grouped = groupBy($activeData, d => d["Year"]);
+
+		// acc, curr, index, og
+		let runningTotal = 0;
+		const data = Object.entries(grouped).reduce((accumulator, [year, yearData]) => {
+			const yearTotal = yearData.reduce((a, c) => {
+				a = a + c["Revenue Growth (Historic)"] * c["Scope 1 Intensity (Sector Min)"];
+				return a;
+			}, 0);
+			runningTotal += yearTotal;
+			accumulator.push({
+				x: year,
+				y: runningTotal,
+			});
+			return accumulator;
+		}, []);
+
+		console.log({ data });
+	}
+	function buildAnnualChart() {}
 </script>
 
 <style>
@@ -70,5 +113,5 @@
 		{header}
 		<MoreInformation text={definition} {id} flip={index % 2 !== 0} />
 	</h2>
-	<div class="chart__container" />
+	<div class="chart__container" bind:this={container} />
 </div>

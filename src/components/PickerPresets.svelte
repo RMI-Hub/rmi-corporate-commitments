@@ -22,6 +22,7 @@
 
 		display: flex;
 		gap: 0.5rem;
+		overflow: scroll;
 	}
 
 	.preset {

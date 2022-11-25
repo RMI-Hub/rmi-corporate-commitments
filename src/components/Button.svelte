@@ -38,4 +38,4 @@
 	}
 </style>
 
-<button {type} class:muted class:active {disabled}><slot /></button>
+<button on:click {type} class:muted class:active {disabled}><slot /></button>
