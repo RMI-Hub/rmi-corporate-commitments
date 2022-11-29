@@ -1,13 +1,17 @@
 <script>
+	// COMPONENTS
 	import Chart from "./components/Chart.svelte";
 	import PoweredBy from "./components/PoweredBy.svelte";
 	import Toggles from "./components/Toggles.svelte";
 	import Intro from "./components/Intro.svelte";
 	import PickerSector from "./components/PickerSector.svelte";
 	import PickerPresets from "./components/PickerPresets.svelte";
+
+	// UTILS
 	import * as d3 from "d3";
-	import { activeData } from "./stores.js";
+	import { yearly, cumulative, multipliers } from "./stores.js";
 	import { afterUpdate, onMount } from "svelte";
+	import groupBy from "lodash.groupby";
 
 	export let headline = "";
 	export let intro = "";
@@ -34,23 +38,7 @@
 			label: "Industrials slow change",
 		},
 	};
-	export let sectors = {
-		manufacturing: {
-			heading: "Manufacturing",
-			description:
-				"Lorem ipsum dolor sit amet consectetur adipisicing elit. In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit?",
-		},
-		pharma: {
-			heading: "Pharmaceuticals",
-			description:
-				"In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit? Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
-		},
-		semi: {
-			heading: "Fancy computer chips",
-			description:
-				"Lorem ipsum dolor adipisicing elit. In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus ullam velit?",
-		},
-	};
+	export let sectors = {};
 
 	let activeSector = "manufacturing";
 
@@ -60,31 +48,80 @@
 	$: sectorHeader = sectors[activeSector].heading;
 	$: sectorDescription = sectors[activeSector].description;
 
+	$: intensity = "Scope 1 Intensity (Company)";
+
 	async function handleSectorChange(e) {
 		const { sector } = e.detail;
-		console.log("switching to %s", sector);
-
-		// console.log(sectorData);
+		fetchData();
 	}
 
 	onMount(async () => {
-		$activeData = await fetchData();
+		fetchData();
 	});
-
+	afterUpdate(() => {
+		// console.log({ $multipliers });
+	});
 	/**
 	 * Looks at the `activeSector` and loads the appropriate data file from our cache. If the data is not in the cache,
 	 * then it goes and gets it.
 	 */
 	async function fetchData() {
+		let sectorData;
 		if (data.has(activeSector)) {
 			// This data is already fetched and cached. Use it.
-			return data.get(activeSector);
+			sectorData = data.get(activeSector);
 		} else {
-			// This data is not cached. Get it.
-			const sectorData = await d3.csv(`/data/${activeSector}.csv`).catch(console.error);
+			// This data is not cached. Get it. Cache it.
+			sectorData = await d3.csv(`/data/${activeSector}.csv`).catch(console.error);
 			data.set(activeSector, sectorData);
-			return sectorData;
 		}
+
+		$yearly = sectorData.map(d => {
+			return {
+				name: d.company,
+				year: new Date(d.year, 0, 1),
+
+				// Rev * growth * multiplier
+				baseline: d.revenue * d[$multipliers.growth] * d[intensity],
+				// TK: This
+				target: d.revenue * d[$multipliers.growth] * d[intensity],
+			};
+		});
+
+		// Generate the cumulative figures, grouped by year
+		const grouped = groupBy($yearly, d => d["year"]);
+
+		// Running totals, to track the overall accumulation
+		let runningTotalBaseline = 0;
+		let runningTotalTarget = 0;
+
+		// Reduce the grouped into an array of objects, one per year
+		$cumulative = Object.entries(grouped).reduce((accumulator, [year, yearData]) => {
+			// Get our annual totals
+			const { baseline, target } = yearData.reduce(
+				(a, c) => {
+					// Add 'em up
+					if (c.baseline) a.baseline += +c.baseline;
+					if (c.target) a.target += +c.target;
+					return a;
+				},
+				{ baseline: 0, target: 0 }
+			);
+
+			// Add the annual totals to the running totals
+			runningTotalBaseline += baseline;
+			runningTotalTarget += target;
+
+			// Store our new values
+			accumulator.push({
+				year: new Date(year),
+				baseline: runningTotalBaseline,
+				target: runningTotalTarget,
+			});
+			return accumulator;
+		}, []);
+
+		console.log("NEW DATA!", { $yearly, $cumulative });
 	}
 </script>
 

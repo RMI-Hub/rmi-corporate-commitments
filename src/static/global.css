@@ -4,8 +4,8 @@
 	--color-black: #0a090c;
 	--color-slate: #07393c;
 	--color-gray-dark: #222;
-	--color-gray: #888;
-	--color-gray-light: #eee;
+	--color-gray: #999999;
+	--color-gray-light: #ccc;
 	--color-apricot-light: #fcd7ad;
 	--color-blue-baby: #90ddf0;
 	--color-blue-dark: #003b63;
@@ -18,6 +18,9 @@
 	--color-font: var(--color-slate);
 	--color-accent: var(--color-blue-dark);
 	--color-accent-text: var(--color-white);
+
+	--color-chart: var(--color-blue-medium);
+	--color-chart-accent: var(--color-blue-dark);
 
 	/* TYPE */
 

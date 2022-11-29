@@ -1,0 +1,103 @@
+[
+	{
+		"label": "Scope",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "Scope 1", "value": "scope1", "group": "scope", "default": true },
+			{ "text": "Scope 2", "value": "scope2", "group": "scope" },
+			{ "text": "Scope 1 + 2", "value": "scope12", "group": "scope" }
+		]
+	},
+	{
+		"label": "Sector emission intensity",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "Min", "value": "" },
+			{ "text": "Mean", "value": "" },
+			{ "text": "Max", "value": "" }
+		]
+	},
+	{
+		"label": "Annual revenut growth",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "S&P", "value": "growth_sp", "group": "growth", "default": true },
+			{
+				"text": "Historic",
+				"value": "growth_historic",
+				"group": "growth"
+			}
+		]
+	},
+	{
+		"label": "End target",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "Current", "value": "" },
+			{
+				"text": "None to NZT",
+				"value": ""
+			},
+			{
+				"text": "50% largest to NZT",
+				"value": ""
+			}
+		]
+	},
+	{
+		"label": "Interim target",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "Current", "value": "" },
+			{
+				"text": "All to 50% by 2030",
+				"value": ""
+			}
+		]
+	},
+	{
+		"label": "Slowdown",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "2022", "value": "" },
+			{
+				"text": "2030",
+				"value": ""
+			},
+			{
+				"text": "2040",
+				"value": ""
+			}
+		]
+	},
+	{
+		"label": "Percentage of targets met",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "25%", "value": "" },
+			{
+				"text": "50%",
+				"value": ""
+			},
+			{
+				"text": "100%",
+				"value": ""
+			}
+		]
+	},
+	{
+		"label": "Targets met with offset",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "0", "value": "" },
+			{
+				"text": "25%",
+				"value": ""
+			},
+			{
+				"text": "50%",
+				"value": ""
+			}
+		]
+	}
+]

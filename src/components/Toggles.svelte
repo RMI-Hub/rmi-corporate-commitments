@@ -1,6 +1,10 @@
 <script>
-	import MoreInformation from "./MoreInformation.svelte";
+	// UTILS
 	import { slugify } from "../utils/slugify.js";
+	import { multipliers } from "../stores.js";
+
+	// COMPONENTS
+	import MoreInformation from "./MoreInformation.svelte";
 	import Button from "./Button.svelte";
 
 	export let togglesLabel = "Knobs and dials";
@@ -121,14 +125,15 @@
 						{label}
 						<MoreInformation text={definition} fullwidth={true} />
 					</h3>
-					{#each buttons as { text, value }}
+					{#each buttons as { text, value, group = "foo" }}
 						<label class="toggles__label sans-serif" for={slugify(text)}>
 							<input
 								class="toggles__btn"
 								type="radio"
+								bind:group={$multipliers[group]}
 								id={slugify(text)}
 								name={slugify(label)}
-								value="button" />
+								{value} />
 							{text}
 						</label>
 					{/each}

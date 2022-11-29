@@ -2,54 +2,138 @@
 	import Expand from "../icons/Expand.svelte";
 	import Share from "../icons/Share.svelte";
 	import MoreInformation from "./MoreInformation.svelte";
-	import { activeData } from "../stores.js";
-	import { afterUpdate } from "svelte";
-	import groupBy from "lodash.groupby";
+	import { yearly, cumulative } from "../stores.js";
+	import { afterUpdate, onMount } from "svelte";
+	import * as d3 from "d3";
 
 	export let header;
 	export let id;
 	export let definition;
 	export let index;
-	export let type;
-	export let cumulative;
-	let container;
+	export let type; // "baseline" or "target"
+	export let annual; // true or false
 
-	$: $activeData && buildChart();
+	let canvasHeight, canvasWidth;
+	let containerElement; // Use a ref here because we want to redraw this on resize and need to know the container
+	const margins = { top: 0, right: 0, bottom: 15, left: 25 };
 
-	function buildChart() {
-		if (!$activeData) return;
-		if (cumulative) {
-			buildCumulativeChart();
+	$: $cumulative.length && buildCumulativeChart(containerElement);
+	$: $yearly.length && buildAnnualChart(containerElement);
+
+	function buildCumulativeChart(containerElement) {
+		// CHART SCAFFOLDING
+		// ------------------------------------
+		if (!$cumulative.length) return;
+		console.log({ $cumulative });
+
+		const data = $cumulative;
+
+		const { height, width } = containerElement.getBoundingClientRect();
+		canvasHeight = height - margins.top - margins.bottom;
+		canvasWidth = width - margins.left - margins.right;
+
+		const svg = d3
+			.select(containerElement)
+			.append("svg")
+			.attr("height", height)
+			.attr("width", width)
+			.attr("role", "img");
+
+		// DRAW THE CHART
+		const x = d3
+			.scaleBand()
+			.paddingInner([0.2])
+			.domain(d3.map(data, d => d.year))
+			.range([0, canvasWidth]);
+
+		const xAxis = d3
+			.axisBottom(x)
+			.tickFormat(d => {
+				const year = d.getFullYear();
+				if (year % 5 === 0) {
+					return d3.timeFormat("%Y")(d).slice(-2) === "25"
+						? d3.timeFormat("%Y")(d)
+						: d3.timeFormat("\u2019%y")(d);
+				}
+				return "";
+			})
+			.tickSize(0)
+			.ticks(5);
+		svg
+			.append("g")
+			.classed("axis", true)
+			.classed("x", true)
+			.attr("transform", `translate(${margins.left}, ${canvasHeight})`)
+			.call(xAxis);
+
+		const y = d3
+			.scaleLinear()
+			.domain([0, d3.max(data, d => d[type])])
+			.range([canvasHeight, 0]);
+
+		const yAxis = d3
+			.axisLeft(y)
+			.tickFormat(d => d3.format(".1s")(d).replace("G", "B"))
+			.ticks(5);
+
+		svg
+			.append("g")
+			.classed("axis", true)
+			.classed("y", true)
+			.attr("transform", `translate(${margins.left},${margins.top})`)
+			.call(yAxis.tickSize([0]));
+
+		// DRAW THE BARS
+		const bars = svg
+			.append("g")
+			.classed("bars", true)
+			.attr("transform", `translate(${margins.left},0)`);
+
+		// // Add the axis ticks
+
+		/*
+		g.insert("g", ".bars")         
+        .attr("class", "grid horizontal")
+        .call(d3.svg.axis().scale(yScale)
+            .orient("left")
+            .tickSize(-(height-margin.top-margin.bottom), 0, 0)
+            .tickFormat("")
+        );
+		*/
+		bars
+			.append("g")
+			.classed("bars__ticks", true)
+			.attr("transform", `translate(${canvasWidth},0)`)
+			.call(yAxis.tickFormat("").tickSize(canvasWidth, 0, 0));
+
+		console.log({
+			"yAxis.ticks()": yAxis.ticks(),
+		});
+		// Add the bar chart bars
+		bars
+			.selectAll(".bar")
+			.data(data)
+			.enter()
+			.append("rect")
+			.classed("bar", true)
+			.classed("highlight", d => d.year.getFullYear() === 2025)
+			.attr("width", x.bandwidth())
+			.attr("x", d => x(d.year))
+			.attr("y", d => y(d[type]))
+			.attr("height", d => canvasHeight - y(d[type]));
+	}
+
+	function buildChart(node) {
+		if (annual) {
+			buildAnnualChart(node);
 		} else {
-			buildAnnualChart();
+			buildCumulativeChart(node);
 		}
 	}
-
-	function buildCumulativeChart() {
-		console.log("Builing cumulative chart for ", type);
-
-		// Revenue Growth (Historic)
-		// Scope 1 Intensity (Sector Min)
-		const grouped = groupBy($activeData, d => d["Year"]);
-
-		// acc, curr, index, og
-		let runningTotal = 0;
-		const data = Object.entries(grouped).reduce((accumulator, [year, yearData]) => {
-			const yearTotal = yearData.reduce((a, c) => {
-				a = a + c["Revenue Growth (Historic)"] * c["Scope 1 Intensity (Sector Min)"];
-				return a;
-			}, 0);
-			runningTotal += yearTotal;
-			accumulator.push({
-				x: year,
-				y: runningTotal,
-			});
-			return accumulator;
-		}, []);
-
-		console.log({ data });
-	}
-	function buildAnnualChart() {}
+	function buildAnnualChart(node) {}
+	onMount(() => {
+		console.log({ annual, type });
+	});
 </script>
 
 <style>
@@ -61,8 +145,9 @@
 
 	.chart__container {
 		margin-top: auto;
-		background-color: #aaa;
+		outline: 2px solid fuchsia;
 		height: 300px;
+		position: relative;
 	}
 
 	.chart__header {
@@ -96,6 +181,30 @@
 		height: 100%;
 		width: 100%;
 	}
+
+	.chart :global(canvas) {
+		position: absolute;
+		top: var(--canvas-top);
+		right: var(--canvas-right);
+		height: var(--canvas-height);
+		width: var(--canvas-width);
+	}
+
+	.chart :global(.bar) {
+		fill: var(--color-chart);
+	}
+	.chart :global(.bar.highlight) {
+		fill: var(--color-chart-highlight);
+	}
+
+	.chart :global(.bars__ticks .tick) {
+		color: var(--color-gray);
+		stroke-width: 0.5;
+	}
+	.chart :global(.bars__ticks .domain),
+	.chart :global(.y.axis .domain) {
+		display: none;
+	}
 </style>
 
 <div class="chart stack" aria-labelledby="chart-{id}">
@@ -113,5 +222,5 @@
 		{header}
 		<MoreInformation text={definition} {id} flip={index % 2 !== 0} />
 	</h2>
-	<div class="chart__container" bind:this={container} />
+	<div class="chart__container" bind:this={containerElement} use:buildChart />
 </div>
