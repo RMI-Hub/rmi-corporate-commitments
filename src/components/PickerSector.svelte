@@ -45,6 +45,7 @@
 		position: absolute;
 		left: 0;
 		padding-bottom: 0.25em;
+		padding-left: 3px;
 		border-bottom: 3px solid var(--color-accent);
 	}
 	.picker__label::after {
