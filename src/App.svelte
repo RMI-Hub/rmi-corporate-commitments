@@ -77,10 +77,10 @@
 		}
 
 		$yearly = sectorData.map(d => {
+			console.log($multipliers.growth);
 			return {
 				name: d.company,
 				year: new Date(d.year, 0, 1),
-
 				// Rev * growth * multiplier
 				baseline: d.revenue * d[$multipliers.growth] * d[intensity],
 				// TK: This
@@ -174,6 +174,6 @@
 			<Chart {...data} {id} {index} />
 		</div>
 	{/each}
-	<div class="controls"><Toggles {toggles} /></div>
+	<div class="controls"><Toggles {toggles} on:input={fetchData} /></div>
 	<PoweredBy />
 </section>

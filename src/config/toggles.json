@@ -18,7 +18,7 @@
 		]
 	},
 	{
-		"label": "Annual revenut growth",
+		"label": "Annual revenue growth",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
 			{ "text": "S&P", "value": "growth_sp", "group": "growth", "default": true },

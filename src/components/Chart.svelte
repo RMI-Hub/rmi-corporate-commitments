@@ -6,6 +6,8 @@
 	import { afterUpdate, onMount } from "svelte";
 	import * as d3 from "d3";
 
+	import { StackedAreaChart } from "../utils/stacked-area-chart.js";
+
 	export let header;
 	export let id;
 	export let definition;
@@ -15,16 +17,17 @@
 
 	let canvasHeight, canvasWidth;
 	let containerElement; // Use a ref here because we want to redraw this on resize and need to know the container
-	const margins = { top: 0, right: 0, bottom: 15, left: 25 };
+	const margins = { top: 0, right: 5, bottom: 15, left: 25 };
 
-	$: $cumulative.length && buildCumulativeChart(containerElement);
-	$: $yearly.length && buildAnnualChart(containerElement);
+	$: $yearly.length &&
+		$cumulative.length &&
+		containerElement &&
+		buildChart(containerElement);
 
 	function buildCumulativeChart(containerElement) {
 		// CHART SCAFFOLDING
 		// ------------------------------------
 		if (!$cumulative.length) return;
-		console.log({ $cumulative });
 
 		const data = $cumulative;
 
@@ -59,12 +62,6 @@
 			})
 			.tickSize(0)
 			.ticks(5);
-		svg
-			.append("g")
-			.classed("axis", true)
-			.classed("x", true)
-			.attr("transform", `translate(${margins.left}, ${canvasHeight})`)
-			.call(xAxis);
 
 		const y = d3
 			.scaleLinear()
@@ -89,26 +86,13 @@
 			.classed("bars", true)
 			.attr("transform", `translate(${margins.left},0)`);
 
-		// // Add the axis ticks
-
-		/*
-		g.insert("g", ".bars")         
-        .attr("class", "grid horizontal")
-        .call(d3.svg.axis().scale(yScale)
-            .orient("left")
-            .tickSize(-(height-margin.top-margin.bottom), 0, 0)
-            .tickFormat("")
-        );
-		*/
+		// Add the axis ticks
 		bars
 			.append("g")
 			.classed("bars__ticks", true)
-			.attr("transform", `translate(${canvasWidth},0)`)
-			.call(yAxis.tickFormat("").tickSize(canvasWidth, 0, 0));
+			.attr("transform", `translate(${canvasWidth + margins.right},0)`)
+			.call(yAxis.tickFormat("").tickSize(canvasWidth + margins.right, 0, 0));
 
-		console.log({
-			"yAxis.ticks()": yAxis.ticks(),
-		});
 		// Add the bar chart bars
 		bars
 			.selectAll(".bar")
@@ -121,19 +105,54 @@
 			.attr("x", d => x(d.year))
 			.attr("y", d => y(d[type]))
 			.attr("height", d => canvasHeight - y(d[type]));
+
+		// Build xAxis now so it's atop the bars
+		svg
+			.append("g")
+			.classed("axis", true)
+			.classed("x", true)
+			.attr("transform", `translate(${margins.left}, ${canvasHeight})`)
+			.call(xAxis);
 	}
 
 	function buildChart(node) {
+		console.log({ annual });
 		if (annual) {
+			console.log("foo", node);
 			buildAnnualChart(node);
 		} else {
+			console.log("bar", node);
 			buildCumulativeChart(node);
 		}
 	}
-	function buildAnnualChart(node) {}
-	onMount(() => {
-		console.log({ annual, type });
-	});
+	function buildAnnualChart(node) {
+		if (!$yearly.length) return;
+
+		// const data = $cumulative;
+
+		const { height, width } = containerElement.getBoundingClientRect();
+		canvasHeight = height - margins.top - margins.bottom;
+		canvasWidth = width - margins.left - margins.right;
+
+		const stackedChart = StackedAreaChart($yearly, {
+			x: d => d.year,
+			y: d => d[type],
+			z: d => d.name,
+			width,
+			height,
+		});
+
+		console.log(stackedChart);
+		containerElement.appendChild(stackedChart);
+
+		// const svg = d3
+		// 	.select(containerElement)
+		// 	.append("svg")
+		// 	.attr("height", height)
+		// 	.attr("width", width)
+		// 	.attr("role", "img");
+	}
+	onMount(() => {});
 </script>
 
 <style>
@@ -222,5 +241,5 @@
 		{header}
 		<MoreInformation text={definition} {id} flip={index % 2 !== 0} />
 	</h2>
-	<div class="chart__container" bind:this={containerElement} use:buildChart />
+	<div class="chart__container" bind:this={containerElement} />
 </div>
