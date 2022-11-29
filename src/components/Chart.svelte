@@ -144,13 +144,6 @@
 
 		console.log(stackedChart);
 		containerElement.appendChild(stackedChart);
-
-		// const svg = d3
-		// 	.select(containerElement)
-		// 	.append("svg")
-		// 	.attr("height", height)
-		// 	.attr("width", width)
-		// 	.attr("role", "img");
 	}
 	onMount(() => {});
 </script>
@@ -164,7 +157,6 @@
 
 	.chart__container {
 		margin-top: auto;
-		outline: 2px solid fuchsia;
 		height: 300px;
 		position: relative;
 	}
@@ -216,7 +208,7 @@
 		fill: var(--color-chart-highlight);
 	}
 
-	.chart :global(.bars__ticks .tick) {
+	.chart :global(.tick) {
 		color: var(--color-gray);
 		stroke-width: 0.5;
 	}

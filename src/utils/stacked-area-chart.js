@@ -101,7 +101,6 @@ export function StackedAreaChart(
 				.selectAll(".tick line")
 				.clone()
 				.attr("x2", width - marginLeft - marginRight)
-				.attr("stroke-opacity", 0.1)
 		)
 		.call(g =>
 			g
