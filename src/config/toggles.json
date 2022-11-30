@@ -12,9 +12,10 @@
 		"label": "Sector emission intensity",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "Min", "value": "" },
-			{ "text": "Mean", "value": "" },
-			{ "text": "Max", "value": "" }
+			{ "text": "Company", "value": "company", "group": "sector_emission_intensity" },
+			{ "text": "Min", "value": "min", "group": "sector_emission_intensity" },
+			{ "text": "Mean", "value": "mean", "group": "sector_emission_intensity" },
+			{ "text": "Max", "value": "max", "group": "sector_emission_intensity" }
 		]
 	},
 	{
