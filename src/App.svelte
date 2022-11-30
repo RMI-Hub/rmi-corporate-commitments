@@ -9,9 +9,8 @@
 
 	// UTILS
 
-	import { target, baseline, multipliers } from "./stores.js";
+	import { chartData, multipliers } from "./stores.js";
 	import { afterUpdate, onMount } from "svelte";
-
 	import { fetchData } from "./utils/fetch-data.js";
 
 	export let headline = "";
@@ -41,10 +40,11 @@
 	};
 	export let sectors = {};
 
+	let data = {};
 	let activeSector = "manufacturing";
 
 	// Let's stash our initial toggles
-	const defaultMultipliers = $multipliers;
+	const defaultMultipliers = Object.assign({}, $multipliers);
 
 	$: sectorHeader = sectors[activeSector].heading;
 	$: sectorDescription = sectors[activeSector].description;
@@ -54,25 +54,20 @@
 	// $: target = `TKTK`;
 
 	async function handleUpdate(e) {
-		console.group("Starting update");
-		const { baselineData, targetData } = await fetchData({
+		console.log("HANDLE-update", { activeSector, ...$multipliers, intensity });
+		$chartData = await fetchData({
 			activeSector,
 			intensity,
 			...$multipliers,
+		}).catch(console.error);
+		console.log("NEW DATA HAS BEEN FETCHED!", {
+			$chartData,
 		});
-		console.log("NEW DATA!", {
-			targetData,
-			baselineData,
-		});
-
-		$target = targetData;
-		$baseline = baselineData;
 		window.dispatchEvent(new Event("renderCharts"));
-		console.groupEnd();
 	}
 
 	onMount(async () => {
-		handleUpdate();
+		await handleUpdate();
 	});
 </script>
 
@@ -127,9 +122,11 @@
 			on:sectorChange={handleUpdate} />
 		<p>{@html sectorDescription}</p>
 	</div>
-	{#each Object.entries(charts) as [type, data]}
-		<Charts {...data} {type} />
+	{#each Object.entries(charts) as [type, chartInfo]}
+		<Charts {...chartInfo} data={data[type]} {type} />
 	{/each}
-	<div class="controls"><Toggles {toggles} on:input={fetchData} /></div>
+	<div class="controls">
+		<Toggles {defaultMultipliers} {toggles} on:input={handleUpdate} />
+	</div>
 	<PoweredBy />
 </section>

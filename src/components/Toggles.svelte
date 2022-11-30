@@ -9,6 +9,7 @@
 
 	export let togglesLabel = "Knobs and dials";
 	export let toggles = [];
+	export let defaultMultipliers = {};
 
 	let visible = false;
 
@@ -20,6 +21,9 @@
 	function closeControls(e) {
 		if (doc) doc.classList.remove("scroll-lock");
 		visible = false;
+	}
+	function onReset(e) {
+		$multipliers = defaultMultipliers;
 	}
 
 	function onSubmit(e) {
@@ -142,7 +146,7 @@
 			{/each}
 		</div>
 		<div class="toggles__buttons">
-			<Button>Reset</Button>
+			<Button on:click={onReset}>Reset</Button>
 			<Button type="submit" active={true}>Submit</Button>
 		</div>
 	</form>
