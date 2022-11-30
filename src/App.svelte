@@ -1,11 +1,11 @@
 <script>
 	// COMPONENTS
-	import Chart from "./components/Chart.svelte";
 	import PoweredBy from "./components/PoweredBy.svelte";
 	import Toggles from "./components/Toggles.svelte";
 	import Intro from "./components/Intro.svelte";
 	import PickerSector from "./components/PickerSector.svelte";
 	import PickerPresets from "./components/PickerPresets.svelte";
+	import Charts from "./components/Charts.svelte";
 
 	// UTILS
 
@@ -13,7 +13,6 @@
 	import { afterUpdate, onMount } from "svelte";
 
 	import { fetchData } from "./utils/fetch-data.js";
-	import Charts from "./components/Charts.svelte";
 
 	export let headline = "";
 	export let intro = "";
@@ -56,15 +55,18 @@
 
 	async function handleUpdate(e) {
 		console.group("Starting update");
-		const { baseline, target } = await fetchData({
+		const { baselineData, targetData } = await fetchData({
 			activeSector,
 			intensity,
 			...$multipliers,
 		});
 		console.log("NEW DATA!", {
-			target,
-			baseline,
+			targetData,
+			baselineData,
 		});
+
+		$target = targetData;
+		$baseline = baselineData;
 		window.dispatchEvent(new Event("renderCharts"));
 		console.groupEnd();
 	}
@@ -106,6 +108,9 @@
 
 		.container :global(.chart--cumulative) {
 			grid-row: 3;
+		}
+		.container :global(.chart--baseline) {
+			grid-column: 2;
 		}
 	}
 </style>
