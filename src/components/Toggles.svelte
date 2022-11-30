@@ -135,8 +135,7 @@
 								id={slugify(text)}
 								name={slugify(label)}
 								{value}
-								bind:group={$multipliers[group]}
-								on:input />
+								bind:group={$multipliers[group]} />
 							{text}
 						</label>
 					{/each}
