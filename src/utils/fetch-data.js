@@ -3,26 +3,32 @@ import groupBy from "lodash.groupby";
 import { csv } from "d3";
 
 // THis is our data cache
-const data = new Map();
+const sectors = new Map();
 /**
  * Looks at the `activeSector` and loads the appropriate data file from our cache. If the data is not in the cache,
  * then it goes and gets it. This function is throttle to once every 250ms.
  */
 export const fetchData = throttle(
-	async ({ intensity, activeSector, growth }) => {
+	async ({ intensity, activeSector, growth, foo }) => {
 		return new Promise(async (resolve, reject) => {
-			console.log("NEW DATA FETCHING", { intensity, activeSector });
+			console.log("FETCHING & MUNGING NEW DATA", {
+				intensity,
+				activeSector,
+				growth,
+				foo,
+			});
+			console.log({ activeSector, has: sectors.has(activeSector) });
 			let sectorData;
-			if (data.has(activeSector)) {
+			if (sectors.has(activeSector)) {
 				// This data is already fetched and cached. Use it.
-				sectorData = data.get(activeSector);
+				sectorData = sectors.get(activeSector);
 			} else {
 				// This data is not cached. Get it. Cache it.
 				sectorData = await csv(`/data/${activeSector}.csv`).catch(e => {
 					console.error(e);
 					reject(e);
 				});
-				data.set(activeSector, sectorData);
+				sectors.set(activeSector, sectorData);
 			}
 
 			const yearly = sectorData.map(d => {
@@ -71,7 +77,6 @@ export const fetchData = throttle(
 				},
 				[]
 			);
-			console.log({ yearly, cumulative });
 
 			const baseline = {
 				yearly: yearly.map(a => {
