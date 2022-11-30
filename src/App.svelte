@@ -10,7 +10,7 @@
 	// UTILS
 
 	import { chartData, multipliers } from "./stores.js";
-	import { afterUpdate, onMount } from "svelte";
+	import { onMount } from "svelte";
 	import { fetchData } from "./utils/fetch-data.js";
 
 	export let headline = "";
@@ -40,7 +40,6 @@
 	};
 	export let sectors = {};
 
-	let data = {};
 	let activeSector = "manufacturing";
 
 	// Let's stash our initial toggles
@@ -48,8 +47,11 @@
 
 	$: sectorHeader = sectors[activeSector].heading;
 	$: sectorDescription = sectors[activeSector].description;
+
+	// Handle update will run any time these store values update
 	$: ($multipliers || activeSector) && handleUpdate();
 
+	// fetches data when needed
 	async function handleUpdate(e) {
 		$chartData = await fetchData({ activeSector, multipliers: $multipliers }).catch(
 			console.error
@@ -59,10 +61,6 @@
 		});
 		window.dispatchEvent(new Event("renderCharts"));
 	}
-
-	onMount(async () => {
-		// await handleUpdate();
-	});
 </script>
 
 <style>
