@@ -111,7 +111,7 @@
 		<p>{@html sectorDescription}</p>
 	</div>
 	{#each Object.entries(charts) as [type, chartInfo]}
-		<Charts {...chartInfo} data={data[type]} {type} />
+		<Charts {...chartInfo} {type} />
 	{/each}
 	<div class="controls">
 		<Toggles {defaultMultipliers} {toggles} />
