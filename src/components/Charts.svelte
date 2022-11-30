@@ -1,5 +1,5 @@
 <script>
-	import { target, baseline } from "../stores.js";
+	import { chartData } from "../stores.js";
 	import { afterUpdate, onMount } from "svelte";
 	import * as d3 from "d3";
 
@@ -13,122 +13,148 @@
 
 	let canvasHeight, canvasWidth;
 	let cumulativeContainer, annualContainer;
+	// Cumulative placeholders
+	let cumulativeSVG, annualSVG;
+	let yAxisG, xAxisG, bars, barTicks;
 
-	const margins = { top: 0, right: 5, bottom: 15, left: 25 };
+	const DURATION = 500;
+	const MARGINS = { top: 0, right: 5, bottom: 15, left: 25 };
 
-	// $: $yearly.length &&
-	// 	$cumulative.length &&
-	// 	containerElement &&
-	// 	buildChart(containerElement);
+	function render(e) {
+		buildCumulativeChart();
+	}
 
-	// function buildCumulativeChart(containerElement) {
-	// 	// CHART SCAFFOLDING
-	// 	// ------------------------------------
-	// 	if (!$cumulative.length) return;
+	function buildCumulativeChart() {
+		// CHART SCAFFOLDING
+		// ------------------------------------
+		const data = $chartData?.[type]?.cumulative;
+		const domain = $chartData?.cumulative_domain;
+		if (!data) return;
 
-	// 	const data = $cumulative;
+		if (!cumulativeSVG) {
+			const { height, width } = cumulativeContainer.getBoundingClientRect();
+			canvasHeight = height - MARGINS.top - MARGINS.bottom;
+			canvasWidth = width - MARGINS.left - MARGINS.right;
+			cumulativeSVG = d3
+				.select(cumulativeContainer)
+				.append("svg")
+				.attr("height", height)
+				.attr("width", width)
+				.attr("viewBox", "0 0 " + width + " " + height)
+				.attr("preserveAspectRatio", "xMinYMid")
+				.attr("role", "img");
 
-	// 	const { height, width } = containerElement.getBoundingClientRect();
-	// 	canvasHeight = height - margins.top - margins.bottom;
-	// 	canvasWidth = width - margins.left - margins.right;
+			// DRAW THE BARS
+			bars = cumulativeSVG
+				.append("g")
+				.classed("bars", true)
+				.attr("transform", `translate(${MARGINS.left},0)`);
 
-	// 	const svg = d3
-	// 		.select(containerElement)
-	// 		.append("svg")
-	// 		.attr("height", height)
-	// 		.attr("width", width)
-	// 		.attr("viewBox", "0 0 " + width + " " + height)
-	// 		.attr("preserveAspectRatio", "xMinYMid")
-	// 		.attr("role", "img");
+			barTicks = bars
+				.append("g")
+				.classed("bars__ticks", true)
+				.attr("transform", `translate(${canvasWidth + MARGINS.right},0)`);
 
-	// 	// DRAW THE CHART
-	// 	const x = d3
-	// 		.scaleBand()
-	// 		.paddingInner([0.2])
-	// 		.domain(d3.map(data, d => d.year))
-	// 		.range([0, canvasWidth]);
+			// Build yAxis now so it's atop the bars
+			yAxisG = cumulativeSVG
+				.append("g")
+				.classed("axis", true)
+				.classed("y", true)
+				.attr("transform", `translate(${MARGINS.left},${MARGINS.top})`);
 
-	// 	const xAxis = d3
-	// 		.axisBottom(x)
-	// 		.tickFormat(d => {
-	// 			const year = d.getFullYear();
-	// 			if (year % 5 === 0) {
-	// 				return d3.timeFormat("%Y")(d).slice(-2) === "25"
-	// 					? d3.timeFormat("%Y")(d)
-	// 					: d3.timeFormat("\u2019%y")(d);
-	// 			}
-	// 			return "";
-	// 		})
-	// 		.tickSize(0)
-	// 		.ticks(5);
+			// Build xAxis now so it's atop the bars
+			xAxisG = cumulativeSVG
+				.append("g")
+				.classed("axis", true)
+				.classed("x", true)
+				.attr("transform", `translate(${MARGINS.left}, ${canvasHeight})`);
+		}
+		// DRAW THE CHART
+		const x = d3
+			.scaleBand()
+			.paddingInner([0.2])
+			.domain(d3.map(data, d => d.year))
+			.range([0, canvasWidth]);
 
-	// 	const y = d3
-	// 		.scaleLinear()
-	// 		.domain([0, d3.max(data, d => d[type])])
-	// 		.range([canvasHeight, 0]);
+		const xAxis = d3
+			.axisBottom(x)
+			.tickFormat(d => {
+				const year = d.getFullYear();
+				if (year % 5 === 0) {
+					return d3.timeFormat("%Y")(d).slice(-2) === "25"
+						? d3.timeFormat("%Y")(d)
+						: d3.timeFormat("\u2019%y")(d);
+				}
+				return "";
+			})
+			.tickSize(0)
+			.ticks(5);
 
-	// 	const yAxis = d3
-	// 		.axisLeft(y)
-	// 		.tickFormat(d => d3.format(".1s")(d).replace("G", "B"))
-	// 		.ticks(5);
+		// Create the y scale for emissions
+		const y = d3.scaleLinear().domain(domain).range([canvasHeight, 0]);
 
-	// 	svg
-	// 		.append("g")
-	// 		.classed("axis", true)
-	// 		.classed("y", true)
-	// 		.attr("transform", `translate(${margins.left},${margins.top})`)
-	// 		.call(yAxis.tickSize([0]));
+		// Create the function for the y Axis
+		const yAxis = d3
+			.axisLeft(y)
+			.tickFormat(d => d3.format(".1s")(d).replace("G", "B"))
+			.ticks(5);
 
-	// 	// DRAW THE BARS
-	// 	const bars = svg
-	// 		.append("g")
-	// 		.classed("bars", true)
-	// 		.attr("transform", `translate(${margins.left},0)`);
+		// ADJUST THE RENDERED AXES
+		yAxisG
+			.transition()
+			.duration(DURATION)
+			.call(yAxis.tickSize([0]));
 
-	// 	// Add the axis ticks
-	// 	bars
-	// 		.append("g")
-	// 		.classed("bars__ticks", true)
-	// 		.attr("transform", `translate(${canvasWidth + margins.right},0)`)
-	// 		.call(yAxis.tickFormat("").tickSize(canvasWidth + margins.right, 0, 0));
+		xAxisG.transition().duration(DURATION).call(xAxis);
 
-	// 	// Add the bar chart bars
-	// 	bars
-	// 		.selectAll(".bar")
-	// 		.data(data)
-	// 		.enter()
-	// 		.append("rect")
-	// 		.classed("bar", true)
-	// 		.classed("highlight", d => d.year.getFullYear() === 2025)
-	// 		.attr("width", x.bandwidth())
-	// 		.attr("x", d => x(d.year))
-	// 		.attr("y", d => y(d[type]))
-	// 		.attr("height", d => canvasHeight - y(d[type]));
+		// UPDATE THE FULLWIDTH TICKS
+		barTicks
+			.transition()
+			.duration(DURATION)
+			.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
 
-	// 	// Build xAxis now so it's atop the bars
-	// 	svg
-	// 		.append("g")
-	// 		.classed("axis", true)
-	// 		.classed("x", true)
-	// 		.attr("transform", `translate(${margins.left}, ${canvasHeight})`)
-	// 		.call(xAxis);
+		// Add the bar chart bars
+		bars
+			.selectAll(".bar")
+			.data(data)
+			// .enter()
+			.join(
+				enter => {
+					enter
+						.append("rect")
+						.classed("bar", true)
+						.classed("highlight", d => d.year.getFullYear() === 2025)
+						.attr("width", x.bandwidth())
+						.attr("x", d => x(d.year))
+						.attr("y", d => y(d[type]))
+						.attr("height", d => canvasHeight - y(d[type]));
+				},
+				update => {
+					update
+						.transition()
+						.duration(DURATION)
+						.attr("y", d => y(d[type]))
+						.attr("height", d => canvasHeight - y(d[type]));
+				}
+			);
+		// .append("rect")
+	}
+
+	// function buildChart(node) {
+	// 	if (annual) {
+	// 		buildAnnualChart(node);
+	// 	} else {
+	// 		buildCumulativeChart(node);
+	// 	}
 	// }
-
-	// // function buildChart(node) {
-	// // 	if (annual) {
-	// // 		buildAnnualChart(node);
-	// // 	} else {
-	// // 		buildCumulativeChart(node);
-	// // 	}
-	// // }
 	// function buildAnnualChart(node) {
 	// 	if (!$yearly.length) return;
 
 	// 	// const data = $cumulative;
 
 	// 	const { height, width } = containerElement.getBoundingClientRect();
-	// 	canvasHeight = height - margins.top - margins.bottom;
-	// 	canvasWidth = width - margins.left - margins.right;
+	// 	canvasHeight = height - MARGINS.top - MARGINS.bottom;
+	// 	canvasWidth = width - MARGINS.left - MARGINS.right;
 
 	// 	const stackedChart = StackedAreaChart($yearly, {
 	// 		x: d => d.year,
@@ -140,7 +166,6 @@
 
 	// 	// containerElement.appendChild(stackedChart);
 	// }
-	onMount(() => {});
 </script>
 
 <style>
@@ -173,10 +198,7 @@
 	}
 </style>
 
-<svelte:window
-	on:renderCharts={e => {
-		console.log("TIME TO RENDER", e);
-	}} />
+<svelte:window on:renderCharts={render} />
 
 <div
 	class="chart chart--yearly chart--{type} stack"
