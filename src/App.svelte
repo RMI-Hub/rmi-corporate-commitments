@@ -8,11 +8,12 @@
 	import PickerPresets from "./components/PickerPresets.svelte";
 
 	// UTILS
-	import * as d3 from "d3";
-	import { yearly, cumulative, multipliers } from "./stores.js";
+
+	import { target, baseline, multipliers } from "./stores.js";
 	import { afterUpdate, onMount } from "svelte";
-	import groupBy from "lodash.groupby";
-	import throttle from "lodash.throttle";
+
+	import { fetchData } from "./utils/fetch-data.js";
+	import Charts from "./components/Charts.svelte";
 
 	export let headline = "";
 	export let intro = "";
@@ -43,90 +44,34 @@
 
 	let activeSector = "manufacturing";
 
-	// THis is our data cache
-	const data = new Map();
+	// Let's stash our initial toggles
+	const defaultMultipliers = $multipliers;
 
 	$: sectorHeader = sectors[activeSector].heading;
 	$: sectorDescription = sectors[activeSector].description;
 
 	// scope2_intensity_sector_min
 	$: intensity = `${$multipliers.scope}_intensity_${$multipliers.sector_emission_intensity}`;
+	// $: target = `TKTK`;
 
-	async function handleSectorChange(e) {
-		const { sector } = e.detail;
-		fetchData();
+	async function handleUpdate(e) {
+		console.group("Starting update");
+		const { baseline, target } = await fetchData({
+			activeSector,
+			intensity,
+			...$multipliers,
+		});
+		console.log("NEW DATA!", {
+			target,
+			baseline,
+		});
+		window.dispatchEvent(new Event("renderCharts"));
+		console.groupEnd();
 	}
 
 	onMount(async () => {
-		fetchData();
+		handleUpdate();
 	});
-
-	/**
-	 * Looks at the `activeSector` and loads the appropriate data file from our cache. If the data is not in the cache,
-	 * then it goes and gets it. This function is throttle to once every 250ms.
-	 */
-	const fetchData = throttle(
-		async () => {
-			console.log("NEW DATA FETCHING", { $multipliers, intensity });
-			let sectorData;
-			if (data.has(activeSector)) {
-				// This data is already fetched and cached. Use it.
-				sectorData = data.get(activeSector);
-			} else {
-				// This data is not cached. Get it. Cache it.
-				sectorData = await d3.csv(`/data/${activeSector}.csv`).catch(console.error);
-				data.set(activeSector, sectorData);
-			}
-
-			$yearly = sectorData.map(d => {
-				return {
-					name: d.company,
-					year: new Date(d.year, 0, 1),
-					// Rev * growth * multiplier
-					baseline: d.revenue * d[$multipliers.growth] * d[intensity],
-					// TK: This
-					target: d.revenue * d[$multipliers.growth] * d[intensity],
-				};
-			});
-
-			// Generate the cumulative figures, grouped by year
-			const grouped = groupBy($yearly, d => d["year"]);
-
-			// Running totals, to track the overall accumulation
-			let runningTotalBaseline = 0;
-			let runningTotalTarget = 0;
-
-			// Reduce the grouped into an array of objects, one per year
-			$cumulative = Object.entries(grouped).reduce((accumulator, [year, yearData]) => {
-				// Get our annual totals
-				const { baseline, target } = yearData.reduce(
-					(a, c) => {
-						// Add 'em up
-						if (c.baseline) a.baseline += +c.baseline;
-						if (c.target) a.target += +c.target;
-						return a;
-					},
-					{ baseline: 0, target: 0 }
-				);
-
-				// Add the annual totals to the running totals
-				runningTotalBaseline += baseline;
-				runningTotalTarget += target;
-
-				// Store our new values
-				accumulator.push({
-					year: new Date(year),
-					baseline: runningTotalBaseline,
-					target: runningTotalTarget,
-				});
-				return accumulator;
-			}, []);
-
-			console.log("NEW DATA!", { $yearly, $cumulative });
-		},
-		250,
-		{ leading: true }
-	);
 </script>
 
 <style>
@@ -158,6 +103,10 @@
 			grid-row: -1;
 			grid-column: 1/-1;
 		}
+
+		.container :global(.chart--cumulative) {
+			grid-row: 3;
+		}
 	}
 </style>
 
@@ -170,13 +119,11 @@
 			{sectors}
 			{sectorHeader}
 			bind:value={activeSector}
-			on:sectorChange={handleSectorChange} />
+			on:sectorChange={handleUpdate} />
 		<p>{@html sectorDescription}</p>
 	</div>
-	{#each Object.entries(charts) as [id, data], index}
-		<div class="chart chart--{index}">
-			<Chart {...data} {id} {index} />
-		</div>
+	{#each Object.entries(charts) as [type, data]}
+		<Charts {...data} {type} />
 	{/each}
 	<div class="controls"><Toggles {toggles} on:input={fetchData} /></div>
 	<PoweredBy />
