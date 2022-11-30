@@ -1,12 +1,13 @@
 <script>
-	import Expand from "../icons/Expand.svelte";
-	import Share from "../icons/Share.svelte";
-	import MoreInformation from "./MoreInformation.svelte";
-	import { yearly, cumulative } from "../stores.js";
+	import Expand from "../src/icons/Expand.svelte";
+	import Share from "../src/icons/Share.svelte";
+	import MoreInformation from "../src/components/MoreInformation.svelte";
+	import { target, baseline } from "../src/stores.js";
 	import { afterUpdate, onMount } from "svelte";
 	import * as d3 from "d3";
 
-	import { StackedAreaChart } from "../utils/stacked-area-chart.js";
+	import { StackedAreaChart } from "../src/utils/stacked-area-chart.js";
+	import ChartHeader from "../src/components/ChartHeader.svelte";
 
 	export let header;
 	export let id;
@@ -40,6 +41,8 @@
 			.append("svg")
 			.attr("height", height)
 			.attr("width", width)
+			.attr("viewBox", "0 0 " + width + " " + height)
+			.attr("preserveAspectRatio", "xMinYMid")
 			.attr("role", "img");
 
 		// DRAW THE CHART
@@ -116,12 +119,9 @@
 	}
 
 	function buildChart(node) {
-		console.log({ annual });
 		if (annual) {
-			console.log("foo", node);
 			buildAnnualChart(node);
 		} else {
-			console.log("bar", node);
 			buildCumulativeChart(node);
 		}
 	}
@@ -142,8 +142,7 @@
 			height,
 		});
 
-		console.log(stackedChart);
-		containerElement.appendChild(stackedChart);
+		// containerElement.appendChild(stackedChart);
 	}
 	onMount(() => {});
 </script>
@@ -159,46 +158,6 @@
 		margin-top: auto;
 		height: 300px;
 		position: relative;
-	}
-
-	.chart__header {
-		font: bold var(--font-size) / 1.3em var(--sans-serif-fonts);
-		max-width: calc(100% - var(--controls-width));
-	}
-
-	.chart__controls {
-		width: var(--controls-width);
-		height: 1rem;
-		display: flex;
-		gap: var(--gap);
-
-		position: absolute;
-		top: 0;
-		right: 0;
-	}
-
-	.chart__controls > * {
-		flex: 1 1;
-		font: var(--font-size-very-small) / 1.3em var(--sans-serif-fonts);
-		text-transform: uppercase;
-		color: var(--color-gray);
-		border: none;
-		background-color: transparent;
-		cursor: pointer;
-		padding: 0;
-	}
-	.chart__controls :global(svg) {
-		fill: var(--color-gray);
-		height: 100%;
-		width: 100%;
-	}
-
-	.chart :global(canvas) {
-		position: absolute;
-		top: var(--canvas-top);
-		right: var(--canvas-right);
-		height: var(--canvas-height);
-		width: var(--canvas-width);
 	}
 
 	.chart :global(.bar) {
@@ -218,20 +177,11 @@
 	}
 </style>
 
+<svelte:window
+	on:renderCharts={e => {
+		console.log("TIME TO RENDER", e);
+	}} />
 <div class="chart stack" aria-labelledby="chart-{id}">
-	<div class="chart__controls">
-		<button>
-			<span class="visually-hidden">Expand this chart</span>
-			<Expand />
-		</button>
-		<button>
-			<span class="visually-hidden">Expand this chart</span>
-			<Share />
-		</button>
-	</div>
-	<h2 id="chart-{id}" class="chart__header">
-		{header}
-		<MoreInformation text={definition} {id} flip={index % 2 !== 0} />
-	</h2>
+	<ChartHeader {id} {header} {definition} />
 	<div class="chart__container" bind:this={containerElement} />
 </div>
