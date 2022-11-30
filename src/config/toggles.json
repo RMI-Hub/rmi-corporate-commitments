@@ -13,9 +13,9 @@
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
 			{ "text": "Company", "value": "company", "group": "sector_emission_intensity" },
-			{ "text": "Min", "value": "min", "group": "sector_emission_intensity" },
-			{ "text": "Mean", "value": "mean", "group": "sector_emission_intensity" },
-			{ "text": "Max", "value": "max", "group": "sector_emission_intensity" }
+			{ "text": "Min", "value": "sector_min", "group": "sector_emission_intensity" },
+			{ "text": "Mean", "value": "sector_mean", "group": "sector_emission_intensity" },
+			{ "text": "Max", "value": "sector_max", "group": "sector_emission_intensity" }
 		]
 	},
 	{
