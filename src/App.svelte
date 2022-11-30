@@ -49,18 +49,12 @@
 	$: sectorHeader = sectors[activeSector].heading;
 	$: sectorDescription = sectors[activeSector].description;
 
-	// scope2_intensity_sector_min
-	$: intensity = `${$multipliers.scope}_intensity_${$multipliers.sector_emission_intensity}`;
-	// $: target = `TKTK`;
-
 	async function handleUpdate(e) {
-		console.log("HANDLE-update", { activeSector, ...$multipliers, intensity });
-		$chartData = await fetchData({
-			activeSector,
-			intensity,
-			...$multipliers,
-		}).catch(console.error);
-		console.log("NEW DATA HAS BEEN FETCHED!", {
+		console.log("UPDATE");
+		$chartData = await fetchData({ activeSector, multipliers: $multipliers }).catch(
+			console.error
+		);
+		console.log("NEW DATA", {
 			$chartData,
 		});
 		window.dispatchEvent(new Event("renderCharts"));
