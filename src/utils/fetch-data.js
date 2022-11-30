@@ -9,15 +9,14 @@ const sectors = new Map();
  * then it goes and gets it. This function is throttle to once every 250ms.
  */
 export const fetchData = throttle(
-	async ({ intensity, activeSector, growth, foo }) => {
+	async ({ activeSector, multipliers }) => {
 		return new Promise(async (resolve, reject) => {
-			console.log("FETCHING & MUNGING NEW DATA", {
-				intensity,
-				activeSector,
-				growth,
-				foo,
-			});
-			console.log({ activeSector, has: sectors.has(activeSector) });
+			const { scope, sector_emission_intensity, growth } = multipliers;
+			// Our chief multiplier
+			const intensity = `${scope}_intensity_${sector_emission_intensity}`;
+			// const target = `TKTK`;
+			console.log("intensity", intensity);
+
 			let sectorData;
 			if (sectors.has(activeSector)) {
 				// This data is already fetched and cached. Use it.
@@ -37,8 +36,8 @@ export const fetchData = throttle(
 					year: new Date(d.year, 0, 1),
 					// Rev * growth * multiplier
 					baseline: d.revenue * d[growth] * d[intensity],
-					// TK: This
-					target: d.revenue * d[growth] * d[intensity],
+					// TODO: This is fudged
+					target: d.revenue * d[growth] * d[intensity] * 0.65,
 				};
 			});
 
@@ -77,6 +76,22 @@ export const fetchData = throttle(
 				},
 				[]
 			);
+			console.log(cumulative[0]);
+			const { min, max } = cumulative.reduce(
+				(acc, curr) => {
+					const { baseline, target } = curr;
+					// acc.min = Math.min(baseline, target, acc.min);
+					acc.max = Math.max(baseline, target, acc.max);
+					return acc;
+				},
+				{ min: 0, max: 0 }
+			);
+			// These are the min and max values for the charts, so they are on the same scale
+
+			// TK: this
+			const yearly_domain = [];
+
+			const cumulative_domain = [min, max];
 
 			const baseline = {
 				yearly: yearly.map(a => {
@@ -115,6 +130,8 @@ export const fetchData = throttle(
 			};
 
 			resolve({
+				cumulative_domain,
+				yearly_domain,
 				target,
 				baseline,
 			});

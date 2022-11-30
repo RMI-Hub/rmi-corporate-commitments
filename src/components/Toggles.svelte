@@ -26,9 +26,7 @@
 		$multipliers = defaultMultipliers;
 	}
 
-	function onSubmit(e) {
-		console.log("DO SOMETHING!");
-	}
+	function onSubmit(e) {}
 </script>
 
 <style>
@@ -132,13 +130,13 @@
 					{#each buttons as { text, value, group = "foo" }}
 						<label class="toggles__label sans-serif" for={slugify(text)}>
 							<input
-								on:input
 								class="toggles__btn"
 								type="radio"
-								bind:group={$multipliers[group]}
 								id={slugify(text)}
 								name={slugify(label)}
-								{value} />
+								{value}
+								bind:group={$multipliers[group]}
+								on:input />
 							{text}
 						</label>
 					{/each}

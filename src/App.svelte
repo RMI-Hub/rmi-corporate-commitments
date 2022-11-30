@@ -48,9 +48,9 @@
 
 	$: sectorHeader = sectors[activeSector].heading;
 	$: sectorDescription = sectors[activeSector].description;
+	$: ($multipliers || activeSector) && handleUpdate();
 
 	async function handleUpdate(e) {
-		console.log("UPDATE");
 		$chartData = await fetchData({ activeSector, multipliers: $multipliers }).catch(
 			console.error
 		);
@@ -61,7 +61,7 @@
 	}
 
 	onMount(async () => {
-		await handleUpdate();
+		// await handleUpdate();
 	});
 </script>
 
@@ -109,18 +109,14 @@
 <section class="container" aria-labelledby="sector-heading">
 	<div class="sector-heading">
 		<h2 id="sector-heading" class="visually-hidden">About {sectorHeader}</h2>
-		<PickerSector
-			{sectors}
-			{sectorHeader}
-			bind:value={activeSector}
-			on:sectorChange={handleUpdate} />
+		<PickerSector {sectors} {sectorHeader} bind:value={activeSector} />
 		<p>{@html sectorDescription}</p>
 	</div>
 	{#each Object.entries(charts) as [type, chartInfo]}
 		<Charts {...chartInfo} data={data[type]} {type} />
 	{/each}
 	<div class="controls">
-		<Toggles {defaultMultipliers} {toggles} on:input={handleUpdate} />
+		<Toggles {defaultMultipliers} {toggles} />
 	</div>
 	<PoweredBy />
 </section>
