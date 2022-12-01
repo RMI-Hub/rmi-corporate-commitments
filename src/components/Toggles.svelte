@@ -121,13 +121,13 @@
 	<form class="toggles__form stack" on:submit|preventDefault={onSubmit}>
 		<h2 class="header">{togglesLabel}</h2>
 		<div class="toggles__ui stack--margin">
-			{#each toggles as { label, definition, buttons = [] }}
+			{#each toggles as { label, definition, id, buttons = [] }}
 				<div class="toggles__btn-group">
 					<h3 class="label">
 						{label}
-						<MoreInformation text={definition} fullwidth={true} />
+						<MoreInformation {id} text={definition} fullwidth={true} />
 					</h3>
-					{#each buttons as { text, value, group = "foo" }}
+					{#each buttons as { text, value }}
 						<label class="toggles__label sans-serif" for={slugify(text)}>
 							<input
 								class="toggles__btn"
@@ -135,7 +135,7 @@
 								id={slugify(text)}
 								name={slugify(label)}
 								{value}
-								bind:group={$multipliers[group]} />
+								bind:group={$multipliers[id]} />
 							{text}
 						</label>
 					{/each}

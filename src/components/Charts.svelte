@@ -22,6 +22,7 @@
 
 	function render(e) {
 		buildCumulativeChart();
+		buildAnnualChart();
 	}
 
 	function buildCumulativeChart() {
@@ -137,35 +138,28 @@
 						.attr("height", d => canvasHeight - y(d[type]));
 				}
 			);
-		// .append("rect")
 	}
 
-	// function buildChart(node) {
-	// 	if (annual) {
-	// 		buildAnnualChart(node);
-	// 	} else {
-	// 		buildCumulativeChart(node);
-	// 	}
-	// }
-	// function buildAnnualChart(node) {
-	// 	if (!$yearly.length) return;
+	function buildAnnualChart() {
+		const data = $chartData?.[type]?.annual;
+		const domain = $chartData?.yearly_domain;
+		if (!data) return;
 
-	// 	// const data = $cumulative;
+		// const data = $cumulative;
 
-	// 	const { height, width } = containerElement.getBoundingClientRect();
-	// 	canvasHeight = height - MARGINS.top - MARGINS.bottom;
-	// 	canvasWidth = width - MARGINS.left - MARGINS.right;
+		const { height, width } = annualContainer.getBoundingClientRect();
+		canvasHeight = height - MARGINS.top - MARGINS.bottom;
+		canvasWidth = width - MARGINS.left - MARGINS.right;
 
-	// 	const stackedChart = StackedAreaChart($yearly, {
-	// 		x: d => d.year,
-	// 		y: d => d[type],
-	// 		z: d => d.name,
-	// 		width,
-	// 		height,
-	// 	});
-
-	// 	// containerElement.appendChild(stackedChart);
-	// }
+		const stackedChart = StackedAreaChart(data, {
+			x: d => d.year,
+			y: d => d[type],
+			z: d => d.name,
+			width,
+			height,
+		});
+		annualContainer.appendChild(stackedChart);
+	}
 </script>
 
 <style>
@@ -204,6 +198,7 @@
 	class="chart chart--yearly chart--{type} stack"
 	aria-labelledby="chart-yearly-{type}">
 	<ChartHeader
+		flip={type === "target"}
 		id="chart-yearly-{type}"
 		header={yearly.header}
 		definition={yearly.definition} />
@@ -213,6 +208,7 @@
 	class="chart chart--cumulative chart--{type} stack"
 	aria-labelledby="chart-cumulative-{type}">
 	<ChartHeader
+		flip={type === "target"}
 		id="chart-cumulative-{type}"
 		header={cumulative.header}
 		definition={cumulative.definition} />

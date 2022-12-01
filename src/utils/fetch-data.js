@@ -15,7 +15,6 @@ export const fetchData = throttle(
 			// Our chief multiplier
 			const intensity = `${scope}_intensity_${sector_emission_intensity}`;
 			// const target = `TKTK`;
-			console.log("intensity", intensity);
 
 			let sectorData;
 			if (sectors.has(activeSector)) {
@@ -76,7 +75,6 @@ export const fetchData = throttle(
 				},
 				[]
 			);
-			console.log(cumulative[0]);
 			const { min, max } = cumulative.reduce(
 				(acc, curr) => {
 					const { baseline, target } = curr;
