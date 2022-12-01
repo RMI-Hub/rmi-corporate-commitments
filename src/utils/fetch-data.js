@@ -75,21 +75,26 @@ export const fetchData = throttle(
 				},
 				[]
 			);
-			const { min, max } = cumulative.reduce(
+			// These are the min and max values for the charts, so they are on the same scale
+			const cumulative_domain = cumulative.reduce(
 				(acc, curr) => {
 					const { baseline, target } = curr;
-					// acc.min = Math.min(baseline, target, acc.min);
-					acc.max = Math.max(baseline, target, acc.max);
+					// acc[0] = Math.min(baseline, target, acc[0]);
+					acc[1] = Math.max(baseline, target, acc[1]);
 					return acc;
 				},
-				{ min: 0, max: 0 }
+				[0, 0]
 			);
-			// These are the min and max values for the charts, so they are on the same scale
 
-			// TK: this
-			const yearly_domain = [];
-
-			const cumulative_domain = [min, max];
+			const yearly_domain = yearly.reduce(
+				(acc, curr) => {
+					const { baseline, target } = curr;
+					// acc[0] = Math.min(baseline, target, acc[0]);
+					if (!!baseline && !!target) acc[1] = Math.max(baseline, target, acc[1]);
+					return acc;
+				},
+				[0, 0]
+			);
 
 			const baseline = {
 				yearly: yearly.map(a => {
