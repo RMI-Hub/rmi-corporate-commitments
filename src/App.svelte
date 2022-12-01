@@ -10,7 +10,6 @@
 	// UTILS
 
 	import { chartData, multipliers } from "./stores.js";
-	import { onMount } from "svelte";
 	import { fetchData } from "./utils/fetch-data.js";
 
 	export let headline = "";
