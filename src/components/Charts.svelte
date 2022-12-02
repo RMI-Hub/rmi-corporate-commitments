@@ -1,10 +1,8 @@
 <script>
 	import { chartData } from "../stores.js";
-	import { afterUpdate, onMount } from "svelte";
 	import * as d3 from "d3";
 	import throttle from "lodash.throttle";
 
-	import { StackedAreaChart } from "../utils/stacked-area-chart.js";
 	import ChartHeader from "./ChartHeader.svelte";
 
 	// Chart meta
@@ -226,24 +224,14 @@
 			});
 
 		annualSVG
-			.selectAll("area")
+			.selectAll(".path")
 			.data(s_data)
-			.join(
-				enter => {
-					enter
-						.append("path")
-						.classed("path", true)
-						.attr("transform", `translate(${MARGINS.left},0)`)
-						.attr("d", areaGenerator);
-				},
-				update => {
-					update
-						.selectAll(".path")
-						.transition()
-						.duration(DURATION)
-						.attr("d", areaGenerator);
-				}
-			);
+			.join("path")
+			.classed("path", true)
+			.attr("transform", `translate(${MARGINS.left},0)`)
+			.transition()
+			.duration(DURATION)
+			.attr("d", areaGenerator);
 
 		// annualTicks
 		// 	.transition()
