@@ -4,9 +4,9 @@
 		"label": "Scope",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "Scope 1", "value": "scope1" },
-			{ "text": "Scope 2", "value": "scope2" },
-			{ "text": "Scope 1 + 2", "value": "scope12" }
+			{ "text": "Scope 1", "value": "Scope 1" },
+			{ "text": "Scope 2", "value": "Scope 2" },
+			{ "text": "Scope 1 + 2", "value": "Scope 1&2" }
 		]
 	},
 	{
@@ -14,21 +14,20 @@
 		"label": "Sector emission intensity",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "Company", "value": "company" },
-			{ "text": "Min", "value": "sector_min" },
-			{ "text": "Mean", "value": "sector_mean" },
-			{ "text": "Max", "value": "sector_max" }
+			{ "text": "Min", "value": "Min" },
+			{ "text": "Mean", "value": "Mean" },
+			{ "text": "Max", "value": "Max" }
 		]
 	},
 	{
-		"id": "growth",
+		"id": "agr",
 		"label": "Annual revenue growth",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "S&P", "value": "growth_sp" },
+			{ "text": "S&P", "value": "S&P" },
 			{
 				"text": "Historic",
-				"value": "growth_historic"
+				"value": "Historic"
 			}
 		]
 	},
@@ -37,14 +36,15 @@
 		"label": "End target",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "Current", "value": "" },
+			{ "text": "Current", "value": "Current" },
+
 			{
 				"text": "None to NZT",
-				"value": ""
+				"value": "None to NZT"
 			},
 			{
 				"text": "50% largest to NZT",
-				"value": ""
+				"value": "50% Largest to NZT"
 			}
 		]
 	},
@@ -53,10 +53,10 @@
 		"label": "Interim target",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "Current", "value": "" },
+			{ "text": "Current", "value": "Current" },
 			{
 				"text": "All to 50% by 2030",
-				"value": ""
+				"value": "All to 50% by 2030"
 			}
 		]
 	},
@@ -65,46 +65,46 @@
 		"label": "Slowdown",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "2022", "value": "" },
+			{ "text": "No slowdown", "value": 2022 },
 			{
 				"text": "2030",
-				"value": ""
+				"value": 2030
 			},
 			{
 				"text": "2040",
-				"value": ""
+				"value": 2040
 			}
 		]
 	},
 	{
-		"id": "percentage_of_target_met",
+		"id": "partial_target",
 		"label": "Percentage of targets met",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "25%", "value": "" },
+			{ "text": "25%", "value": 0.25 },
 			{
 				"text": "50%",
-				"value": ""
+				"value": 0.5
 			},
 			{
 				"text": "100%",
-				"value": ""
+				"value": 1
 			}
 		]
 	},
 	{
-		"id": "targets_met_with_offset",
+		"id": "offsets",
 		"label": "Targets met with offset",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "0", "value": "" },
+			{ "text": "0", "value": 0 },
 			{
 				"text": "25%",
-				"value": ""
+				"value": 0.25
 			},
 			{
 				"text": "50%",
-				"value": ""
+				"value": 0.5
 			}
 		]
 	}

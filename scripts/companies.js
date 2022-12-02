@@ -10,8 +10,8 @@ async function getCompanies() {
 
 	// Generate a list of our unique company names
 	const companies = Array.from(
-		csvParse(rawText).reduce((a, { company }) => {
-			a.add(company);
+		csvParse(rawText).reduce((a, { Company }) => {
+			a.add(Company);
 			return a;
 		}, new Set())
 	);
