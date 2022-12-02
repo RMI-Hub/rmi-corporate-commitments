@@ -214,6 +214,7 @@
 
 		var areaGenerator = d3
 			.area()
+			.curve(d3.curveCardinal)
 			.x(function (d) {
 				return xScale(d.data.year);
 			})
