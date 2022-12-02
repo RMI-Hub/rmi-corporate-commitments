@@ -10,6 +10,12 @@
 	export let cumulative = {};
 	export let type; // "baseline" or "target"
 	export let companies = [];
+	export let tooltipFlip = false;
+
+	let tooltip;
+	let tooltipHidden = true;
+	let tooltipX = 0;
+	let tooltipY = 0;
 
 	let canvasHeight, canvasWidth;
 	let cumulativeContainer, annualContainer;
@@ -229,6 +235,9 @@
 			.join("path")
 			.classed("path", true)
 			.attr("transform", `translate(${MARGINS.left},0)`)
+			.on("mouseover", mouseover)
+			.on("mousemove", mousemove)
+			.on("mouseleave", mouseleave)
 			.transition()
 			.duration(DURATION)
 			.attr("d", areaGenerator);
@@ -241,6 +250,29 @@
 			.transition()
 			.duration(DURATION)
 			.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
+	}
+
+	function mouseover(e) {
+		console.log("over", { e, this: this });
+		tooltipHidden = false;
+		this.classList.add("highlight");
+		// var subgroupName = d3.select(this.parentNode).datum().key;
+		// var subgroupValue = d.data[subgroupName];
+		// tooltip
+		// 	.html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
+		// 	.style("opacity", 1);
+	}
+
+	function mousemove(e) {
+		console.log("move", { e });
+		const { clientX, clientY } = e;
+		tooltipX = clientX;
+		tooltipY = clientY;
+	}
+	function mouseleave(e) {
+		console.log("leave", { e });
+		tooltipHidden = true;
+		this.classList.remove("highlight");
 	}
 </script>
 
@@ -278,6 +310,47 @@
 		fill: var(--color-chart);
 		stroke: white;
 		stroke-width: 1;
+		cursor: pointer;
+		transition: fill var(--speed-transition) ease-in-out;
+	}
+	.chart--yearly :global(.path:hover),
+	.chart--yearly :global(.path.highlight) {
+		fill: var(--color-chart-highlight);
+	}
+
+	.tooltip {
+		font: var(--font-size-small) / 1.3em var(--sans-serif-fonts);
+		width: 200px;
+		border: 1px solid var(--color-slate);
+		border-radius: 0.5rem;
+		padding: 0.75rem;
+		background-color: white;
+		transition: opacity var(--speed-transition);
+
+		position: fixed;
+		top: var(--y);
+		left: var(--x);
+		z-index: 10;
+	}
+
+	.tooltip[hidden] {
+		opacity: 0;
+	}
+
+	.tooltip span {
+		display: block;
+	}
+
+	.tooltip__name {
+		font-weight: bold;
+		font-size: 1.2em;
+		margin-bottom: 0.25rem;
+	}
+
+	@media all and (min-width: 1024px) {
+		.tooltip.flip {
+			transform: translate(-100%, 0);
+		}
 	}
 </style>
 
@@ -295,7 +368,20 @@
 		id="chart-yearly-{type}"
 		header={yearly.header}
 		definition={yearly.definition} />
-	<div class="chart__container" bind:this={annualContainer} />
+	<div class="chart__container" bind:this={annualContainer}>
+		<div
+			bind:this={tooltip}
+			hidden={tooltipHidden ? true : null}
+			id="tooltip-{type}"
+			class="tooltip"
+			class:flip={type === "target"}
+			style:--x="{tooltipX}px"
+			style:--y="{tooltipY}px">
+			<span class="tooltip__name">Company name</span>
+			<span class="tooltip__commitments">
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+		</div>
+	</div>
 </div>
 <div
 	class="chart chart--cumulative chart--{type} stack"
