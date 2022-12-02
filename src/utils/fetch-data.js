@@ -1,6 +1,27 @@
 import throttle from "lodash.throttle";
 import groupBy from "lodash.groupby";
-import { csv } from "d3";
+import { csv, stack, max } from "d3";
+
+/**
+ *
+ * Takes our two data sets and convers them into a stack, so we can get the overall domain and set each chart to the same scale
+ * @param {*} target
+ * @param {*} baseline
+ * @param {*} companies
+ * @returns
+ */
+function getYearlyMax(target, baseline, companies) {
+	let maxValue = 0;
+	const stacker = stack().keys(companies);
+	for (let d of [target.yearly, baseline.yearly]) {
+		const s_data = stacker(d);
+		maxValue = Math.max(
+			maxValue,
+			max(s_data[s_data.length - 1], d => d[1])
+		);
+	}
+	return maxValue;
+}
 
 // THis is our data cache
 const sectors = new Map();
@@ -9,7 +30,7 @@ const sectors = new Map();
  * then it goes and gets it. This function is throttle to once every 250ms.
  */
 export const fetchData = throttle(
-	async ({ activeSector, multipliers }) => {
+	async ({ activeSector, multipliers, companies }) => {
 		return new Promise(async (resolve, reject) => {
 			// Tease out the multipliers
 			const { scope, sector_emission_intensity, growth } = multipliers;
@@ -132,11 +153,12 @@ export const fetchData = throttle(
 					};
 				}),
 			};
-
+			let yearly_max = getYearlyMax(target, baseline, companies);
 			resolve({
 				cumulative_domain,
 				target,
 				baseline,
+				yearly_max,
 			});
 		});
 	},

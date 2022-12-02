@@ -22,6 +22,7 @@
 
 	// ANNUAL PLACEHOLERS
 	let annualPaths;
+	let annualYAxisG, annualXAxisG, annualTicks;
 
 	const DURATION = 500;
 
@@ -147,12 +148,10 @@
 				}
 			);
 	}
-	let annualYAxisG, annualXAxisG;
 
 	function buildAnnualChart() {
 		const MARGINS = { top: 0, right: 15, bottom: 15, left: 35 };
 		const data = $chartData?.[type]?.yearly;
-		const domain = $chartData?.yearly_domain;
 
 		// This won't work if there is not data
 		if (!data) return;
@@ -171,13 +170,11 @@
 				.attr("preserveAspectRatio", "xMinYMid")
 				.attr("role", "img");
 
-			// For the areas
-			annualPaths = annualSVG
+			// Fullwidth ticks
+			annualTicks = annualSVG
 				.append("g")
-				.classed("paths", true)
-				.attr("width", canvasWidth)
-				.attr("height", canvasHeight)
-				.attr("transform", `translate(${MARGINS.left},${MARGINS.top})`);
+				.classed("ticks", true)
+				.attr("transform", `translate(${width - MARGINS.left},0)`);
 
 			// Build axes now so it's atop the bars
 			annualYAxisG = annualSVG
@@ -202,19 +199,18 @@
 			.domain(d3.extent(data, d => d.year))
 			.range([0, canvasWidth]);
 
-		const xAxis = d3.axisBottom(xScale).tickFormat(yearFormatter);
+		const xAxis = d3.axisBottom(xScale).tickFormat(yearFormatter).tickSize(0).ticks(10);
 
 		const yScale = d3
 			.scaleLinear()
-			.domain([
-				0,
-				d3.max(s_data[s_data.length - 1], function (d) {
-					return d[1];
-				}),
-			])
+			.domain([0, $chartData.yearly_max])
 			.range([canvasHeight, 0]);
 
-		const yAxis = d3.axisLeft(yScale).ticks(5).tickFormat(emissionsNumberFormatter);
+		const yAxis = d3
+			.axisLeft(yScale)
+			.ticks(5)
+			.tickSize(0)
+			.tickFormat(emissionsNumberFormatter);
 
 		var areaGenerator = d3
 			.area()
@@ -241,12 +237,17 @@
 				},
 				update => {
 					update
-						.selectAll("path")
+						.selectAll(".path")
 						.transition()
 						.duration(DURATION)
 						.attr("d", areaGenerator);
 				}
 			);
+
+		// annualTicks
+		// 	.transition()
+		// 	.duration(DURATION)
+		// 	.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
 
 		annualXAxisG.transition().duration(DURATION).call(xAxis);
 

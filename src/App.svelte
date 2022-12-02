@@ -53,9 +53,11 @@
 
 	// fetches data when needed
 	async function handleUpdate(e) {
-		$chartData = await fetchData({ activeSector, multipliers: $multipliers }).catch(
-			console.error
-		);
+		$chartData = await fetchData({
+			activeSector,
+			multipliers: $multipliers,
+			companies,
+		}).catch(console.error);
 		console.log("NEW DATA", {
 			$chartData,
 		});
