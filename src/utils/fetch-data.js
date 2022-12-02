@@ -44,7 +44,12 @@ export const fetchData = throttle(
 				sectorData = sectors.get(activeSector);
 			} else {
 				// This data is not cached. Get it. Cache it.
-				sectorData = await csv(`/data/${activeSector}.csv`).catch(e => {
+
+				const dataURL = window.location.href.includes("localhost")
+					? `/data/${activeSector}.csv`
+					: `https://ryanbmarx.com/rmi-corporate-commitments/data/${activeSector}.csv`;
+
+				sectorData = await csv(dataURL).catch(e => {
 					console.error(e);
 					reject(e);
 				});
