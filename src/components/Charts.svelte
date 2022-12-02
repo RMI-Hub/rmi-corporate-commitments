@@ -63,7 +63,7 @@
 				.append("svg")
 				.attr("height", height)
 				.attr("width", width)
-				.attr("viewBox", "0 0 " + width + " " + height)
+				.attr("viewBox", `0 0 ${width} ${height}`)
 				.attr("preserveAspectRatio", "xMinYMid")
 				.attr("role", "img");
 
@@ -171,8 +171,8 @@
 			// Fullwidth ticks
 			annualTicks = annualSVG
 				.append("g")
-				.classed("ticks", true)
-				.attr("transform", `translate(${width - MARGINS.left},0)`);
+				.classed("annualTicks", true)
+				.attr("transform", `translate(${width},0)`);
 
 			// Build axes now so it's atop the bars
 			annualYAxisG = annualSVG
@@ -207,7 +207,7 @@
 		const yAxis = d3
 			.axisLeft(yScale)
 			.ticks(5)
-			.tickSize(0)
+			.tickSize(5)
 			.tickFormat(emissionsNumberFormatter);
 
 		var areaGenerator = d3
@@ -233,14 +233,14 @@
 			.duration(DURATION)
 			.attr("d", areaGenerator);
 
-		// annualTicks
-		// 	.transition()
-		// 	.duration(DURATION)
-		// 	.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
-
+		// Update Axes
 		annualXAxisG.transition().duration(DURATION).call(xAxis);
-
 		annualYAxisG.transition().duration(DURATION).call(yAxis);
+
+		annualTicks
+			.transition()
+			.duration(DURATION)
+			.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
 	}
 </script>
 
@@ -269,6 +269,7 @@
 		stroke-width: 0.5;
 	}
 	.chart :global(.bars__ticks .domain),
+	.chart :global(.annualTicks .domain),
 	.chart :global(.y.axis .domain) {
 		display: none;
 	}
