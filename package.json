@@ -32,7 +32,8 @@
 		"dev": "run-p start:dev autobuild",
 		"start": "sirv public --single",
 		"start:dev": "sirv public --single --dev",
-		"static": "mkdir -p ./public && cp -rf src/static/* public/"
+		"static": "mkdir -p ./public && cp -rf src/static/* public/",
+		"test": "echo \"Nothing yet.\""
 	},
 	"browserslist": "> 0.25%, not dead"
 }
