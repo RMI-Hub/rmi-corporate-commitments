@@ -16,6 +16,7 @@
 	export let intro = "";
 	export let charts = {};
 	export let toggles = [];
+	export let companies;
 
 	export let presets = {
 		preset1: {
@@ -110,7 +111,7 @@
 		<p>{@html sectorDescription}</p>
 	</div>
 	{#each Object.entries(charts) as [type, chartInfo]}
-		<Charts {...chartInfo} {type} />
+		<Charts {...chartInfo} {type} {companies} />
 	{/each}
 	<div class="controls">
 		<Toggles {defaultMultipliers} {toggles} />

@@ -25,8 +25,6 @@
 	function onReset(e) {
 		$multipliers = defaultMultipliers;
 	}
-
-	function onSubmit(e) {}
 </script>
 
 <style>
@@ -118,7 +116,7 @@
 <button class="open" on:click={openControls}>Controls</button>
 <div class="toggles" class:visible>
 	<button class="close" on:click={closeControls}>X</button>
-	<form class="toggles__form stack" on:submit|preventDefault={onSubmit}>
+	<div class="toggles__form stack">
 		<h2 class="header">{togglesLabel}</h2>
 		<div class="toggles__ui stack--margin">
 			{#each toggles as { label, definition, id, buttons = [] }}
@@ -144,7 +142,7 @@
 		</div>
 		<div class="toggles__buttons">
 			<Button on:click={onReset}>Reset</Button>
-			<Button type="submit" active={true}>Submit</Button>
+			<!-- <Button type="submit" active={true}>Submit</Button> -->
 		</div>
-	</form>
+	</div>
 </div>

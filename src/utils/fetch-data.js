@@ -11,11 +11,12 @@ const sectors = new Map();
 export const fetchData = throttle(
 	async ({ activeSector, multipliers }) => {
 		return new Promise(async (resolve, reject) => {
+			// Tease out the multipliers
 			const { scope, sector_emission_intensity, growth } = multipliers;
-			// Our chief multiplier
 			const intensity = `${scope}_intensity_${sector_emission_intensity}`;
 			// const target = `TKTK`;
 
+			// Check the cache for our data, or fetch it.
 			let sectorData;
 			if (sectors.has(activeSector)) {
 				// This data is already fetched and cached. Use it.
@@ -29,12 +30,14 @@ export const fetchData = throttle(
 				sectors.set(activeSector, sectorData);
 			}
 
+			// Split out the yearly figures
 			const yearly = sectorData.map(d => {
 				return {
 					name: d.company,
 					year: new Date(d.year, 0, 1),
 					// Rev * growth * multiplier
 					baseline: d.revenue * d[growth] * d[intensity],
+
 					// TODO: This is fudged
 					target: d.revenue * d[growth] * d[intensity] * 0.65,
 				};
@@ -42,6 +45,16 @@ export const fetchData = throttle(
 
 			// Generate the cumulative figures, grouped by year
 			const grouped = groupBy(yearly, d => d["year"]);
+
+			const stack = Object.entries(grouped).map(([year, data]) => {
+				const datum = { year: new Date(year), baseline: {}, target: {} };
+				for (const { name, baseline, target } of data) {
+					datum.baseline[name] = baseline;
+					datum.target[name] = target;
+				}
+
+				return datum;
+			});
 
 			// Running totals, to track the overall accumulation
 			let runningTotalBaseline = 0;
@@ -86,23 +99,12 @@ export const fetchData = throttle(
 				[0, 0]
 			);
 
-			const yearly_domain = yearly.reduce(
-				(acc, curr) => {
-					const { baseline, target } = curr;
-					// acc[0] = Math.min(baseline, target, acc[0]);
-					if (!!baseline && !!target) acc[1] = Math.max(baseline, target, acc[1]);
-					return acc;
-				},
-				[0, 0]
-			);
-
 			const baseline = {
-				yearly: yearly.map(a => {
-					const { baseline, name, year } = a;
+				yearly: stack.map(a => {
+					const { baseline, year } = a;
 					return {
 						year,
-						name,
-						baseline,
+						...baseline,
 					};
 				}),
 				cumulative: cumulative.map(c => {
@@ -115,12 +117,11 @@ export const fetchData = throttle(
 			};
 
 			const target = {
-				yearly: yearly.map(a => {
-					const { name, target, year } = a;
+				yearly: stack.map(a => {
+					const { target, year } = a;
 					return {
 						year,
-						name,
-						target,
+						...target,
 					};
 				}),
 				cumulative: cumulative.map(c => {
@@ -134,7 +135,6 @@ export const fetchData = throttle(
 
 			resolve({
 				cumulative_domain,
-				yearly_domain,
 				target,
 				baseline,
 			});
