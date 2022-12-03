@@ -264,20 +264,17 @@
 	}
 
 	function mouseover(e, d) {
-		console.log("over", { d, e, this: this });
 		tooltipCompany = d.key;
 		tooltipHidden = false;
 		this.classList.add("highlight");
 	}
 
 	function mousemove(e) {
-		console.log("move", { e });
 		const { clientX, clientY } = e;
 		tooltipX = clientX;
 		tooltipY = clientY;
 	}
 	function mouseleave(e) {
-		console.log("leave", { e });
 		tooltipHidden = true;
 		this.classList.remove("highlight");
 	}

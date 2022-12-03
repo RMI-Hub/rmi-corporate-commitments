@@ -3,7 +3,7 @@
 
 	import { format, timeFormat } from "d3";
 	import Chart from "../icons/Chart.svelte";
-	import { onMount } from "svelte";
+
 	export let type;
 	export let data = [];
 	export let visible = false;
@@ -13,10 +13,6 @@
 		cumulative ? "cumulative" : "yearly"
 	} ${type} emissions by year`;
 	$: keys = Object.keys(data[0]);
-
-	onMount(() => {
-		console.log(data);
-	});
 </script>
 
 <style>
