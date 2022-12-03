@@ -42,8 +42,8 @@ jobs:
           node-version: "16"
       - name: Install dependencies
         run: npm ci
-      - name: Update and process
-        run: make update
+      - name: Update and process data
+        run: make data
       - name: Generate bundled files
         run: make build
       - name: Upload artifact
