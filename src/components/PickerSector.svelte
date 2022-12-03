@@ -17,6 +17,7 @@
 		position: relative;
 		z-index: 2;
 
+		width: 100%;
 		height: calc(var(--font-size-large) + 0.3em);
 		appearance: none;
 		background-color: transparent;
