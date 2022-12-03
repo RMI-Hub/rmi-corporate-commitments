@@ -2,7 +2,7 @@
 	export let title = "Sharing icon";
 </script>
 
-<svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48.83 65.86">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48.83 65.86" role="img">
 	<title>{title}</title>
 	<path
 		d="M45.39,65.02H3.33c-1.64,0-2.97-1.33-2.97-2.97V22.62c0-1.64,1.33-2.97,2.97-2.97H20.42v3.31H3.67V61.71H45.05V22.96H28.3v-3.31h17.09c1.64,0,2.97,1.33,2.97,2.97V62.05c0,1.64-1.33,2.97-2.97,2.97Z" />

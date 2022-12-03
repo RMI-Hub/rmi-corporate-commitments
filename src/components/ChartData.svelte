@@ -1,8 +1,8 @@
 <script>
-	import { fly } from "svelte/transition";
+	import { fade } from "svelte/transition";
 
 	import { format, timeFormat } from "d3";
-	import Chart from "../icons/Chart.svelte";
+	import X from "../icons/X.svelte";
 
 	export let type;
 	export let data = [];
@@ -51,20 +51,19 @@
 	}
 
 	.close :global(svg) {
+		stroke-width: 2;
 		width: 60%;
 		height: 60%;
-		fill: var(--color-gray);
+		stroke: var(--color-gray);
 		transition: fill var(--speed-transition);
 	}
 	.close:hover :global(svg) {
-		fill: var(--color-slate);
+		stroke: var(--color-slate);
 	}
 	.close:hover {
-		background-color: var(--color-gray);
+		background-color: var(--color-gray-light);
 	}
-	.close:hover :global(svg) {
-		fill: var(--color-slate);
-	}
+
 	.data__table {
 		font: var(--font-size-very-small) / 1.3em var(--sans-serif-fonts);
 		width: 100%;
@@ -88,12 +87,9 @@
 </style>
 
 {#if visible}
-	<div
-		class="data"
-		in:fly={{ duration: 250, y: 300 }}
-		out:fly={{ duration: 250, y: 300 }}>
+	<div class="data" transition:fade={{ duration: 250 }}>
 		<button class="close" on:click>
-			<Chart title="Return to the visualization" />
+			<X title="Return to the visualization" />
 		</button>
 		<table class="data__table">
 			<caption class="visually-hidden">{caption}</caption>

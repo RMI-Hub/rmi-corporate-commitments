@@ -18,7 +18,10 @@
 	let tooltipY = 0;
 	let tooltipCompany = "A";
 
-	$: tooltipText = tooltips[tooltipCompany] || "";
+	let tooltipCumulative;
+	let cumulativeTooltipX = 0;
+	let cumulativeTooltipY = 0;
+	let cumulativeTooltipHidden = true;
 
 	let canvasHeight, canvasWidth;
 	let cumulativeContainer, annualContainer;
@@ -28,7 +31,7 @@
 	let yAxisG, xAxisG, bars, barTicks;
 
 	// ANNUAL PLACEHOLERS
-	let annualYAxisG, annualXAxisG, annualTicks;
+	let annualYAxisG, annualXAxisG, annualTicks, annualPaths;
 
 	// data tables
 	let showCumulativeData = false;
@@ -40,6 +43,7 @@
 		B: "BBB Lorem ipsum dolor ipsum dolor ipsum dolor ipsum dolor ipsum dolor.",
 		C: "CCC Lorem ipsum dolor ipsum dolor ipsum dolor ipsum dolor ipsum dolor.",
 	};
+	$: tooltipText = tooltips[tooltipCompany] || "";
 	function yearFormatter(d) {
 		const year = d.getFullYear();
 		if (year % 5 === 0) {
@@ -51,6 +55,9 @@
 	}
 
 	function emissionsNumberFormatter(d) {
+		if (d > 1000000000) {
+			return `${Math.floor(d / 1000000000)}B`;
+		}
 		return d3.format(".1s")(d).replace("G", "B");
 	}
 
@@ -147,11 +154,14 @@
 					enter
 						.append("rect")
 						.classed("bar", true)
-						.classed("highlight", d => d.year.getFullYear() === 2025)
+						.classed("current-year", d => d.year.getFullYear() === 2025)
 						.attr("width", x.bandwidth())
 						.attr("x", d => x(d.year))
 						.attr("y", d => y(d[type]))
-						.attr("height", d => canvasHeight - y(d[type]));
+						.attr("height", d => canvasHeight - y(d[type]))
+						.on("mouseover", cumulativeMouseover)
+						.on("mousemove", cumulativeMousemove)
+						.on("mouseleave", cumulativeMouseleave);
 				},
 				update => {
 					update
@@ -164,7 +174,7 @@
 	}
 
 	function buildAnnualChart() {
-		const MARGINS = { top: 10, right: 15, bottom: 15, left: 35 };
+		const MARGINS = { top: 10, right: 10, bottom: 15, left: 35 };
 		const data = $chartData?.[type]?.yearly;
 		const companies = $chartData.companies || [];
 
@@ -189,7 +199,12 @@
 			annualTicks = annualSVG
 				.append("g")
 				.classed("annualTicks", true)
-				.attr("transform", `translate(${width},0)`);
+				.attr("transform", `translate(${width},${MARGINS.top})`);
+
+			annualPaths = annualSVG
+				.append("g")
+				.classed("paths", true)
+				.attr("transform", `translate(0,${MARGINS.top})`);
 
 			// Build axes now so it's atop the bars
 			annualYAxisG = annualSVG
@@ -203,7 +218,7 @@
 				.append("g")
 				.classed("axis", true)
 				.classed("x", true)
-				.attr("transform", `translate(${MARGINS.left}, ${canvasHeight})`);
+				.attr("transform", `translate(${MARGINS.left}, ${MARGINS.top + canvasHeight})`);
 		}
 		const stack = d3.stack().keys(companies);
 		const s_data = stack(data);
@@ -223,7 +238,7 @@
 		const yAxis = d3
 			.axisLeft(yScale)
 			.ticks(5)
-			.tickSize(5)
+			.tickSize(0)
 			.tickFormat(emissionsNumberFormatter);
 
 		var areaGenerator = d3
@@ -239,7 +254,7 @@
 				return yScale(d[1]);
 			});
 
-		annualSVG
+		annualPaths
 			.selectAll(".path")
 			.data(s_data)
 			.join("path")
@@ -278,6 +293,35 @@
 		tooltipHidden = true;
 		this.classList.remove("highlight");
 	}
+
+	function cumulativeMouseover(e, d) {
+		console.log(e, d, this);
+		// POSITION IT
+		const { clientX, clientY } = e;
+		cumulativeTooltipX = clientX;
+		cumulativeTooltipY = clientY;
+
+		// POPULATE IT
+		const value = d.target || d.baseline;
+		tooltipCumulative = `<strong>${d.year.getFullYear()}:</strong> ${d3.format(",.0f")(
+			value
+		)}`;
+
+		// Style it
+		this.classList.add("highlight");
+		// UNHIDE IT
+		cumulativeTooltipHidden = false;
+	}
+
+	function cumulativeMousemove(e) {
+		const { clientX, clientY } = e;
+		cumulativeTooltipX = clientX;
+		cumulativeTooltipY = clientY;
+	}
+	function cumulativeMouseleave(e) {
+		cumulativeTooltipHidden = true;
+		this.classList.remove("highlight");
+	}
 </script>
 
 <style>
@@ -296,7 +340,7 @@
 	.chart :global(.bar) {
 		fill: var(--color-chart);
 	}
-	.chart :global(.bar.highlight) {
+	.chart :global(.bar:is(.highlight, .current-year)) {
 		fill: var(--color-chart-highlight);
 	}
 
@@ -376,18 +420,15 @@
 		on:showData={e => {
 			showAnnualData = true;
 		}} />
-	<div class="chart__container" bind:this={annualContainer}>
-		<div
-			bind:this={tooltip}
-			hidden={tooltipHidden ? true : null}
-			id="tooltip-{type}"
-			class="tooltip"
-			class:flip={type === "target"}
-			style:--x="{tooltipX}px"
-			style:--y="{tooltipY}px">
-			<span class="tooltip__name">{tooltipCompany}</span>
-			<span class="tooltip__commitments">{tooltipText}</span>
-		</div>
+	<div class="chart__container" bind:this={annualContainer} />
+	<div
+		hidden={tooltipHidden ? true : null}
+		class="tooltip"
+		class:flip={type === "target"}
+		style:--x="{tooltipX}px"
+		style:--y="{tooltipY}px">
+		<span class="tooltip__name">{tooltipCompany}</span>
+		<span class="tooltip__commitments">{tooltipText}</span>
 	</div>
 	{#if $chartData?.[type]?.yearly}
 		<ChartData
@@ -412,6 +453,14 @@
 		header={cumulative.header}
 		definition={cumulative.definition} />
 	<div class="chart__container" bind:this={cumulativeContainer} />
+	<div
+		hidden={cumulativeTooltipHidden ? true : null}
+		class="tooltip"
+		class:flip={type === "target"}
+		style:--x="{cumulativeTooltipX}px"
+		style:--y="{cumulativeTooltipY}px">
+		<span class="tooltip__text">{@html tooltipCumulative}</span>
+	</div>
 	{#if $chartData?.[type]?.cumulative}
 		<ChartData
 			{type}

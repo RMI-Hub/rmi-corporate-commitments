@@ -273,6 +273,8 @@ export const fetchData = throttle(
 				},
 				[0, 0]
 			);
+			// Nudge the domain up a little so that the top tick covers all the bars
+			cumulative_domain[1] = cumulative_domain[1] * 1.1;
 
 			const baseline = {
 				yearly: stack.map(a => {

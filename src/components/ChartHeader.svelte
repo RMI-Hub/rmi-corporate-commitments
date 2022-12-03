@@ -1,5 +1,4 @@
 <script>
-	import { create } from "d3";
 	import { createEventDispatcher } from "svelte";
 
 	import Data from "../icons/Data.svelte";
@@ -16,20 +15,49 @@
 	const dataTitle = "See the underlying data";
 	const shareTitle = "Share this chart";
 
+	let webShare = testForWebShare();
+
 	const dispatch = createEventDispatcher();
+
+	/**
+	 * handleWebShare will, if supported, trigger a device's native share functions
+	 */
 
 	function share(e) {
 		console.log("sharing");
+
+		navigator
+			.share({
+				text: document.title,
+				url: window.location.href,
+			})
+			.catch(err => {
+				console.error(`Couldn't share because of`, err);
+			});
 	}
+
 	function showData(e) {
-		console.log("showing");
 		dispatch("showData", { type });
+	}
+
+	function testForWebShare() {
+		/**
+		 * testForWebShare returns true/false based on whether webshare is supported.
+		 * You quickly can check this in Safari desktop, which supports WebShare
+		 */
+		if (typeof window !== "undefined") {
+			return (
+				(window.navigator && window.navigator.share) ||
+				window.location.href.includes("localhost")
+			);
+		}
+		return false;
 	}
 </script>
 
 <style>
 	.header {
-		--controls-width: 130px;
+		--controls-width: 100px;
 		display: grid;
 		gap: 0.25rem;
 		grid-template: auto / minmax(1px, 1fr) var(--controls-width);
@@ -38,7 +66,10 @@
 		font: bold var(--font-size) / 1.3em var(--sans-serif-fonts);
 		margin: 0;
 	}
-
+	.header__controls {
+		display: flex;
+		flex-flow: row-reverse nowrap;
+	}
 	.control {
 		font: var(--font-size-very-small) / 1.3em var(--sans-serif-fonts);
 		text-transform: uppercase;
@@ -78,6 +109,7 @@
 	/* FOCUS */
 	.control:focus {
 		outline: 2px solid var(--color-accent);
+		outline-offset: -2px;
 	}
 </style>
 
@@ -99,9 +131,11 @@
 			<span class="visually-hidden">{dataTitle}</span>
 			<Data title={dataTitle} />
 		</button>
-		<button class="control" on:click={share}>
-			<span class="visually-hidden">{shareTitle}</span>
-			<Share title={shareTitle} />
-		</button>
+		{#if webShare}
+			<button class="control" on:click={share}>
+				<span class="visually-hidden">{shareTitle}</span>
+				<Share title={shareTitle} />
+			</button>
+		{/if}
 	</div>
 </div>

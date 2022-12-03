@@ -4,7 +4,7 @@
 
 <style></style>
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.23 56.63">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.23 56.63" role="img">
 	<title>{title}</title>
 	<path
 		d="M25.79,.41H.41V56.22H40.82V15.44L25.79,.41Zm1.53,5.77l7.77,7.77h-7.77V6.18ZM3.41,53.22V3.41H24.31V15.44c0,.83,.67,1.5,1.5,1.5h12.01V53.22H3.41Z" /><path
