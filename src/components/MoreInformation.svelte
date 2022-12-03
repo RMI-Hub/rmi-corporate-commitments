@@ -48,19 +48,18 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-
+		color: white;
+		padding: 0;
 		font: bold var(--font-size-very-small) / 1.3em var(--sans-serif-fonts);
 		height: 1.1rem;
 		width: 1.1rem;
 		min-height: var(--tap-target, 1rem);
 		min-width: var(--tap-target, 1rem);
-
-		background: var(--color-background);
-		color: white;
-		cursor: pointer;
+		background-color: transparent;
 		border: none;
 		border-radius: 50%;
 
+		cursor: pointer;
 		position: relative;
 		transition: background var(--speed-transition-fast) ease-in-out;
 	}
@@ -72,6 +71,23 @@
 
 	.more.fullwidth {
 		position: unset;
+	}
+
+	.more__icon {
+		font-family: var(--serif-fonts);
+		font-style: italic;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 1rem;
+		height: 1rem;
+		border-radius: 50%;
+
+		background: var(--color-background);
+		color: white;
+
+		transition: background var(--speed-transition-fast) ease-in-out;
 	}
 
 	.more__text {
@@ -147,7 +163,7 @@
 	bind:this={moreElement}
 	aria-labelledby="more-label-{id}"
 	on:click={handleClick}>
-	i
+	<span class="more__icon">i</span>
 	<span id="more-label-{id}" class="visually-hidden">
 		{hiddenLabel}
 	</span>

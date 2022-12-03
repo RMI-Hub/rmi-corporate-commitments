@@ -31,8 +31,8 @@
 	let annualYAxisG, annualXAxisG, annualTicks;
 
 	// data tables
-	let showCumulativeData = true;
-	let showAnnualData = true;
+	let showCumulativeData = false;
+	let showAnnualData = false;
 
 	const DURATION = 500;
 	const tooltips = {
@@ -286,7 +286,7 @@
 <style>
 	.chart {
 		position: relative;
-		overflow: hidden;
+		overflow: visible;
 		height: 100%;
 	}
 
