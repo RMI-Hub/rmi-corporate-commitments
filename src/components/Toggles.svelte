@@ -48,7 +48,7 @@
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
-		gap: var(--gap);
+		gap: calc(var(--gap) / 2) var(--gap);
 		flex-wrap: wrap;
 		padding-bottom: var(--gap);
 		border-bottom: 1px solid var(--color-gray);
