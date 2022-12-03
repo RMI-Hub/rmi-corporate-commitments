@@ -11,6 +11,7 @@
 		"esbuild-svelte": "^0.5.3",
 		"gootenberg": "^1.6.2",
 		"html-minifier": "^4.0.0",
+		"json2csv": "^5.0.7",
 		"live-server": "^1.2.1",
 		"lodash.groupby": "^4.6.0",
 		"lodash.throttle": "^4.1.1",

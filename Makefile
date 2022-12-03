@@ -1,4 +1,5 @@
-update:
+data:
+	mkdir -p public/data
 	node ./scripts/companies.js
 
 build:
