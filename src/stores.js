@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 
+// These are the default multipliers and will pre-configure the toggles
 export const multipliers = writable({
 	scope: "Scope 1",
 	sector_emission_intensity: "Min",

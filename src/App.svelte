@@ -16,7 +16,6 @@
 	export let intro = "";
 	export let charts = {};
 	export let toggles = [];
-	export let companies;
 
 	export let presets = {
 		preset1: {
@@ -56,8 +55,8 @@
 		$chartData = await fetchData({
 			activeSector,
 			multipliers: $multipliers,
-			companies,
 		}).catch(console.error);
+
 		console.log("NEW DATA", {
 			$chartData,
 		});
@@ -113,7 +112,7 @@
 		<p>{@html sectorDescription}</p>
 	</div>
 	{#each Object.entries(charts) as [type, chartInfo]}
-		<Charts {...chartInfo} {type} {companies} />
+		<Charts {...chartInfo} {type} />
 	{/each}
 	<div class="controls">
 		<Toggles {defaultMultipliers} {toggles} />

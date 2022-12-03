@@ -9,8 +9,6 @@
 	export let yearly = {};
 	export let cumulative = {};
 	export let type; // "baseline" or "target"
-	export let companies = [];
-	export let tooltipFlip = false;
 
 	let tooltip;
 	let tooltipHidden = true;
@@ -154,8 +152,9 @@
 	}
 
 	function buildAnnualChart() {
-		const MARGINS = { top: 0, right: 15, bottom: 15, left: 35 };
+		const MARGINS = { top: 10, right: 15, bottom: 15, left: 35 };
 		const data = $chartData?.[type]?.yearly;
+		const companies = $chartData.companies || [];
 
 		// This won't work if there is not data
 		if (!data) return;
@@ -194,7 +193,6 @@
 				.classed("x", true)
 				.attr("transform", `translate(${MARGINS.left}, ${canvasHeight})`);
 		}
-
 		const stack = d3.stack().keys(companies);
 		const s_data = stack(data);
 
@@ -256,11 +254,6 @@
 		console.log("over", { e, this: this });
 		tooltipHidden = false;
 		this.classList.add("highlight");
-		// var subgroupName = d3.select(this.parentNode).datum().key;
-		// var subgroupValue = d.data[subgroupName];
-		// tooltip
-		// 	.html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
-		// 	.style("opacity", 1);
 	}
 
 	function mousemove(e) {

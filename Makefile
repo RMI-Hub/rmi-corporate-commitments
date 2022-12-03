@@ -1,6 +1,6 @@
 data:
 	mkdir -p public/data
-	node ./scripts/companies.js
+	node ./scripts/data.js
 
 build:
 	mkdir -p public
