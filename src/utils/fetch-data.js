@@ -204,7 +204,6 @@ export const fetchData = throttle(
 						console.error(e);
 						reject(e);
 					});
-				console.log({ sectorData });
 				sectors.set(activeSector, sectorData);
 			}
 

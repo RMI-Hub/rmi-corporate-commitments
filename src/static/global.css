@@ -130,6 +130,6 @@ a {
 @media (pointer: fine) {
 	/* We're using a mouse/This is not a touchscreen */
 	:root {
-		--tap-target: 0;
+		--tap-target: 2rem;
 	}
 }

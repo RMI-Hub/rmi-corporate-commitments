@@ -1,4 +1,6 @@
 <script>
+	import ChartData from "./ChartData.svelte";
+
 	import { chartData } from "../stores.js";
 	import * as d3 from "d3";
 	import throttle from "lodash.throttle";
@@ -14,6 +16,9 @@
 	let tooltipHidden = true;
 	let tooltipX = 0;
 	let tooltipY = 0;
+	let tooltipCompany = "A";
+
+	$: tooltipText = tooltips[tooltipCompany] || "";
 
 	let canvasHeight, canvasWidth;
 	let cumulativeContainer, annualContainer;
@@ -23,11 +28,18 @@
 	let yAxisG, xAxisG, bars, barTicks;
 
 	// ANNUAL PLACEHOLERS
-	let annualPaths;
 	let annualYAxisG, annualXAxisG, annualTicks;
 
-	const DURATION = 500;
+	// data tables
+	let showCumulativeData = true;
+	let showAnnualData = true;
 
+	const DURATION = 500;
+	const tooltips = {
+		A: "AAA Lorem ipsum dolor ipsum dolor ipsum dolor ipsum dolor ipsum dolor.",
+		B: "BBB Lorem ipsum dolor ipsum dolor ipsum dolor ipsum dolor ipsum dolor.",
+		C: "CCC Lorem ipsum dolor ipsum dolor ipsum dolor ipsum dolor ipsum dolor.",
+	};
 	function yearFormatter(d) {
 		const year = d.getFullYear();
 		if (year % 5 === 0) {
@@ -232,6 +244,7 @@
 			.data(s_data)
 			.join("path")
 			.classed("path", true)
+			.attr("data-name", d => d)
 			.attr("transform", `translate(${MARGINS.left},0)`)
 			.on("mouseover", mouseover)
 			.on("mousemove", mousemove)
@@ -250,8 +263,9 @@
 			.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
 	}
 
-	function mouseover(e) {
-		console.log("over", { e, this: this });
+	function mouseover(e, d) {
+		console.log("over", { d, e, this: this });
+		tooltipCompany = d.key;
 		tooltipHidden = false;
 		this.classList.add("highlight");
 	}
@@ -271,8 +285,8 @@
 
 <style>
 	.chart {
-		--controls-width: 5rem;
 		position: relative;
+		overflow: hidden;
 		height: 100%;
 	}
 
@@ -357,10 +371,14 @@
 	class="chart chart--yearly chart--{type} stack"
 	aria-labelledby="chart-yearly-{type}">
 	<ChartHeader
+		type="{type}-yearly"
 		flip={type === "target"}
 		id="chart-yearly-{type}"
 		header={yearly.header}
-		definition={yearly.definition} />
+		definition={yearly.definition}
+		on:showData={e => {
+			showAnnualData = true;
+		}} />
 	<div class="chart__container" bind:this={annualContainer}>
 		<div
 			bind:this={tooltip}
@@ -370,19 +388,41 @@
 			class:flip={type === "target"}
 			style:--x="{tooltipX}px"
 			style:--y="{tooltipY}px">
-			<span class="tooltip__name">Company name</span>
-			<span class="tooltip__commitments">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+			<span class="tooltip__name">{tooltipCompany}</span>
+			<span class="tooltip__commitments">{tooltipText}</span>
 		</div>
 	</div>
+	{#if $chartData?.[type]?.yearly}
+		<ChartData
+			{type}
+			cumulative={false}
+			data={$chartData[type].yearly}
+			visible={showAnnualData}
+			on:click={e => {
+				showAnnualData = false;
+			}} />
+	{/if}
 </div>
 <div
 	class="chart chart--cumulative chart--{type} stack"
 	aria-labelledby="chart-cumulative-{type}">
 	<ChartHeader
+		on:showData={e => {
+			showCumulativeData = true;
+		}}
 		flip={type === "target"}
 		id="chart-cumulative-{type}"
 		header={cumulative.header}
 		definition={cumulative.definition} />
 	<div class="chart__container" bind:this={cumulativeContainer} />
+	{#if $chartData?.[type]?.cumulative}
+		<ChartData
+			{type}
+			cumulative={true}
+			data={$chartData[type].cumulative}
+			visible={showCumulativeData}
+			on:click={e => {
+				showCumulativeData = false;
+			}} />
+	{/if}
 </div>
