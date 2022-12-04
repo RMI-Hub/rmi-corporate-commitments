@@ -61,12 +61,12 @@
 		return d3.format(".1s")(d).replace("G", "B");
 	}
 
-	const render = throttle((e, force) => {
-		buildCumulativeChart(force);
-		buildAnnualChart(force);
+	const render = throttle(e => {
+		buildCumulativeChart();
+		buildAnnualChart();
 	}, 500);
 
-	function buildCumulativeChart(force = false) {
+	function buildCumulativeChart() {
 		// CHART SCAFFOLDING
 		// ------------------------------------
 		const MARGINS = { top: 0, right: 5, bottom: 15, left: 25 };
@@ -74,7 +74,7 @@
 		const domain = $chartData?.cumulative_domain;
 		if (!data) return;
 
-		if (!cumulativeSVG || force) {
+		if (!cumulativeSVG) {
 			const { height, width } = cumulativeContainer.getBoundingClientRect();
 			canvasHeight = height - MARGINS.top - MARGINS.bottom;
 			canvasWidth = width - MARGINS.left - MARGINS.right;
@@ -154,7 +154,7 @@
 					enter
 						.append("rect")
 						.classed("bar", true)
-						.classed("current-year", d => d.year.getFullYear() === 2025)
+						// .classed("current-year", d => d.year.getFullYear() === 2025)
 						.attr("width", x.bandwidth())
 						.attr("x", d => x(d.year))
 						.attr("y", d => y(d[type]))
