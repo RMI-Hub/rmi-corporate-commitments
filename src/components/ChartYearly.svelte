@@ -2,8 +2,18 @@
 	// UTILS
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
 	import { chartData } from "../stores.js";
-	import * as d3 from "d3";
 	import throttle from "lodash.throttle";
+	import {
+		stack,
+		extent,
+		scaleLinear,
+		scaleTime,
+		axisBottom,
+		axisLeft,
+		area,
+		select,
+		curveCardinal,
+	} from "d3";
 
 	// COMPONENTS
 	import ChartData from "./ChartData.svelte";
@@ -54,8 +64,7 @@
 			canvasHeight = height - MARGINS.top - MARGINS.bottom;
 			canvasWidth = width - MARGINS.left - MARGINS.right;
 
-			svg = d3
-				.select(container)
+			svg = select(container)
 				.append("svg")
 				.attr("height", height)
 				.attr("width", width)
@@ -88,30 +97,27 @@
 				.classed("x", true)
 				.attr("transform", `translate(${MARGINS.left}, ${MARGINS.top + canvasHeight})`);
 		}
-		const stack = d3.stack().keys(companies);
-		const s_data = stack(data);
 
-		const xScale = d3
-			.scaleTime()
-			.domain(d3.extent(data, d => d.year))
+		const stacker = stack().keys(companies);
+		const s_data = stacker(data);
+
+		const xScale = scaleTime()
+			.domain(extent(data, d => d.year))
 			.range([0, canvasWidth]);
 
-		const xAxis = d3.axisBottom(xScale).tickFormat(yearFormatter).tickSize(0).ticks(10);
+		const xAxis = axisBottom(xScale).tickFormat(yearFormatter).tickSize(0).ticks(10);
 
-		const yScale = d3
-			.scaleLinear()
+		const yScale = scaleLinear()
 			.domain([0, $chartData.yearly_max])
 			.range([canvasHeight, 0]);
 
-		const yAxis = d3
-			.axisLeft(yScale)
+		const yAxis = axisLeft(yScale)
 			.ticks(5)
 			.tickSize(0)
 			.tickFormat(emissionsNumberFormatter);
 
-		var areaGenerator = d3
-			.area()
-			.curve(d3.curveCardinal)
+		var areaGenerator = area()
+			.curve(curveCardinal)
 			.x(d => xScale(d.data.year))
 			.y0(d => yScale(d[0]))
 			.y1(d => yScale(d[1]));

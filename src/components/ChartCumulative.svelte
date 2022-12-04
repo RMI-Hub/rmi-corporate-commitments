@@ -2,7 +2,7 @@
 	import ChartData from "./ChartData.svelte";
 
 	import { chartData } from "../stores.js";
-	import * as d3 from "d3";
+	import { scaleBand, format, scaleLinear, axisBottom, axisLeft, select } from "d3";
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
 	import throttle from "lodash.throttle";
 
@@ -46,8 +46,7 @@
 
 			container.innerHTML = "";
 
-			svg = d3
-				.select(container)
+			svg = select(container)
 				.append("svg")
 				.attr("height", height)
 				.attr("width", width)
@@ -81,19 +80,18 @@
 				.attr("transform", `translate(${MARGINS.left}, ${canvasHeight})`);
 		}
 		// DRAW THE CHART
-		const x = d3
-			.scaleBand()
+		const x = scaleBand()
 			.paddingInner([0.2])
-			.domain(d3.map(data, d => d.year))
+			.domain(data.map(d => d.year))
 			.range([0, canvasWidth]);
 
-		const xAxis = d3.axisBottom(x).tickFormat(yearFormatter).tickSize(0).ticks(5);
+		const xAxis = axisBottom(x).tickFormat(yearFormatter).tickSize(0).ticks(5);
 
 		// Create the y scale for emissions
-		const y = d3.scaleLinear().domain(domain).range([canvasHeight, 0]);
+		const y = scaleLinear().domain(domain).range([canvasHeight, 0]);
 
 		// Create the function for the y Axis
-		const yAxis = d3.axisLeft(y).tickFormat(emissionsNumberFormatter).ticks(5);
+		const yAxis = axisLeft(y).tickFormat(emissionsNumberFormatter).ticks(5);
 
 		// ADJUST THE RENDERED AXES
 		yAxisG
@@ -113,13 +111,11 @@
 		bars
 			.selectAll(".bar")
 			.data(data)
-			// .enter()
 			.join(
 				enter => {
 					enter
 						.append("rect")
 						.classed("bar", true)
-						// .classed("current-year", d => d.year.getFullYear() === 2025)
 						.attr("width", x.bandwidth())
 						.attr("x", d => x(d.year))
 						.attr("y", d => y(d[type]))
@@ -145,9 +141,7 @@
 
 		// POPULATE IT
 		const value = d.target || d.baseline;
-		tooltipText = `<strong>${d.year.getFullYear()}:</strong> ${d3.format(",.0f")(
-			value
-		)}`;
+		tooltipText = `<strong>${d.year.getFullYear()}:</strong> ${format(",.0f")(value)}`;
 
 		// Style it
 		this.classList.add("highlight");
