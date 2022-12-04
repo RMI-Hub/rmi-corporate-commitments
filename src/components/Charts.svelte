@@ -54,6 +54,7 @@
 		return "";
 	}
 
+	// TODO: WHy is this rounding so weird?
 	function emissionsNumberFormatter(d) {
 		if (d > 1000000000) {
 			return `${Math.floor(d / 1000000000)}B`;
