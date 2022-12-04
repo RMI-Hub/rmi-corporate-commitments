@@ -1,11 +1,11 @@
 <script>
-	import ChartData from "./ChartData.svelte";
+	import ChartData from "../src/components/ChartData.svelte";
 
-	import { chartData } from "../stores.js";
+	import { chartData } from "../src/stores.js";
 	import * as d3 from "d3";
 	import throttle from "lodash.throttle";
 
-	import ChartHeader from "./ChartHeader.svelte";
+	import ChartHeader from "../src/components/ChartHeader.svelte";
 
 	// Chart meta
 	export let yearly = {};
