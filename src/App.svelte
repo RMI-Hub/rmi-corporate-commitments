@@ -5,7 +5,6 @@
 	import Intro from "./components/Intro.svelte";
 	import PickerSector from "./components/PickerSector.svelte";
 	import PickerPresets from "./components/PickerPresets.svelte";
-	import Charts from "./components/Charts.svelte";
 	import ChartYearly from "./components/ChartYearly.svelte";
 	import ChartCumulative from "./components/ChartCumulative.svelte";
 

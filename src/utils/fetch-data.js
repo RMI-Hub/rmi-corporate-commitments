@@ -2,6 +2,9 @@ import throttle from "lodash.throttle";
 import groupBy from "lodash.groupby";
 import { csv, stack, max } from "d3";
 
+// THis is our data cache
+const sectors = new Map();
+
 /**
  *
  * Takes our two data sets and convers them into a stack, so we can get the overall domain and set each chart to the same scale
@@ -20,11 +23,9 @@ function getYearlyMax(target, baseline, companies) {
 			max(s_data[s_data.length - 1], d => d[1])
 		);
 	}
-	return maxValue;
+	// Nudge the max value a little higher so the scale definitely encapsulates it
+	return maxValue * 1.1;
 }
-
-// THis is our data cache
-const sectors = new Map();
 
 /**
  * Takes a row of data and returns an aobject of the baseline and target values
