@@ -39,14 +39,17 @@
 	};
 	$: tooltipText = tooltips[tooltipCompany] || "";
 
-	const render = throttle(e => {
+	const render = throttle((e, force = false) => {
 		const data = $chartData?.[type]?.yearly;
 
 		// This won't work if there is not data
 		if (!data) return;
 		const companies = $chartData.companies || [];
 
-		if (!svg) {
+		if (!svg || force) {
+			// Start by clearing out the container for a new chart
+			container.innerHTML = "";
+
 			const { height, width } = container.getBoundingClientRect();
 			canvasHeight = height - MARGINS.top - MARGINS.bottom;
 			canvasWidth = width - MARGINS.left - MARGINS.right;
@@ -109,15 +112,9 @@
 		var areaGenerator = d3
 			.area()
 			.curve(d3.curveCardinal)
-			.x(function (d) {
-				return xScale(d.data.year);
-			})
-			.y0(function (d) {
-				return yScale(d[0]);
-			})
-			.y1(function (d) {
-				return yScale(d[1]);
-			});
+			.x(d => xScale(d.data.year))
+			.y0(d => yScale(d[0]))
+			.y1(d => yScale(d[1]));
 
 		paths
 			.selectAll(".path")

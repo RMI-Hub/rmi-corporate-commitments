@@ -32,14 +32,14 @@
 
 	const MARGINS = { top: 0, right: 5, bottom: 15, left: 25 };
 
-	const render = throttle(e => {
+	const render = throttle((e, force = false) => {
 		// CHART SCAFFOLDING
 		// ------------------------------------
 		const data = $chartData?.[type]?.cumulative;
 		const domain = $chartData?.cumulative_domain;
 		if (!data) return;
 
-		if (!svg) {
+		if (!svg || force) {
 			const { height, width } = container.getBoundingClientRect();
 			canvasHeight = height - MARGINS.top - MARGINS.bottom;
 			canvasWidth = width - MARGINS.left - MARGINS.right;
