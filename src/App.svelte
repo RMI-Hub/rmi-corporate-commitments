@@ -6,6 +6,8 @@
 	import PickerSector from "./components/PickerSector.svelte";
 	import PickerPresets from "./components/PickerPresets.svelte";
 	import Charts from "./components/Charts.svelte";
+	import ChartYearly from "./components/ChartYearly.svelte";
+	import ChartCumulative from "./components/ChartCumulative.svelte";
 
 	// UTILS
 
@@ -41,8 +43,16 @@
 
 	let activeSector = "manufacturing";
 
+	const CHART_UPDATE_DURATION = 500;
+
 	// Let's stash our initial toggles
 	const defaultMultipliers = Object.assign({}, $multipliers);
+
+	// our chart types
+	const chartForms = {
+		yearly: ChartYearly,
+		cumulative: ChartCumulative,
+	};
 
 	$: sectorHeader = sectors[activeSector].heading;
 	$: sectorDescription = sectors[activeSector].description;
@@ -111,8 +121,16 @@
 		<PickerSector {sectors} {sectorHeader} bind:value={activeSector} />
 		<p>{@html sectorDescription}</p>
 	</div>
-	{#each Object.entries(charts) as [type, chartInfo]}
-		<Charts {...chartInfo} {type} />
+	{#each Object.entries(charts) as [type, typeInfo]}
+		<!-- For each type (target, baseline) ....-->
+		{#each Object.entries(typeInfo) as [chartForm, chartInfo]}
+			<!-- Put each configured chart -->
+			<svelte:component
+				this={chartForms[chartForm]}
+				DURATION={CHART_UPDATE_DURATION}
+				{type}
+				{...chartInfo} />
+		{/each}
 	{/each}
 	<div class="controls">
 		<Toggles {defaultMultipliers} {toggles} />
