@@ -112,7 +112,7 @@
 			.range([canvasHeight, 0]);
 
 		const yAxis = axisLeft(yScale)
-			.ticks(5)
+			.ticks(10)
 			.tickSize(0)
 			.tickFormat(emissionsNumberFormatter);
 
