@@ -1,0 +1,50 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "microcopy",
+	"description": "Collection of various text bits and labels, so that they are not written in the code.",
+	"type": "object",
+	"properties": {
+		"headline": {
+			"type": "string",
+			"description": "A proper, SEO-friendly headline",
+			"maxLength": 70
+		},
+		"intro": {
+			"type": "string",
+			"description": "OPTIONAL: A short, SEO-friendly description of the dashboard, its purpose, capabilities and limitations",
+			"maxLength": 500
+		},
+		"charts": {
+			"type": "object",
+			"description": "This collected the four charts into iterable groups",
+			"properties": {
+				"type": { "$ref": "#/$defs/chartGroup" }
+			}
+		}
+	},
+	"required": ["headline", "charts"],
+	"$defs": {
+		"chartGroup": {
+			"type": "object",
+			"properties": {
+				"type": { "$ref": "#/$defs/chartGroup" }
+			}
+		},
+		"chart": {
+			"type": "object",
+			"description": "Metadata required for each chart",
+			"properties": {
+				"header": {
+					"type": "string",
+					"description": "The human-readable chart label",
+					"maxLength": 60
+				},
+				"definition": {
+					"type": "string",
+					"description": "OPTIONAL: The context and definition of what that chart does. Information will be available in a tooltip",
+					"maxLength": 240
+				}
+			}
+		}
+	}
+}

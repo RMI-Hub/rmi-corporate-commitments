@@ -1,0 +1,44 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "Toggles collection",
+	"type": "array",
+	"items": { "$ref": "#/$defs/toggle" },
+	"$defs": {
+		"toggle": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "The unique identifier for the toggle group. This will be used to connect the radio buttons and is required to access the user's selection in the calculations"
+				},
+				"label": {
+					"type": "string",
+					"maxLength": 100,
+					"description": "The human-readable label for the buttons"
+				},
+				"definition": {
+					"type": "string",
+					"maxLength": 300,
+					"description": "Optional description of the toggle. Text appears in a tooltip"
+				},
+				"buttons": {
+					"type": "array",
+					"description": "The individual radio buttons for each toggle component.",
+					"items": { "$ref": "#/$defs/toggleButton" }
+				}
+			},
+			"required": ["id", "label", "buttons"]
+		},
+		"toggleButton": {
+			"text": {
+				"type": "string",
+				"description": "The human-readable label for the radio button",
+				"maxLength": 40
+			},
+			"value": {
+				"type": ["integer", "string", "boolean"],
+				"description": "The computationally-important representation of the user's toggle seleection. This is used in the data fetching and munging"
+			}
+		}
+	}
+}
