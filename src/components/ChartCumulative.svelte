@@ -6,6 +6,7 @@
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
 	import throttle from "lodash.throttle";
 
+	import Tooltip from "./Tooltip.svelte";
 	import ChartHeader from "./ChartHeader.svelte";
 
 	// Chart meta
@@ -15,7 +16,6 @@
 	export let DURATION = 500;
 
 	// Refs, etc. for the tooltip
-	let tooltip;
 	let tooltipText = "";
 	let tooltipHidden = true;
 	let tooltipX = 0;
@@ -116,6 +116,9 @@
 					enter
 						.append("rect")
 						.classed("bar", true)
+						.classed("current", d => {
+							return d.year.getFullYear() === 2025;
+						})
 						.attr("width", x.bandwidth())
 						.attr("x", d => x(d.year))
 						.attr("y", d => y(d[type]))
@@ -176,7 +179,7 @@
 	.chart :global(.bar) {
 		fill: var(--color-chart);
 	}
-	.chart :global(.bar:is(.highlight, .current-year)) {
+	.chart :global(.bar:is(.highlight, .current)) {
 		fill: var(--color-chart-highlight);
 	}
 
@@ -188,53 +191,6 @@
 	.chart :global(.annualTicks .domain),
 	.chart :global(.y.axis .domain) {
 		display: none;
-	}
-
-	.chart--yearly :global(.path) {
-		fill: var(--color-chart);
-		stroke: white;
-		stroke-width: 1;
-		cursor: pointer;
-		transition: fill var(--speed-transition) ease-in-out;
-	}
-	.chart--yearly :global(.path:hover),
-	.chart--yearly :global(.path.highlight) {
-		fill: var(--color-chart-highlight);
-	}
-
-	.tooltip {
-		font: var(--font-size-small) / 1.3em var(--sans-serif-fonts);
-		width: 200px;
-		border: 1px solid var(--color-slate);
-		border-radius: 0.5rem;
-		padding: 0.75rem;
-		background-color: white;
-		transition: opacity var(--speed-transition);
-
-		position: fixed;
-		top: var(--y);
-		left: var(--x);
-		z-index: 10;
-	}
-
-	.tooltip[hidden] {
-		opacity: 0;
-	}
-
-	.tooltip span {
-		display: block;
-	}
-
-	.tooltip__name {
-		font-weight: bold;
-		font-size: 1.2em;
-		margin-bottom: 0.25rem;
-	}
-
-	@media all and (min-width: 1024px) {
-		.tooltip.flip {
-			transform: translate(-100%, 0);
-		}
 	}
 </style>
 
@@ -256,14 +212,9 @@
 		{header}
 		{definition} />
 	<div class="chart__container" bind:this={container} />
-	<div
-		hidden={tooltipHidden ? true : null}
-		class="tooltip"
-		class:flip={type === "target"}
-		style:--x="{tooltipX}px"
-		style:--y="{tooltipY}px">
+	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__text">{@html tooltipText}</span>
-	</div>
+	</Tooltip>
 	{#if $chartData?.[type]?.cumulative}
 		<ChartData
 			{type}

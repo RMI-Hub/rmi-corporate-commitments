@@ -31,6 +31,11 @@
 	}
 </style>
 
-<div {hidden} class="tooltip" class:flip style:--x="{x}px" style:--y="{y}px">
+<div
+	hidden={hidden ? true : null}
+	class="tooltip"
+	class:flip
+	style:--x="{x}px"
+	style:--y="{y}px">
 	<slot />
 </div>

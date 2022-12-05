@@ -1,4 +1,6 @@
 <script>
+	import Tooltip from "./Tooltip.svelte";
+
 	// UTILS
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
 	import { chartData } from "../stores.js";
@@ -154,6 +156,7 @@
 
 	function mousemove(e) {
 		const { clientX, clientY } = e;
+		console.log({ clientX, clientY });
 		tooltipX = clientX;
 		tooltipY = clientY;
 	}
@@ -176,68 +179,31 @@
 		position: relative;
 	}
 
-	.chart :global(.bar) {
-		fill: var(--color-chart);
-	}
-	.chart :global(.bar:is(.highlight, .current-year)) {
-		fill: var(--color-chart-highlight);
-	}
-
 	.chart :global(.tick) {
 		color: var(--color-gray);
 		stroke-width: 0.5;
 	}
-	.chart :global(.bars__ticks .domain),
 	.chart :global(.ticks .domain),
 	.chart :global(.y.axis .domain) {
 		display: none;
 	}
 
-	.chart--yearly :global(.path) {
+	.chart :global(.path) {
 		fill: var(--color-chart);
 		stroke: white;
 		stroke-width: 1;
 		cursor: pointer;
 		transition: fill var(--speed-transition) ease-in-out;
 	}
-	.chart--yearly :global(.path:hover),
-	.chart--yearly :global(.path.highlight) {
+	.chart :global(.path:hover),
+	.chart :global(.path.highlight) {
 		fill: var(--color-chart-highlight);
-	}
-
-	.tooltip {
-		font: var(--font-size-small) / 1.3em var(--sans-serif-fonts);
-		width: 200px;
-		border: 1px solid var(--color-slate);
-		border-radius: 0.5rem;
-		padding: 0.75rem;
-		background-color: white;
-		transition: opacity var(--speed-transition);
-
-		position: fixed;
-		top: var(--y);
-		left: var(--x);
-		z-index: 10;
-	}
-
-	.tooltip[hidden] {
-		opacity: 0;
-	}
-
-	.tooltip span {
-		display: block;
 	}
 
 	.tooltip__name {
 		font-weight: bold;
 		font-size: 1.2em;
 		margin-bottom: 0.25rem;
-	}
-
-	@media all and (min-width: 1024px) {
-		.tooltip.flip {
-			transform: translate(-100%, 0);
-		}
 	}
 </style>
 
@@ -260,15 +226,10 @@
 			showData = true;
 		}} />
 	<div class="chart__container" bind:this={container} />
-	<div
-		hidden={tooltipHidden ? true : null}
-		class="tooltip"
-		class:flip={type === "target"}
-		style:--x="{tooltipX}px"
-		style:--y="{tooltipY}px">
+	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__name">{tooltipCompany}</span>
 		<span class="tooltip__commitments">{tooltipText}</span>
-	</div>
+	</Tooltip>
 	{#if $chartData?.[type]?.yearly}
 		<ChartData
 			{type}
