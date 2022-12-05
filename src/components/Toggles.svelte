@@ -62,6 +62,7 @@
 		display: flex;
 		align-items: flex-start;
 		gap: 0.25rem;
+		cursor: pointer;
 	}
 
 	.toggles__btn {
