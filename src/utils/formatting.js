@@ -10,10 +10,6 @@ export function yearFormatter(d) {
 	return "";
 }
 
-// TODO: WHy is this rounding so weird?
 export function emissionsNumberFormatter(d) {
-	if (d > 1000000000) {
-		return `${Math.floor(d / 1000000000)}B`;
-	}
-	return format(".1s")(d).replace("G", "B");
+	return format("~s")(d).replace("G", "B");
 }

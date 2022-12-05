@@ -48,7 +48,7 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 		slowdown,
 	} = multipliers;
 
-	const { year } = row;
+	const { Year: year } = row;
 
 	// # Toggles
 	// T_Scope = 'Scope 1' # Select from Scope 1, Scope 2, Scope 1 + 2
@@ -141,12 +141,13 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 
 	// # SLOWDOWN MULTIPLIER
 	// df['Multiplier (Slowdown)'] = df['Multiplier (Target)']
+	let multiplierSlowdown = multiplierTarget;
 
 	// df['Multiplier (Slowdown)'] = np.where(df['Year'] < T_Slowdown,
 	// 									   df['Multiplier (Baseline)'],
 	// 									   df['Multiplier (Slowdown)'])
 
-	const multiplierSlowdown = year < slowdown ? multiplierBaseline : multiplierTarget;
+	multiplierSlowdown = year < slowdown ? multiplierBaseline : multiplierSlowdown;
 
 	// # PARTIAL TARGETS MULTIPLIER
 	// df['Multiplier (Partial Targets)'] = 1 + T_Partial_Target
