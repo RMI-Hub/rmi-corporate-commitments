@@ -15,7 +15,7 @@
 		"target": {
 			"yearly": {
 				"header": "Target emissions by year",
-				"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium."
+				"definition": "Lorem ipsum dolor."
 			},
 			"cumulative": {
 				"header": "Target emissions cumulative",

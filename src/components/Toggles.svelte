@@ -4,8 +4,9 @@
 	import { multipliers } from "../stores.js";
 
 	// COMPONENTS
-	import MoreInformation from "./MoreInformation.svelte";
+	import MoreInformation from "../../_scratch/MoreInformation.svelte";
 	import Button from "./Button.svelte";
+	import Toggletip from "./Toggletip.svelte";
 
 	export let togglesLabel = "Knobs and dials";
 	export let toggles = [];
@@ -45,6 +46,7 @@
 	}
 
 	.toggles__btn-group {
+		position: relative; /* contains toggle tip*/
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
@@ -124,7 +126,7 @@
 				<div class="toggles__btn-group">
 					<h3 class="label">
 						{label}
-						<MoreInformation {id} text={definition} fullwidth={true} />
+						<Toggletip text={definition} />
 					</h3>
 					{#each buttons as { text, value }}
 						<label class="toggles__label sans-serif" for={slugify(text)}>

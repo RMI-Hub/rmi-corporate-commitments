@@ -4,7 +4,8 @@
 	import Data from "../icons/Data.svelte";
 	import Expand from "../icons/Expand.svelte";
 	import Share from "../icons/Share.svelte";
-	import MoreInformation from "./MoreInformation.svelte";
+	import MoreInformation from "../../_scratch/MoreInformation.svelte";
+	import Toggletip from "./Toggletip.svelte";
 
 	export let header = "";
 	export let definition = "";
@@ -61,6 +62,7 @@
 		display: grid;
 		gap: 0.25rem;
 		grid-template: auto / minmax(1px, 1fr) var(--controls-width);
+		position: relative;
 	}
 	.header__text {
 		font: bold var(--font-size) / 1.3em var(--sans-serif-fonts);
@@ -118,7 +120,7 @@
 		<h2 {id} class="header__text">
 			{header}
 			{#if definition}
-				<MoreInformation text={definition} {id} {flip} />
+				<Toggletip text={definition} {id} {flip} />
 			{/if}
 		</h2>
 	{/if}
