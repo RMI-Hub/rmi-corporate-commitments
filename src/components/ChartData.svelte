@@ -18,7 +18,7 @@
 <style>
 	.data {
 		padding: var(--gap);
-		padding-top: 0;
+		padding-top: 2.25rem;
 		background: rgba(255, 255, 255, 0.9);
 
 		position: absolute;
@@ -27,41 +27,6 @@
 		width: 100%;
 		height: 100%;
 		overflow: scroll;
-	}
-
-	.close {
-		margin: 0 0 0 auto;
-		position: sticky;
-		top: 0;
-		right: 0;
-
-		width: var(--tap-target);
-		height: var(--tap-target);
-
-		background-color: rgba(255, 255, 255, 0.75);
-		transition: background-color var(--speed-transition);
-		border-radius: 50%;
-		border: none;
-		padding: 0;
-		cursor: pointer;
-
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.close :global(svg) {
-		stroke-width: 2;
-		width: 60%;
-		height: 60%;
-		stroke: var(--color-gray);
-		transition: fill var(--speed-transition);
-	}
-	.close:hover :global(svg) {
-		stroke: var(--color-slate);
-	}
-	.close:hover {
-		background-color: var(--color-gray-light);
 	}
 
 	.data__table {
@@ -84,11 +49,17 @@
 	.data__table tr:nth-child(even) :is(th, td) {
 		background: var(--color-apricot-light);
 	}
+
+	.control.control--close {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
 </style>
 
 {#if visible}
 	<div class="data" transition:fade={{ duration: 250 }}>
-		<button class="close" on:click>
+		<button class="control control--close" on:click>
 			<X title="Return to the visualization" />
 		</button>
 		<table class="data__table">

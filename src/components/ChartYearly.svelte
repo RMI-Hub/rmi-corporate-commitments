@@ -1,7 +1,6 @@
 <script>
-	import Tooltip from "./Tooltip.svelte";
-
 	// UTILS
+	import { tick } from "svelte";
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
 	import { chartData } from "../stores.js";
 	import throttle from "lodash.throttle";
@@ -18,8 +17,10 @@
 	} from "d3";
 
 	// COMPONENTS
+	import Tooltip from "./Tooltip.svelte";
 	import ChartData from "./ChartData.svelte";
 	import ChartHeader from "./ChartHeader.svelte";
+	import X from "../icons/X.svelte";
 
 	// Chart meta
 	export let header = "";
@@ -28,7 +29,6 @@
 	export let DURATION = 500;
 
 	// La tooltip. Voila!
-	let tooltip;
 	let tooltipHidden = true;
 	let tooltipX = 0;
 	let tooltipY = 0;
@@ -38,20 +38,37 @@
 	let container, svg, yAxisG, xAxisG, ticks, paths;
 	let canvasHeight, canvasWidth;
 
-	// data tables
+	// config state
 	let showData = false;
+	let fullscreen = false;
+	let chartHidden = false;
 
 	// CONFIG
-	const MARGINS = { top: 10, right: 10, bottom: 15, left: 35 };
-
+	const ENLARGE_DURATION = 200;
 	const tooltips = {
 		A: "AAA Lorem ipsum dolor ipsum dolor ipsum dolor ipsum dolor ipsum dolor.",
 		B: "BBB Lorem ipsum dolor ipsum dolor ipsum dolor ipsum dolor ipsum dolor.",
 		C: "CCC Lorem ipsum dolor ipsum dolor ipsum dolor ipsum dolor ipsum dolor.",
 	};
 	$: tooltipText = tooltips[tooltipCompany] || "";
+	$: tickDimension = fullscreen ? 8 : 0;
+	$: MARGINS = fullscreen
+		? { top: 10, right: 10, bottom: 25, left: 60 }
+		: { top: 10, right: 20, bottom: 15, left: 35 };
+	$: fullscreen, forceRender();
+
+	async function forceRender() {
+		chartHidden = true;
+		await tick();
+		console.log("re-rendering for fullscreen change");
+		render({}, true);
+		setTimeout(() => {
+			chartHidden = false;
+		}, ENLARGE_DURATION);
+	}
 
 	const render = throttle((e, force = false) => {
+		console.log({ e, force });
 		const data = $chartData?.[type]?.yearly;
 
 		// This won't work if there is not data
@@ -59,6 +76,7 @@
 		const companies = $chartData.companies || [];
 
 		if (!svg || force) {
+			console.log({ container });
 			// Start by clearing out the container for a new chart
 			container.innerHTML = "";
 
@@ -107,7 +125,10 @@
 			.domain(extent(data, d => d.year))
 			.range([0, canvasWidth]);
 
-		const xAxis = axisBottom(xScale).tickFormat(yearFormatter).tickSize(0).ticks(10);
+		const xAxis = axisBottom(xScale)
+			.tickFormat(yearFormatter)
+			.tickSize(tickDimension)
+			.ticks(10);
 
 		const yScale = scaleLinear()
 			.domain([0, $chartData.yearly_max])
@@ -115,7 +136,7 @@
 
 		const yAxis = axisLeft(yScale)
 			.ticks(10)
-			.tickSize(0)
+			.tickSize(tickDimension)
 			.tickFormat(emissionsNumberFormatter);
 
 		var areaGenerator = area()
@@ -154,12 +175,11 @@
 		this.classList.add("highlight");
 	}
 
-	function mousemove(e) {
+	const mousemove = e => {
 		const { clientX, clientY } = e;
-		console.log({ clientX, clientY });
 		tooltipX = clientX;
 		tooltipY = clientY;
-	}
+	};
 	function mouseleave(e) {
 		tooltipHidden = true;
 		this.classList.remove("highlight");
@@ -167,22 +187,6 @@
 </script>
 
 <style>
-	.chart {
-		position: relative;
-		overflow: visible;
-		height: 100%;
-	}
-
-	.stack .chart__container {
-		margin-top: auto;
-		height: 300px;
-		position: relative;
-	}
-
-	.chart :global(.tick) {
-		color: var(--color-gray);
-		stroke-width: 0.5;
-	}
 	.chart :global(.ticks .domain),
 	.chart :global(.y.axis .domain) {
 		display: none;
@@ -205,6 +209,8 @@
 		font-size: 1.2em;
 		margin-bottom: 0.25rem;
 	}
+
+	/* FULLSCREEN */
 </style>
 
 <svelte:window
@@ -215,6 +221,8 @@
 
 <div
 	class="chart chart--yearly chart--{type} stack"
+	class:fullscreen
+	style:--speed-transition="{ENLARGE_DURATION}ms"
 	aria-labelledby="chart-yearly-{type}">
 	<ChartHeader
 		type="{type}-yearly"
@@ -224,8 +232,23 @@
 		{definition}
 		on:showData={e => {
 			showData = true;
+		}}
+		on:enlarge={async e => {
+			fullscreen = true;
 		}} />
-	<div class="chart__container" bind:this={container} />
+
+	<div class="chart__wrapper">
+		{#if fullscreen}
+			<button
+				class="control control--close"
+				on:click={async e => {
+					fullscreen = false;
+				}}>
+				<X title="Shrink this visualization back to regular size" />
+			</button>
+		{/if}
+		<div class="chart__container" class:hidden={chartHidden} bind:this={container} />
+	</div>
 	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__name">{tooltipCompany}</span>
 		<span class="tooltip__commitments">{tooltipText}</span>

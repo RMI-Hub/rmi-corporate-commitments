@@ -24,7 +24,7 @@
 	 * handleWebShare will, if supported, trigger a device's native share functions
 	 */
 
-	function share(e) {
+	function onShare(e) {
 		console.log("sharing");
 
 		navigator
@@ -37,8 +37,12 @@
 			});
 	}
 
-	function showData(e) {
+	function onShowData(e) {
 		dispatch("showData", { type });
+	}
+
+	function onEnlarge(e) {
+		dispatch("enlarge", {});
 	}
 
 	function testForWebShare() {
@@ -72,47 +76,6 @@
 		display: flex;
 		flex-flow: row-reverse nowrap;
 	}
-	.control {
-		font: var(--font-size-very-small) / 1.3em var(--sans-serif-fonts);
-		text-transform: uppercase;
-		color: var(--color-gray);
-
-		border: none;
-		background-color: transparent;
-		cursor: pointer;
-		padding: 0;
-		border-radius: 50%;
-
-		aspect-ratio: 1/1;
-		height: 2rem;
-		width: 2rem;
-
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.control :global(svg) {
-		fill: var(--color-gray);
-		height: 60%;
-		width: 60%;
-		transition: fill var(--speed-transition) ease;
-	}
-
-	/* HOVER */
-	.control:hover {
-		background-color: var(--color-gray-light);
-	}
-
-	.control:where(:hover, :focus) :global(svg) {
-		fill: var(--color-slate);
-	}
-
-	/* FOCUS */
-	.control:focus {
-		outline: 2px solid var(--color-accent);
-		outline-offset: -2px;
-	}
 </style>
 
 <div class="header">
@@ -125,16 +88,16 @@
 		</h2>
 	{/if}
 	<div class="header__controls">
-		<button class="control">
+		<button class="control" on:click={onEnlarge}>
 			<span class="visually-hidden">Expand this chart</span>
 			<Expand />
 		</button>
-		<button class="control" on:click={showData}>
+		<button class="control" on:click={onShowData}>
 			<span class="visually-hidden">{dataTitle}</span>
 			<Data title={dataTitle} />
 		</button>
 		{#if webShare}
-			<button class="control" on:click={share}>
+			<button class="control" on:click={onShare}>
 				<span class="visually-hidden">{shareTitle}</span>
 				<Share title={shareTitle} />
 			</button>
