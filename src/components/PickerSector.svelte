@@ -6,7 +6,6 @@
 	let button; // The main menu button
 	let showMenu = false;
 
-	const isMobile = false;
 	const menuItems = [];
 
 	function open() {
