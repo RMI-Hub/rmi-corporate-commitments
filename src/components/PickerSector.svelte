@@ -158,8 +158,8 @@
 		text-align: left;
 		font: bold var(--font-size) / 1em var(--sans-serif-fonts);
 		padding: 0.5rem 0.5rem 0.5rem 1rem;
-		background-color: var(--color-accent);
-		color: var(--color-accent-text);
+		background-color: var(--color-blue-medium);
+		color: var(--color-slate);
 		box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
 		border-bottom: 3px solid rgba(255, 255, 255, 0.8);
 		cursor: pointer;
@@ -194,9 +194,11 @@
 		border-radius: 0 0 0.5rem 0.5rem;
 	}
 
+	.menu__btn[aria-selected],
 	.menu__btn:hover,
 	.menu__btn:focus {
-		background-color: #28597a;
+		background-color: var(--color-accent);
+		color: var(--color-accent-text);
 		border-color: rgba(255, 255, 255, 0.5);
 		outline: none;
 	}
@@ -271,7 +273,7 @@
 						id="sector-menu-{id.toLowerCase()}"
 						role="button"
 						class="menu__btn"
-						class:active={id === value}
+						aria-selected={id === value ? true : null}
 						on:click={e => {
 							value = id;
 							close();
