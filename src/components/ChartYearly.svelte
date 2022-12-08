@@ -60,7 +60,6 @@
 	async function forceRender() {
 		chartHidden = true;
 		await tick();
-		console.log("re-rendering for fullscreen change");
 		render({}, true);
 		setTimeout(() => {
 			chartHidden = false;
@@ -68,7 +67,6 @@
 	}
 
 	const render = throttle((e, force = false) => {
-		console.log({ e, force });
 		const data = $chartData?.[type]?.yearly;
 
 		// This won't work if there is not data
@@ -76,7 +74,6 @@
 		const companies = $chartData.companies || [];
 
 		if (!svg || force) {
-			console.log({ container });
 			// Start by clearing out the container for a new chart
 			container.innerHTML = "";
 

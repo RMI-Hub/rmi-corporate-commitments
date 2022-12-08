@@ -25,7 +25,7 @@
 	}
 
 	function handleKeyDown(e) {
-		if ((e.keyCode || e.which) === 27) showInfo = false;
+		if (e.key.toLowerCase() === "escape") showInfo = false;
 	}
 	function close(e) {
 		showInfo = false;
