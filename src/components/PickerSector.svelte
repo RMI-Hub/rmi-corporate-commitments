@@ -2,9 +2,6 @@
 	export let sectors = {};
 	export let sectorHeader;
 	export let value;
-
-	let button; // The main menu button
-	let showMenu = false;
 </script>
 
 <style>

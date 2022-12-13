@@ -47,53 +47,28 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 		offsets,
 		slowdown,
 	} = multipliers;
+	const { Year: year, Company } = row;
 
-	const { Year: year } = row;
+	// Sector intensity
+	const sectorEmissionIntensity =
+		row[`${scope} Intensity (Sector ${sector_emission_intensity}) (tCO2e/USD)`] || null;
 
-	// # Toggles
-	// T_Scope = 'Scope 1' # Select from Scope 1, Scope 2, Scope 1 + 2
-	// T_Sector_Emission_Intensity = 'Min' # Select from Min, Mean, Max
-	// T_AGR = 'S&P' # Select from S&P, Historic
-	// T_End_Target = 'Current' # Select from Current, None to NZT, 50% Largest to NZT
-	// T_Interim_Target = 'Current' # Select from Current, None to 50% by 2050
-	// T_Slowdown = 2022 # Select from 2022, 2030, 2040 (2022 means no slowdown)
-	// T_Partial_Target = 0.25 # Select from 0.25, 0.50, 1.0 (% of target met)
-	// T_Offsets = 0 # Select from 0, 0.25, 0.50 (% of target met using offset)
-	// T_DisplaySector = 'Manufacturing'
-	// # DO NOT CHANGE BELOW #
-	// #######################
-	// ## BASELINE
-	// # Selected sector intensity (S_Sector_Emission_Intensity)
-	// S_Sector_Emission_Intensity = T_Scope + ' Intensity (Sector ' + T_Sector_Emission_Intensity + ')'
-	// df['S_Sector_Emission_Intensity'] = df[S_Sector_Emission_Intensity]
+	// Company intensity
+	const companyEmissionIntensity =
+		row[`${scope} Intensity (Company) (tCO2e/USD)`] || null;
 
-	const sectorIntensity =
-		row[`${scope} Intensity (Sector ${sector_emission_intensity})`] || null;
-
-	// # Selected company intensity (S_Company_Emission_Intensity)
-	// S_Company_Emission_Intensity = T_Scope + ' Intensity (Company)'
-	// df['S_Company_Emission_Intensity'] = df[S_Company_Emission_Intensity]
-
-	const companyIntensity = row[`${scope} Intensity (Company)`] || null;
-
-	// # Selected Intensity
-	// df['S_Emission_Intensity'] = np.where(df['S_Company_Emission_Intensity'].isnull() == False,
-	// 									  df['S_Company_Emission_Intensity'],
-	// 									  df['S_Sector_Emission_Intensity'])
-
-	const intensity = companyIntensity ? companyIntensity : sectorIntensity;
+	// Selected intensity
+	const emissionIntensity = companyEmissionIntensity
+		? companyEmissionIntensity
+		: sectorEmissionIntensity;
 
 	// # Selected Annual Growth Rate (AGR)
-	// # CHOOSE COLUMN F OR G
-	// S_AGR = 'Revenue Growth (' + T_AGR + ')'
-	// df['S_AGR'] = df[S_AGR]
-
 	const multiplierBaseline = row[`Revenue Growth (${agr})`];
 
 	// # START YEAR EMISSIONS
 	// df['Start Year Emissions'] = df['S_Emission_Intensity'] * df['Start Year Revenue']
 
-	const startYearEmissions = intensity * row["Start Year Revenue"];
+	const startYearEmissions = emissionIntensity * row["Start Year Revenue (USD)"];
 
 	// # BASELINE MULTIPLIER
 	// df['Multiplier (Baseline)'] = df['S_AGR']
@@ -102,75 +77,46 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 
 	const baseline = startYearEmissions * multiplierBaseline;
 
+	if (Company === "3i infotech") {
+		console.group();
+		console.log({ multipliers });
+		console.log({ Company, sectorEmissionIntensity });
+		console.log(`${scope} Intensity (Sector ${sector_emission_intensity})`);
+		console.groupEnd();
+	}
+
 	// ------------------------------------------------------------------------
 	// ---- TARGET ------------------------------------------------------------
 	// ------------------------------------------------------------------------
 
 	// 	# End Target Delta
-	// S_End_Target = 'End Target (' + T_End_Target + ')'
-	// df['S_End_Target'] = df[S_End_Target]
-
-	// df['S_End_Target'] = np.where(df['S_End_Target'].isnull() == True,
-	// 							  df['Multiplier (Baseline)'],
-	// 							  df['S_End_Target']) # Use Baseline Multiplier if company does not have end target
-
 	const endTargetDelta = row[`End Target (${end_target})`] || multiplierBaseline;
 
 	// # Interim Target Delta
-	// S_Interim_Target = 'Interim Target (' + T_Interim_Target + ')'
-	// df['S_Interim_Target'] = df[S_Interim_Target]
-
-	// df['S_Interim_Target'] = np.where(df['S_Interim_Target'].isnull() == True,
-	// 							 	  df['S_End_Target'],
-	// 							  	  df['S_Interim_Target']) # Use S_End_Target if company does not have interim target
-
 	const interimTargetDelta =
 		row[`Interim Target (${interim_target})`] || endTargetDelta;
 
 	// # TARGET MULTIPLIER
-	// df['Multiplier (Target)'] = df[['S_End_Target', 'S_Interim_Target']].min(axis = 1) # Row-wise minimum between End Target Delta and Interim Target Delta
-
-	// df['Multiplier (Target)'] = np.where(df['Multiplier (Target)'].isnull() == True,
-	// 									 df['Multiplier (Baseline)'],
-	// 									 df['Multiplier (Target)']) # Use Baseline Multiplier if both End Target Delta and Interim Target Delta are missing
-
 	const multiplierTarget =
 		Math.min(endTargetDelta, interimTargetDelta) || multiplierBaseline;
 
 	// # ADDITIONAL TOGGLES
 
-	// # SLOWDOWN MULTIPLIER
-	// df['Multiplier (Slowdown)'] = df['Multiplier (Target)']
-	let multiplierSlowdown = multiplierTarget;
+	// Slowdown (2040) End Target (Top 50% None to NZT) Revenue Growth (S&P)
+	const multiplierSlowdown =
+		row[`Slowdown (${slowdown}) End Target (${end_target}) Revenue Growth (${agr})`];
 
-	// df['Multiplier (Slowdown)'] = np.where(df['Year'] < T_Slowdown,
-	// 									   df['Multiplier (Baseline)'],
-	// 									   df['Multiplier (Slowdown)'])
+	const multiplierPartialTargets = multiplierTarget < 1 ? 1 + partial_target : 1;
 
-	multiplierSlowdown = year < slowdown ? multiplierBaseline : multiplierSlowdown;
-
-	// # PARTIAL TARGETS MULTIPLIER
-	// df['Multiplier (Partial Targets)'] = 1 + T_Partial_Target
-
-	const multiplierPartialTargets = 1 + partial_target;
-
-	// # OFFSETS MULTIPLIER
-	// df['Multiplier (Offsets)'] = 1 + T_Offsets
-
-	const multiplierOffsets = 1 + offsets;
-
-	// ## FINAL SCENARIO
-
-	// # SCENARIO MULTIPLIER
-	// df['Multiplier (Scenario)'] = df['Multiplier (Slowdown)'] * df['Multiplier (Partial Targets)'] * df['Multiplier (Offsets)']
+	const multiplierOffsets = multiplierTarget < 1 ? 1 + offsets : 1;
 
 	const multiplierScenario =
 		multiplierSlowdown * multiplierPartialTargets * multiplierOffsets;
 
-	// # SCENARIO TRAJECTORY
-	// df['Trajectory (Scenario)'] = df['Start Year Emissions'] * df['Multiplier (Scenario)']
-
 	const target = multiplierScenario * startYearEmissions;
+
+	// if (Company === "3i infotech") console.log({ Company, baseline, target });
+
 	return { baseline, target };
 }
 
@@ -196,7 +142,9 @@ export const fetchData = throttle(
 						// Except for sector and company coerce to numbers or null
 						return d.map(row => {
 							for (let [key, value] of Object.entries(row)) {
-								if (key === "Sector" || key === "Company") continue;
+								if (["sector", "company", "industry"].includes(key.toLowerCase())) {
+									continue;
+								}
 								row[key] = +value ? +value : null;
 							}
 							return row;
@@ -213,16 +161,19 @@ export const fetchData = throttle(
 			const companies = [...new Set(sectorData.map(s => s.Company))];
 
 			// Split out the yearly figures
-			const yearly = sectorData.map(d => {
+			const yearly = sectorData.map(row => {
 				return {
-					name: d.Company,
-					year: d.Year,
-					...getEmissionsValues({ row: d, multipliers }),
+					name: row.Company,
+					year: row.Year,
+					...getEmissionsValues({ row, multipliers }),
 				};
 			});
 
 			// Generate the cumulative figures, grouped by year
 			const grouped = groupBy(yearly, d => d["year"]);
+
+			console.log({ yearly });
+			console.log(grouped);
 
 			const stack = Object.entries(grouped).map(([year, data]) => {
 				const datum = { year: new Date(year, 0, 1), baseline: {}, target: {} };

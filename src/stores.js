@@ -8,7 +8,7 @@ export const multipliers = writable({
 	end_target: "Current",
 	interim_target: "Current",
 	slowdown: 2022,
-	partial_target: 0.25,
+	partial_target: 0,
 	offsets: 0,
 });
 export const chartData = writable({});
