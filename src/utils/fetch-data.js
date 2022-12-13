@@ -47,15 +47,13 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 		offsets,
 		slowdown,
 	} = multipliers;
-
-	const { Year: year } = row;
+	const { Year: year, Company } = row;
 
 	// Sector intensity
 	const sectorEmissionIntensity =
-		row[`${scope} Intensity (Sector ${sector_emission_intensity})`] || null;
+		row[`${scope} Intensity (Sector ${sector_emission_intensity}) (tCO2e/USD)`] || null;
 
 	// Company intensity
-	// TODO: Add units
 	const companyEmissionIntensity =
 		row[`${scope} Intensity (Company) (tCO2e/USD)`] || null;
 
@@ -78,6 +76,14 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 	// df['Trajectory (Baseline)'] = df['Start Year Emissions'] * df['Multiplier (Baseline)']
 
 	const baseline = startYearEmissions * multiplierBaseline;
+
+	if (Company === "3i infotech") {
+		console.group();
+		console.log({ multipliers });
+		console.log({ Company, sectorEmissionIntensity });
+		console.log(`${scope} Intensity (Sector ${sector_emission_intensity})`);
+		console.groupEnd();
+	}
 
 	// ------------------------------------------------------------------------
 	// ---- TARGET ------------------------------------------------------------
@@ -108,6 +114,9 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 		multiplierSlowdown * multiplierPartialTargets * multiplierOffsets;
 
 	const target = multiplierScenario * startYearEmissions;
+
+	// if (Company === "3i infotech") console.log({ Company, baseline, target });
+
 	return { baseline, target };
 }
 
@@ -152,16 +161,19 @@ export const fetchData = throttle(
 			const companies = [...new Set(sectorData.map(s => s.Company))];
 
 			// Split out the yearly figures
-			const yearly = sectorData.map(d => {
+			const yearly = sectorData.map(row => {
 				return {
-					name: d.Company,
-					year: d.Year,
-					...getEmissionsValues({ row: d, multipliers }),
+					name: row.Company,
+					year: row.Year,
+					...getEmissionsValues({ row, multipliers }),
 				};
 			});
 
 			// Generate the cumulative figures, grouped by year
 			const grouped = groupBy(yearly, d => d["year"]);
+
+			console.log({ yearly });
+			console.log(grouped);
 
 			const stack = Object.entries(grouped).map(([year, data]) => {
 				const datum = { year: new Date(year, 0, 1), baseline: {}, target: {} };

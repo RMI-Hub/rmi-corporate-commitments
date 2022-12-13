@@ -27,7 +27,7 @@
 			{ "text": "S&P", "value": "S&P" },
 			{
 				"text": "Historic",
-				"value": "Historic"
+				"value": "NYU CAGR"
 			}
 		]
 	},
@@ -43,8 +43,8 @@
 				"value": "None to NZT"
 			},
 			{
-				"text": "50% largest to NZT",
-				"value": "50% Largest to NZT"
+				"text": "Top 50% None to NZT",
+				"value": "Top 50% None to NZT"
 			}
 		]
 	},
@@ -54,10 +54,7 @@
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
 			{ "text": "Current", "value": "Current" },
-			{
-				"text": "All to 50% by 2030",
-				"value": "All to 50% by 2030"
-			}
+			{ "text": "None to 50% by 2030", "value": "None to 50% by 2030" }
 		]
 	},
 	{
@@ -81,6 +78,7 @@
 		"label": "Percentage of targets met",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
+			{ "text": "Zero", "value": 0 },
 			{ "text": "25%", "value": 0.25 },
 			{
 				"text": "50%",
