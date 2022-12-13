@@ -61,7 +61,7 @@
 
 		border-left: 2px solid currentColor;
 		border-bottom: 2px solid currentColor;
-		transform: translate(0, -50%) rotate(45deg);
+		transform: translate(0, -50%) rotate(-45deg);
 		transform-origin: center;
 		transition: transform var(--speed-transition);
 	}
