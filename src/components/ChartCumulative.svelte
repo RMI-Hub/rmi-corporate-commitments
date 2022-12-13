@@ -165,7 +165,9 @@
 
 		// POPULATE IT
 		const value = d.target || d.baseline;
-		tooltipText = `<strong>${d.year.getFullYear()}:</strong> ${format(",.0f")(value)}`;
+		tooltipText = `<strong>${d.year.getFullYear()}:</strong> ${format(",.0f")(
+			value
+		)} (estimated MtCO2e)`;
 
 		// Style it
 		this.classList.add("highlight");
