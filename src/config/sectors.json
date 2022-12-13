@@ -1,10 +1,1 @@
-{
-	"manufacturing": {
-		"heading": "Manufacturing",
-		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit?"
-	},
-	"pharma": {
-		"heading": "Pharmaceuticals",
-		"description": "In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit? Lorem ipsum dolor sit amet consectetur adipisicing elit."
-	}
-}
+{"technology":{"heading":"Technology","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit?"},"industrials":{"heading":"Industrials","description":"In modi unde, perferendis quaerat fugit laborum nulla vel odit blanditiis eaque aperiam eius nemo neque doloribus illo! Quos distinctio ullam velit? Lorem ipsum dolor sit amet consectetur adipisicing elit."},"utilities":{"heading":"Utilities","description":null},"financial-services":{"heading":"Financial Services","description":null},"real-estate":{"heading":"Real Estate","description":null},"consumer-defensive":{"heading":"Consumer Defensive","description":null},"consumer-cyclical":{"heading":"Consumer Cyclical","description":null},"energy":{"heading":"Energy","description":null},"undefined":{"heading":"","description":null}}

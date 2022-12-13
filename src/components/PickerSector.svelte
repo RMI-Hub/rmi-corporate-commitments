@@ -280,7 +280,7 @@
 						}}
 						on:keydown|preventDefault={onKeydown}
 						use:registerMenuItem>
-						{heading}
+						{heading || id}
 					</li>
 				{/each}
 			</menu>

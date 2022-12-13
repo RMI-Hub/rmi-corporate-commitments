@@ -40,7 +40,7 @@
 	};
 	export let sectors = {};
 
-	let activeSector = "manufacturing";
+	let activeSector = Object.keys(sectors)[0];
 
 	const CHART_UPDATE_DURATION = 500;
 
