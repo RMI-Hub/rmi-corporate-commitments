@@ -70,7 +70,7 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 	// # START YEAR EMISSIONS
 	// df['Start Year Emissions'] = df['S_Emission_Intensity'] * df['Start Year Revenue']
 
-	const startYearEmissions = emissionIntensity * row["Start Year Revenue"];
+	const startYearEmissions = emissionIntensity * row["Start Year Revenue (USD)"];
 
 	// # BASELINE MULTIPLIER
 	// df['Multiplier (Baseline)'] = df['S_AGR']
