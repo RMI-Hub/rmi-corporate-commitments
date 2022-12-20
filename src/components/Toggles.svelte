@@ -66,6 +66,9 @@
 		gap: 0.25rem;
 		cursor: pointer;
 	}
+	.longform .toggles__label {
+		flex: 1 1 100%;
+	}
 
 	.toggles__btn {
 		font-size: 1em;
@@ -122,8 +125,8 @@
 	<div class="toggles__form stack">
 		<h2 class="header">{togglesLabel}</h2>
 		<div class="toggles__ui stack--margin">
-			{#each toggles as { label, definition, id, buttons = [] }}
-				<div class="toggles__btn-group">
+			{#each toggles as { label, definition, id, buttons = [], longform = false }}
+				<div class="toggles__btn-group" class:longform>
 					<h3 class="label">
 						{label}
 						<Toggletip text={definition} />

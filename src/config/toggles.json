@@ -35,6 +35,7 @@
 		"id": "end_target",
 		"label": "End target",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"longform": true,
 		"buttons": [
 			{ "text": "Current", "value": "Current" },
 
@@ -51,6 +52,7 @@
 	{
 		"id": "interim_target",
 		"label": "Interim target",
+		"longform": true,
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
 			{ "text": "Current", "value": "Current" },
@@ -62,7 +64,7 @@
 		"label": "Slowdown",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "No slowdown", "value": 2022 },
+			{ "text": "None", "value": 2022 },
 			{
 				"text": "2030",
 				"value": 2030

@@ -16,6 +16,9 @@
 					"maxLength": 100,
 					"description": "The human-readable label for the buttons"
 				},
+				"longform": {
+					"type": "boolean"
+				},
 				"definition": {
 					"type": "string",
 					"maxLength": 300,
