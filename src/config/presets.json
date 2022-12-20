@@ -1,0 +1,9 @@
+{
+	"key": {
+		"label": "Lorem ipsum",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"suggested": ["sector name"],
+		"toggles": {},
+		"sector_or_industry": "sector in industry slug"
+	}
+}
