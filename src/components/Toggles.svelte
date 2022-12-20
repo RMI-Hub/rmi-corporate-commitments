@@ -8,7 +8,7 @@
 	import Button from "./Button.svelte";
 	import Toggletip from "./Toggletip.svelte";
 
-	export let togglesLabel = "Knobs and dials";
+	export let togglesLabel;
 	export let toggles = [];
 	export let defaultMultipliers = {};
 
