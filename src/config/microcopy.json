@@ -1,25 +1,29 @@
 {
-	"headline": "This is the main headline",
-	"intro": "This is the main intro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+	"headline": "Corporate Commitments Explorer",
+	"intro": "Use this tool to see how nearly 7,000 companies across 14 sectors can help drive climate transitions. This visual uses data derived from self-reported emissions data provided by CDP and publicly accessible data on commitments and economic indicators. 
+ 
+	For further information about our methods please see [documentation here](https://www.rmi.org).",
 	"charts": {
 		"baseline": {
 			"yearly": {
-				"header": "Baseline emissions by year",
-				"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium."
+				"header": "Estimated annual baseline emissions (MMTCO&#8322;e/year)",
+				"definition": "If companies in this sector continue to emit at current rates, we estimate that emissions from the XXXXX sector will continue to increase following its annual growth rate along this trajectory."
 			},
 			"cumulative": {
-				"header": "Baseline emissions cumulative",
-				"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium."
+				"header": "Cumulative estimated baseline emissions (MMTCO&#8322;e)",
+				"definition": "If companies in this sector continue to emit at current rates, we estimate that cumulative emissions will continue to increase following this trajectory. We account for emissions starting in 2019. 
+				Cumulative, rather than annual, emissions are what matter for climate change mitigation. This is why the most important year to 9reduce emissions is this year)[https://rmi.org/what-is-needed-to-meet-us-climate-commitments/]."
 			}
 		},
 		"target": {
 			"yearly": {
-				"header": "Target emissions by year",
-				"definition": "Lorem ipsum dolor."
+				"header": "Estimated annual target emissions (MMTCO&#8322;e/year)",
+				"definition": "According to current corporate targets and the toggles selected, we estimate that emissions from the XXXXX sector will follow this trajectory."
 			},
 			"cumulative": {
-				"header": "Target emissions cumulative",
-				"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium."
+				"header": "Cumulative estimated target emissions (MMTCO&#8322;e)",
+				"definition": "According to current corporate targets and toggles selected, we estimate that cumulative emissions from this sector may follow this trajectory. We account for emissions starting in 2019. 
+				Cumulative, rather than annual, emissions are what matter for climate change mitigation. This is why the most important year to (reduce emissions is this year)[https://rmi.org/what-is-needed-to-meet-us-climate-commitments/]."
 			}
 		}
 	}
