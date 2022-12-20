@@ -77,13 +77,13 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 
 	const baseline = startYearEmissions * multiplierBaseline;
 
-	if (Company === "3i infotech") {
-		console.group();
-		console.log({ multipliers });
-		console.log({ Company, sectorEmissionIntensity });
-		console.log(`${scope} Intensity (Sector ${sector_emission_intensity})`);
-		console.groupEnd();
-	}
+	// if (Company === "3i infotech") {
+	// console.group();
+	// console.log({ multipliers });
+	// console.log({ Company, sectorEmissionIntensity });
+	// console.log(`${scope} Intensity (Sector ${sector_emission_intensity})`);
+	// console.groupEnd();
+	// }
 
 	// ------------------------------------------------------------------------
 	// ---- TARGET ------------------------------------------------------------
@@ -172,8 +172,8 @@ export const fetchData = throttle(
 			// Generate the cumulative figures, grouped by year
 			const grouped = groupBy(yearly, d => d["year"]);
 
-			console.log({ yearly });
-			console.log(grouped);
+			// console.log({ yearly });
+			// console.log(grouped);
 
 			const stack = Object.entries(grouped).map(([year, data]) => {
 				const datum = { year: new Date(year, 0, 1), baseline: {}, target: {} };

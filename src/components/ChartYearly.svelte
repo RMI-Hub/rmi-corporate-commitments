@@ -42,7 +42,7 @@
 	let showData = false;
 	let fullscreen = false;
 	let chartHidden = false;
-
+	let chartDataTable = [];
 	// CONFIG
 	const ENLARGE_DURATION = 200;
 	const tooltips = {
@@ -68,9 +68,23 @@
 
 	const render = throttle((e, force = false) => {
 		const data = $chartData?.[type]?.yearly;
-
 		// This won't work if there is not data
 		if (!data) return;
+
+		// Get our data for the data table
+		// We want, for each year, the sum total of emissions.
+		chartDataTable = data.map(d => {
+			return {
+				year: d.year,
+				"total annual emissions": Object.entries(d).reduce((sum, [company, value]) => {
+					if (company !== "year") {
+						sum += value;
+					}
+					return sum;
+				}, 0),
+			};
+		});
+
 		const companies = $chartData.companies || [];
 
 		if (!svg || force) {
@@ -250,11 +264,11 @@
 		<span class="tooltip__name">{tooltipCompany}</span>
 		<span class="tooltip__commitments">{tooltipText}</span>
 	</Tooltip>
-	{#if $chartData?.[type]?.yearly}
+	{#if chartDataTable && chartDataTable.length}
 		<ChartData
 			{type}
 			cumulative={false}
-			data={$chartData[type].yearly}
+			data={chartDataTable}
 			visible={showData}
 			on:click={e => {
 				showData = false;

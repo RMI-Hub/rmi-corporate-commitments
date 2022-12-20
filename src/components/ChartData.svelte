@@ -79,23 +79,11 @@
 				{/if}
 			</thead>
 			<tbody>
-				{#each data as row}
-					{#if cumulative}
-						<tr>
-							<th scope="row">{timeFormat("%Y")(row.year)}</th>
-							<td>{format(",")(row[type])}</td>
-						</tr>
-					{:else}
-						<tr>
-							{#each keys as key, index}
-								{#if index === 0}
-									<th scope="row">{timeFormat("%Y")(row[key])}</th>
-								{:else}
-									<td>{format(",")(row[key])}</td>
-								{/if}
-							{/each}
-						</tr>
-					{/if}
+				{#each data as row, index}
+					<tr>
+						<th scope="row">{timeFormat("%Y")(row.year)}</th>
+						<td>{format(",")(row[type] || row["total annual emissions"])}</td>
+					</tr>
 				{/each}
 			</tbody>
 		</table>
