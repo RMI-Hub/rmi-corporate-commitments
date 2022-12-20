@@ -5,6 +5,8 @@
 
 	import { onMount } from "svelte";
 	import { fly } from "svelte/transition";
+	import { marked } from "marked";
+
 	// Concepts cribbed from here:
 	// - https://inclusive-components.design/tooltips-toggletips/
 	// - https://codepen.io/heydon/pen/Vzwdpy
@@ -14,7 +16,7 @@
 	let showInfo = false;
 	let btn;
 	let fallback;
-	$: info = showInfo ? text : "";
+	$: info = showInfo ? marked.parse(text) : "";
 
 	function handleClick(e) {
 		showInfo = true;
@@ -45,7 +47,6 @@
 
 	.more__status {
 		/* the bubble element, added inside the toggletip live region */
-		font: bold var(--font-size-small) / 1.3em var(--sans-serif-fonts);
 		position: absolute;
 		top: calc(var(--icon-size) + 0.5rem);
 		left: 5%;
@@ -53,11 +54,15 @@
 		z-index: 10;
 
 		background: var(--color-slate);
-		color: white;
 		padding: 0.75rem;
 		border-radius: 0.5rem;
 
 		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+	}
+
+	.more__status :global(p) {
+		font: bold var(--font-size-small) / 1.3em var(--sans-serif-fonts);
+		color: white;
 	}
 
 	.more__btn {
@@ -75,15 +80,16 @@
 		border-radius: 50%;
 		cursor: pointer;
 		background: var(--color-background);
-		color: white;
 
 		transition: background var(--speed-transition-fast) ease-in-out;
+		color: white;
 	}
+
 	.more:is(:hover, :focus) {
 		--color-background: var(--color-gray-dark);
 	}
 
-	.more__fallback {
+	.more__fallback :global(p) {
 		/* Visible w/o javascript */
 		font: var(--font-size-small) / 1.3em var(--sans-serif-fonts);
 	}
@@ -102,7 +108,7 @@
 		data-toggletip-content={text}>i</button>
 	{#if info}
 		<span class="more__status" transition:fly={{ duration: 250, y: -20 }} role="status">
-			{info}</span>
+			{@html info}</span>
 	{/if}
 </span>
-<p class="more__fallback" bind:this={fallback}>{text}</p>
+<div class="more__fallback" bind:this={fallback}>{marked.parse(text)}</div>

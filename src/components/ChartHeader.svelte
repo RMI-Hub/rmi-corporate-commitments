@@ -4,7 +4,6 @@
 	import Data from "../icons/Data.svelte";
 	import Expand from "../icons/Expand.svelte";
 	import Share from "../icons/Share.svelte";
-	import MoreInformation from "../../_scratch/MoreInformation.svelte";
 	import Toggletip from "./Toggletip.svelte";
 
 	export let header = "";
@@ -81,7 +80,7 @@
 <div class="header">
 	{#if header}
 		<h2 {id} class="header__text">
-			{header}
+			{@html header}
 			{#if definition}
 				<Toggletip text={definition} {id} {flip} />
 			{/if}
