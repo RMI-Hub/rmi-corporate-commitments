@@ -23,7 +23,11 @@
 	}
 
 	function handleCloseClick(e) {
-		if (e.target !== btn) close();
+		console.log(e);
+		const { target } = e;
+		if (target !== btn) {
+			close();
+		}
 	}
 
 	function handleKeyDown(e) {
@@ -63,8 +67,12 @@
 	.more__status :global(p) {
 		font: bold var(--font-size-small) / 1.3em var(--sans-serif-fonts);
 		color: white;
+		margin-top: 0;
 	}
 
+	.more__status :global(p:last-child) {
+		margin: 0;
+	}
 	.more__btn {
 		/* The "i" icon */
 		font: bold var(--font-size-small) / 1em var(--serif-fonts);
