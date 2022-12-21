@@ -10,38 +10,19 @@
 
 	// UTILS
 
-	import { chartData, multipliers } from "./stores.js";
+	import { chartData, multipliers, activeSector } from "./stores.js";
 	import { fetchData } from "./utils/fetch-data.js";
 
 	export let headline = "";
 	export let intro = "";
 	export let togglesLabel = "";
+	export let presetsMicrocopy = {};
 	export let charts = {};
 	export let toggles = [];
-
-	export let presets = {
-		preset1: {
-			label: "Energy dramatic change",
-		},
-		preset2: {
-			label: "Industrials slow change",
-		},
-		preset3: {
-			label: "Energy dramatic change",
-		},
-		preset4: {
-			label: "Industrials slow change",
-		},
-		preset5: {
-			label: "Energy dramatic change",
-		},
-		preset6: {
-			label: "Industrials slow change",
-		},
-	};
+	export let presets = {};
 	export let sectors = {};
 
-	let activeSector = Object.keys(sectors)[0];
+	// let activeSector = Object.keys(sectors)[0];
 
 	const CHART_UPDATE_DURATION = 500;
 
@@ -54,16 +35,16 @@
 		cumulative: ChartCumulative,
 	};
 
-	$: sectorHeader = sectors[activeSector].heading;
-	$: sectorDescription = sectors[activeSector].description;
+	$: sectorHeader = sectors?.[$activeSector].heading ?? "";
+	$: sectorDescription = sectors?.[$activeSector].description ?? "";
 
 	// Handle update will run any time these store values update
-	$: ($multipliers || activeSector) && handleUpdate();
+	$: ($multipliers || $activeSector) && handleUpdate();
 
 	// fetches data when needed
 	async function handleUpdate(e) {
 		$chartData = await fetchData({
-			activeSector,
+			activeSector: $activeSector,
 			multipliers: $multipliers,
 		}).catch(console.error);
 
@@ -114,11 +95,11 @@
 </style>
 
 <Intro {headline} {intro} />
-<PickerPresets {presets} />
+<PickerPresets {presets} {...presetsMicrocopy} />
 <section class="container" aria-labelledby="sector-heading">
 	<div class="sector-heading">
 		<h2 id="sector-heading" class="visually-hidden">About {sectorHeader}</h2>
-		<PickerSector {sectors} {sectorHeader} bind:value={activeSector} />
+		<PickerSector {sectors} {sectorHeader} bind:value={$activeSector} />
 		<p>{@html sectorDescription}</p>
 	</div>
 	{#each Object.entries(charts) as [type, typeInfo]}
