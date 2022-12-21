@@ -9,3 +9,6 @@ build:
 
 clean:
 	rm -rf public
+
+test:
+	npm run test
