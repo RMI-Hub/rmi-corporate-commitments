@@ -1,4 +1,5 @@
 <script>
+	import { marked } from "marked";
 	export let headline, intro;
 </script>
 
@@ -15,6 +16,6 @@
 <header class="container">
 	{#if headline}<h1 class="header">{headline}</h1>{/if}
 	{#if intro}
-		<p>{@html intro}</p>
+		<p>{@html marked.parse(intro)}</p>
 	{/if}
 </header>
