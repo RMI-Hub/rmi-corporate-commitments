@@ -1,9 +1,50 @@
 {
 	"key": {
 		"label": "Lorem ipsum",
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
-		"suggested": ["sector name"],
+		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"suggested": ["Technology", "Sports", "Agriculture"],
 		"toggles": {},
-		"sector_or_industry": "sector in industry slug"
+		"sector_or_industry": "industrials"
+	},
+	"key2": {
+		"label": "Lorem ipsum",
+		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"suggested": ["Pharmaceuticals"],
+		"toggles": {
+			"scope": "Scope 2"
+		}
+	},
+	"key3": {
+		"label": "Lorem ipsum",
+		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"suggested": ["Pharmaceuticals", "Technology"],
+		"toggles": {
+			"scope": "Scope 1&2"
+		},
+		"sector_or_industry": "technology"
+	},
+	"key4": {
+		"label": "Lorem ipsum",
+		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"suggested": ["Technology", "Sports", "Agriculture"],
+		"toggles": {},
+		"sector_or_industry": "industrials"
+	},
+	"key25": {
+		"label": "Lorem ipsum",
+		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"suggested": ["Pharmaceuticals"],
+		"toggles": {
+			"scope": "Scope 2"
+		}
+	},
+	"key5": {
+		"label": "Lorem ipsum",
+		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"suggested": ["Pharmaceuticals", "Technology"],
+		"toggles": {
+			"scope": "Scope 1&2"
+		},
+		"sector_or_industry": "technology"
 	}
 }
