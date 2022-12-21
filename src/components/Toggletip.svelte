@@ -23,7 +23,6 @@
 	}
 
 	function handleCloseClick(e) {
-		console.log(e);
 		const { target } = e;
 		if (target !== btn) {
 			close();
