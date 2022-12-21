@@ -1,6 +1,7 @@
 .DS_Store
 public/
-
+src/config/companies.json
+src/config/sectors.json
 
 
 

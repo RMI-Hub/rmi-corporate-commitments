@@ -6,6 +6,7 @@
 	--color-gray-dark: #222;
 	--color-gray: #999999;
 	--color-gray-light: #ccc;
+	--color-gray-very-light: #eee;
 	--color-apricot-light: #f7f3ee;
 	--color-blue-baby: #90ddf0;
 	--color-blue-dark: #003b63;
@@ -29,6 +30,7 @@
 	--font-size: 1.2rem;
 	--font-size-small: 1rem;
 	--font-size-very-small: 0.8rem;
+	--line-height: 1.3em;
 
 	--sans-serif-fonts: "Arial", "Helvetica Neue", "Helvetica", sans-serif;
 	--display-fonts: "BreulGroteskBBold", sans-serif;
