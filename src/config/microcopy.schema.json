@@ -20,6 +20,20 @@
 			"properties": {
 				"type": { "$ref": "#/$defs/chartGroup" }
 			}
+		},
+		"presetsMicrocopy": {
+			"type": "object",
+			"description": "The umbrella for all the various things needed from here to make the presets picker",
+			"properties": {
+				"presetsLabel": {
+					"type": "string",
+					"description": "The label for the presets selector"
+				},
+				"presetButtonLabel": {
+					"type": "string",
+					"description": "The button text to activate the preset"
+				}
+			}
 		}
 	},
 	"required": ["headline", "charts"],
