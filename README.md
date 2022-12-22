@@ -28,15 +28,13 @@ The primary data client function is `src/utils/fetch-data.js`. It fetches the da
 
 `fetchData()` uses a utility function — `getEmissionsValues()` — to generate, for each year, the baseline and target emissions values based on the user-selected multipliers. The algorithm is devised by [Jun Ukita Shepard](https://rmi.org/people/jun-ukita-shepard/) of RMI and has been ported to Javascript from its original Python. The year-bt-year data it outputs is transformed to a format suitable for the d3 area charts. That data is then combined into data blobs good for the cumulative bar charts.
 
-## The app
+The initial view of the app is a preset, found in `./src/config/presets.json`. This is done so the default view is validated against a json schema.
 
-Generate the bundles
-Generate the HTML
-make build
+## The app
 
 This dashboard is written in [Svelte.js](https://svelte.dev) and uses [D3](https://d3js.org) for the charting. The overarching command `make build` will process all javascript imports and generate `/public/bundle.js` and `/public/bundle.css`. It also moves the current `./src/static/global.css` into the public folder, too. 
 
-The only required HTML is `<div id="rmi" class="app"></div>`
+The only required HTML is `<div id="rmi" class="app"></div>`. To generate the bundles, use `make data build` because using `make build` alone will fail. `make data` generates a couple files critical for the app.
 
 _TK: The initial state of the app is pre-rendered using `./scripts/ssr.js`_
 
