@@ -1,11 +1,17 @@
 {
+	"$id": "/schema/presets/",
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$async": true,
 	"title": "Microcopy for the preset scenarios",
 	"type": "object",
-	"items": { "$ref": "#/$defs/preset" },
+	"additionalProperties": {
+		"type": "object",
+		"$ref": "#/$defs/preset"
+	},
 	"$defs": {
-		"toggles": {
+		"multipliers": {
 			"type": "object",
+			"additionalProperties": false,
 			"properties": {
 				"scope": {
 					"type": "string",
@@ -27,11 +33,11 @@
 				"slowdown": { "type": "integer", "enum": [2022, 2030, 2040] },
 				"partial_target": { "type": "number", "enum": [0, 0.25, 0.5, 1] },
 				"offsets": { "type": "number", "enum": [0, 0.25, 0.5] }
-			},
-			"required": []
+			}
 		},
 		"preset": {
 			"type": "object",
+			"additionalProperties": false,
 			"properties": {
 				"label": {
 					"type": "string",
@@ -45,10 +51,9 @@
 				},
 				"suggested": {
 					"type": "array",
-					"description": "An array of sector/industry slugs that get formed into the helpful sentence \"Why not try this scenario with the XXX sector?\"",
-					"items": "string"
+					"description": "An array of sector/industry slugs that get formed into the helpful sentence \"Why not try this scenario with the XXX sector?\""
 				},
-				"toggles": { "$ref": "#/$defs/toggles" },
+				"toggles": { "$ref": "#/$defs/multipliers" },
 				"sector_or_industry": {
 					"type": "string",
 					"description": "The slug/ID of a sector or industry as part of the preset scenario"

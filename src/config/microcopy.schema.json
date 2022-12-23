@@ -1,6 +1,7 @@
 {
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"title": "microcopy",
+	"$async": true,
 	"description": "Collection of various text bits and labels, so that they are not written in the code.",
 	"type": "object",
 	"properties": {

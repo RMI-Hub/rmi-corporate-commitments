@@ -1,8 +1,9 @@
 {
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"title": "Microcopy for the sectors",
+	"$async": true,
 	"type": "object",
-	"items": { "$ref": "#/$defs/sector" },
+	"additionalProperties": { "$ref": "#/$defs/sector" },
 	"$defs": {
 		"sector": {
 			"type": "object",
@@ -13,7 +14,7 @@
 					"maxLength": 50
 				},
 				"description": {
-					"type": "string",
+					"type": ["string", "null"],
 					"maxLength": 250,
 					"description": "A brief description of the sector containing relevant context and insights."
 				}

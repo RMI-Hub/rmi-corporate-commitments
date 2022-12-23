@@ -1,10 +1,10 @@
 const { test, describe } = require("node:test");
-const assert = require("assert/strict");
+const assert = require("node:assert/strict");
 const fs = require("node:fs/promises");
 const path = require("node:path");
 
-const Validator = require("jsonschema").Validator;
-const v = new Validator();
+const Ajv = require("ajv/dist/2020");
+const ajv = new Ajv({ verbose: true, allowUnionTypes: true });
 
 // describe("Validate config files", validateSchemas);
 
@@ -36,18 +36,15 @@ async function validateSchemas() {
 						assert(false, e);
 					}),
 			]);
-			const validation = v.validate(data, schema);
+			const validator = ajv.compile(schema);
 
-			// console.error(validation);
-			// // Let's see those errors!
-			// if (validation.errors.length)
-			// 	console.error(validation.schema.title, validation.error);
-
-			assert.equal(
-				validation.errors.length,
-				0,
-				`${t}.json failed validation, ${validation}`
-			);
+			const v = await validator(data).catch(e => {
+				// Our json did not validate, so throw an error.
+				const { instancePath, schemaPath, message } = e.errors[0];
+				throw new Error(
+					`ERROR: ${instancePath} ${message} \n\n See schema: ${schemaPath}`
+				);
+			});
 		});
 	}
 }

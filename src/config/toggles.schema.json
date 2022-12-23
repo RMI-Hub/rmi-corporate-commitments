@@ -1,7 +1,9 @@
 {
+	"$id": "/schema/toggles/",
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"title": "Toggles collection",
 	"type": "array",
+	"$async": true,
 	"items": { "$ref": "#/$defs/toggle" },
 	"$defs": {
 		"toggle": {
@@ -33,14 +35,18 @@
 			"required": ["id", "label", "buttons"]
 		},
 		"toggleButton": {
-			"text": {
-				"type": "string",
-				"description": "The human-readable label for the radio button",
-				"maxLength": 40
-			},
-			"value": {
-				"type": ["integer", "string", "boolean"],
-				"description": "The computationally-important representation of the user's toggle seleection. This is used in the data fetching and munging"
+			"type": "object",
+			"required": ["text", "value"],
+			"properties": {
+				"text": {
+					"type": "string",
+					"description": "The human-readable label for the radio button",
+					"maxLength": 40
+				},
+				"value": {
+					"type": ["number", "string", "boolean"],
+					"description": "The computationally-important representation of the user's toggle seleection. This is used in the data fetching and munging"
+				}
 			}
 		}
 	}
