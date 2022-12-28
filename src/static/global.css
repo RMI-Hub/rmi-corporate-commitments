@@ -58,7 +58,7 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 var(--gap) 0;
+	margin: 0 0 calc(var(--gap) / 2) 0;
 }
 
 /* A valid, accessible method for visually hiding content (such as text labels on icon buttons) while preserving it for screen readers and other sight-assist tools. */
@@ -100,9 +100,9 @@ html body.scroll-lock {
 
 p:not([class]) {
 	/* Any standalone paragraph tag should just get this base styling*/
-	font: var(--font-size) / 1.3em var(--sans-serif-fonts);
+	font: var(--font-size-small) / 1.3em var(--sans-serif-fonts);
 	color: var(--color-font);
-	margin: 1rem 0;
+	margin: 0;
 }
 
 a {

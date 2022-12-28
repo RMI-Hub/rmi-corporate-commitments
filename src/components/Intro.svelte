@@ -11,11 +11,15 @@
 	.container {
 		padding-block: 0;
 	}
+
+	.container :global(p) {
+		font-size: var(--font-size);
+	}
 </style>
 
-<header class="container">
+<header class="container stack">
 	{#if headline}<h1 class="header">{headline}</h1>{/if}
 	{#if intro}
-		<p>{@html marked.parse(intro)}</p>
+		{@html marked.parse(intro)}
 	{/if}
 </header>

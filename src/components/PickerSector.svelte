@@ -11,7 +11,7 @@
 		gap: 0.33em;
 
 		align-items: stretch;
-		margin: 0;
+		margin: 0 0 var(--gap) 0;
 	}
 
 	select {
@@ -46,7 +46,7 @@
 		border: none;
 		position: absolute;
 		left: 0;
-		padding: 3px 1.5rem 0.25em 0;
+		padding: 0 1.5rem 3px 0;
 		border-bottom: 3px solid var(--color-accent);
 	}
 	.picker__label::after {
