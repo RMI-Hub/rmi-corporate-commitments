@@ -22,6 +22,20 @@
 				"type": { "$ref": "#/$defs/chartGroup" }
 			}
 		},
+		"togglesMicrocopy": {
+			"type": "object",
+			"description": "All the bits of text necessary to label up the toggles",
+			"properties": {
+				"togglesLabel": {
+					"type": "string",
+					"description": "The big bold label atop the toggles column."
+				},
+				"togglesDescription": {
+					"type": "string",
+					"description": "The helper text below the label, explaining what the toggles even are."
+				}
+			}
+		},
 		"presetsMicrocopy": {
 			"type": "object",
 			"description": "The umbrella for all the various things needed from here to make the presets picker",

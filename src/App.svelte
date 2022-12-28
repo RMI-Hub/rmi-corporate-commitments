@@ -15,7 +15,7 @@
 
 	export let headline = "";
 	export let intro = "";
-	export let togglesLabel = "";
+	export let togglesMicrocopy = {};
 	export let presetsMicrocopy = {};
 	export let charts = {};
 	export let toggles = [];
@@ -114,7 +114,12 @@
 		{/each}
 	{/each}
 	<div class="controls">
-		<Toggles {defaultMultipliers} {toggles} {togglesLabel} />
+		<Toggles
+			{defaultMultipliers}
+			{toggles}
+			{...togglesMicrocopy}
+			{presets}
+			{presetsMicrocopy} />
 	</div>
 	<PoweredBy />
 </section>

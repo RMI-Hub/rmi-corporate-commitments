@@ -2,15 +2,21 @@
 	// UTILS
 	import { slugify } from "../utils/slugify.js";
 	import { multipliers } from "../stores.js";
+	import { marked } from "marked";
 
 	// COMPONENTS
-	import MoreInformation from "../../_scratch/MoreInformation.svelte";
 	import Button from "./Button.svelte";
 	import Toggletip from "./Toggletip.svelte";
+	import PickerPresets from "./PickerPresets.svelte";
 
 	export let togglesLabel;
+	export let togglesDescription = "";
 	export let toggles = [];
 	export let defaultMultipliers = {};
+
+	// FOR THE PRESETS
+	export let presets = {};
+	export let presetsMicrocopy = {};
 
 	let visible = false;
 
@@ -123,7 +129,9 @@
 <div class="toggles" class:visible>
 	<button class="close" on:click={closeControls}>X</button>
 	<div class="toggles__form stack">
+		<PickerPresets {presets} {...presetsMicrocopy} column={true} />
 		<h2 class="header">{togglesLabel}</h2>
+		{#if togglesDescription}{@html marked.parse(togglesDescription)}{/if}
 		<div class="toggles__ui stack--margin">
 			{#each toggles as { label, definition, id, buttons = [], longform = false }}
 				<div class="toggles__btn-group" class:longform>

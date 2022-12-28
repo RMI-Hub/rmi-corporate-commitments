@@ -1,7 +1,10 @@
 {
 	"headline": "Corporate Commitments Explorer",
 	"intro": "Use this tool to see how nearly 7,000 companies across 14 sectors can help drive climate transitions. This visual uses data derived from self-reported emissions data provided by CDP and publicly accessible data on commitments and economic indicators.\n\nFor further information about our methods please see [documentation here](https://www.rmi.org).",
-	"togglesLabel": "Knobs & dials",
+	"togglesMicrocopy": {
+		"togglesLabel": "Knobs & dials",
+		"togglesDescription": "Explore your own scenarios with these controls."
+	},
 	"presetsMicrocopy": {
 		"presetsLabel": "Case studies",
 		"presetButtonLabel": "Activate scenario",

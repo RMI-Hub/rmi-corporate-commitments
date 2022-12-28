@@ -8,6 +8,7 @@
 	export let presetsDescription = "";
 	export let presetButtonLabel = "";
 	export let presetButtonLabelActive = "Now displayed";
+	export let column = false;
 
 	let scrollContainer;
 	let activePreset = null;
@@ -48,17 +49,12 @@
 			const observer = new IntersectionObserver(
 				entries => {
 					entries.forEach(entry => {
-						// set the src attribute and bail
-						console.log(value, {
-							isIntersecting: entry.isIntersecting,
-							intersectionRatio: entry.intersectionRatio,
-							"entry.intersectionRatio >= 1": entry.intersectionRatio >= 1,
-						});
-						if (entry.isIntersecting) visible[value] = entry.intersectionRatio >= 1;
+						visible[value] = entry.isIntersecting;
 					});
 				},
 				{
 					rootMargin: "0px 0px 0px 0px",
+					threshold: 0.9,
 				}
 			);
 			observer.observe(element);
@@ -75,7 +71,7 @@
 	}
 
 	onMount(() => {
-		scrollIncrement = scrollContainer.offsetWidth * 0.55;
+		scrollIncrement = scrollContainer.offsetWidth * 0.95;
 	});
 </script>
 
@@ -84,6 +80,16 @@
 		--button-width: 3rem;
 		--button-rotate: 45deg;
 		--button-shift-x: -58%;
+
+		--row-text: 1;
+		--row-btn: 1;
+		--row-list: 2;
+
+		--col-text: 1;
+		--col-list: 1 / -1;
+		--col-btn-back: 2;
+		--col-btn-fwd: 3;
+
 		width: 100%;
 		margin: var(--gap) 0;
 
@@ -99,45 +105,53 @@
 		align-items: center;
 	}
 
-	#presets__text {
-		grid-row: 1;
-		grid-column: 1;
-	}
-	.presets__list-container {
-		grid-row: 2;
-		grid-column: 1/-1;
-		overflow-y: hidden;
-		overflow-x: scroll;
+	.presets :global(*) {
+		scrollbar-color: transparent transparent; /* thumb and track color */
+		scrollbar-width: 0px;
 	}
 
-	@supports (scroll-snap-align: start) {
-		.presets__list-container {
-			scroll-snap-type: x mandatory;
-		}
+	.presets :global(*)::-webkit-scrollbar,
+	.presets :global(*)::-webkit-scrollbar-track,
+	.presets :global(*)::-webkit-scrollbar-thumb {
+		background: transparent;
+		border: none;
+		width: 0;
+	}
 
-		.preset {
-			scroll-snap-align: start;
-		}
+	.presets__text {
+		grid-row: var(--row-text);
+		grid-column: var(--col-text);
 	}
 
 	.presets__list {
+		grid-row: var(--row-list);
+		grid-column: var(--col-list);
 		margin: 0;
 		padding: 0 0 1rem 0;
 		list-style: none;
+		scroll-snap-type: x mandatory;
 
 		display: flex;
 		align-items: stretch;
-		width: fit-content;
+		width: 100%;
 		overflow-x: scroll;
 	}
 
 	.preset {
-		flex: 1 1;
+		--gap: 0.5rem;
+		flex: 1 1 25%;
 		min-width: 15rem;
 		max-width: 20rem;
 		padding: var(--gap);
 		transition: background-color var(--speed-transition) ease-in-out;
-		--gap: 0.5rem;
+		scroll-snap-align: start;
+	}
+
+	.preset:first-child {
+		padding-left: 0;
+	}
+	.preset:last-child {
+		padding-right: 0;
 	}
 
 	.preset--active {
@@ -193,8 +207,8 @@
 	}
 
 	.btn {
-		grid-row: 1;
-		grid-column: 3;
+		grid-row: var(--row-btn);
+		grid-column: var(--col-btn-fwd);
 
 		padding: 0;
 		height: var(--button-width);
@@ -205,11 +219,7 @@
 		cursor: pointer;
 		position: relative;
 		transition: border-color var(--speed-transition) ease-in-out,
-			background-color var(--speed-transition) ease-in-out;
-
-		/* display: flex;
-		align-items: center;
-		justify-content: center; */
+			opacity var(--speed-transition) ease-in-out;
 	}
 
 	.btn:not(:disabled):is(:hover, :focus) {
@@ -217,7 +227,8 @@
 	}
 
 	.btn:disabled {
-		--color-accent: var(--color-gray-very-light);
+		/* --color-accent: var(--color-gray-very-light); */
+		opacity: 0.2;
 		cursor: not-allowed;
 	}
 
@@ -237,51 +248,79 @@
 		transition: border-color var(--speed-transition) ease-in-out;
 	}
 	.btn--back {
-		grid-row: 1;
-		grid-column: 2;
+		grid-row: var(--row-btn);
+		grid-column: var(--col-btn-back);
 	}
 	.btn--back::after {
 		--button-shift-x: -35%;
 		--button-rotate: -135deg;
 	}
+
+	/* COLUMN LAYOUT (i.e .in the toggles column) */
+
+	.presets.column {
+		--row-btn: 3;
+		--row-list: 2;
+		--col-text: 1 / -1;
+		--col-btn-back: 1;
+		--col-btn-fwd: 2;
+
+		margin: 0;
+		padding: 0;
+		grid-template-columns: repeat(2, minmax(1px, 1fr));
+	}
+
+	.column .btn--fwd {
+		justify-self: end;
+	}
+	.column .preset {
+		padding: 0;
+	}
+
+	.column .preset--active {
+		background: transparent;
+	}
+
+	.column .preset__btn::after {
+		content: none;
+	}
 </style>
 
-<section class="presets container" aria-labelledby="presets-header">
+<div class="presets container" class:column aria-labelledby="presets-header">
 	<div class="presets__text">
-		<h2 id="presets-header" class="label">{presetsLabel}</h2>
+		<h2 id="presets-header" class="header">{presetsLabel}</h2>
 		{@html marked.parse(presetsDescription)}
 	</div>
-	<div class="presets__list-container" bind:this={scrollContainer}>
-		<ul class="presets__list">
-			{#each Object.entries(presets) as [id, { label = "", description = "", suggested = [], toggles = { }, sector_or_industry = null }], index (id)}
-				{@const isActive = id === activePreset}
-				<li
-					id="preset-{id}"
-					class="preset stack"
-					class:preset--active={isActive}
-					data-index={index}
-					use:initPreset>
-					<h3 class="sublabel">{label} {id}</h3>
-					{#if description}{@html marked.parse(description)}{/if}
-					{#if suggested}
-						{@const last = suggested.pop()}
-						{@const or = suggested.length > 0 ? "or" : ""}
-						{@const sectorNames = suggested.join(", ")}
-						{@const suggestedText = `Try it with the <strong>${sectorNames} ${or} ${last}</strong>
-				${suggested.length > 0 ? "sectors" : "sector"}`}
-						<p class="preset__suggestion">{@html suggestedText}</p>
-					{/if}
+	<ul class="presets__list" bind:this={scrollContainer}>
+		{#each Object.entries(presets) as [id, { label = "", description = "", suggestedSectors = [], toggles = { }, sector_or_industry = null }], index (id)}
+			{@const isActive = id === activePreset}
+			<li
+				id="preset-{id}"
+				class="preset stack"
+				class:preset--active={isActive}
+				data-index={index}
+				use:initPreset>
+				<h3 class="sublabel">{label} {id}</h3>
+				{#if description}{@html marked.parse(description)}{/if}
+				{#if suggestedSectors.length > 0}
+					{@const s = [...suggestedSectors]}
+					{@const last = s.pop()}
+					{@const or = s.length > 0 ? "or" : ""}
+					{@const sectorNames = s.join(", ")}
+					{@const suggestedText = `Try it with the <strong>${sectorNames} ${or} ${last}</strong>
+				${suggestedSectors.length > 0 ? "sectors" : "sector"}`}
+					<p class="preset__suggestion">{@html suggestedText}</p>
+				{/if}
 
-					<button
-						disabled={isActive}
-						class="preset__btn"
-						on:click={e => {
-							activatePreset({ toggles, sector_or_industry, id });
-						}}>{isActive ? presetButtonLabelActive : presetButtonLabel}</button>
-				</li>
-			{/each}
-		</ul>
-	</div>
+				<button
+					disabled={isActive}
+					class="preset__btn"
+					on:click={e => {
+						activatePreset({ toggles, sector_or_industry, id });
+					}}>{isActive ? presetButtonLabelActive : presetButtonLabel}</button>
+			</li>
+		{/each}
+	</ul>
 	<button class="btn btn--back" disabled={visible.first} on:click={onBack}>
 		<span class="visually-hidden">Move the presets carousel backwards</span>
 	</button>
@@ -289,4 +328,4 @@
 	<button class="btn btn--fwd" disabled={visible.last} on:click={onForward}>
 		<span class="visually-hidden">Move the presets carousel forward</span>
 	</button>
-</section>
+</div>
