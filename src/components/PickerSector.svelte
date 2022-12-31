@@ -1,87 +1,205 @@
 <script>
+	import { activeSector } from "../stores.js";
+
 	export let sectors = {};
 	export let sectorHeader;
 	export let value;
+
+	let buttonDescription = "Click/tap here to change industry or sector.";
+
+	let visible = false;
+	let btn; // ref for the main button
+	let sectorButtons = [];
+	let activeSectorButtonIndex = -1;
+	function close(e = {}) {
+		if (e.target != btn) {
+			document.body.classList.remove("scroll-lock");
+			visible = false;
+		}
+	}
+
+	function initArrowKeys(e) {
+		const { type } = e;
+
+		switch (type) {
+			case "blur":
+			case "focusout":
+				document.body.classList.remove("scroll-lock");
+				window.removeEventListener("keydown", onKeydown);
+				break;
+			case "focus":
+			case "focusin":
+				document.body.classList.add("scroll-lock");
+				window.addEventListener("keydown", onKeydown);
+				break;
+		}
+	}
+	function onKeydown(e) {
+		switch (e.key.toLowerCase()) {
+			case "up":
+			case "arrowup":
+				console.log("up");
+				activeSectorButtonIndex = Math.max(0, activeSectorButtonIndex - 1);
+				break;
+			case "down":
+			case "arrowdown":
+				if (!visible) {
+					visible = true;
+				} else {
+					activeSectorButtonIndex = Math.min(
+						sectorButtons.length - 1,
+						activeSectorButtonIndex + 1
+					);
+				}
+
+				break;
+		}
+		if (sectorButtons[activeSectorButtonIndex])
+			sectorButtons[activeSectorButtonIndex].focus();
+	}
+	function initSector(node) {
+		sectorButtons.push(node);
+	}
 </script>
 
 <style>
-	.picker {
-		font: bold var(--font-size-large) / 1.3em var(--sans-serif-fonts);
+	.wrapper {
+		--margin-bottom: var(--gap);
+		--carat-width: 0.5rem;
+		margin: 0 0 var(--margin-bottom) 0;
 		display: flex;
-		gap: 0.33em;
-
-		align-items: stretch;
-		margin: 0 0 var(--gap) 0;
+		gap: 0.5em;
+		align-items: center;
 	}
 
-	select {
-		position: absolute;
-		left: 0;
-		top: 0;
-		height: 100%;
-		z-index: 2;
+	.picker {
+		flex: 1 1;
+		width: fit-content;
+		min-width: 20rem;
+		max-width: 100%;
+		position: relative;
+	}
+	.picker__button {
+		text-align: left;
+		padding: 0;
+		border: none;
+		background-color: transparent;
 		cursor: pointer;
+
+		padding: 0 calc(var(--carat-width) * 2) 0 0;
+		position: relative;
+	}
+	.picker__button::before,
+	.picker__button::after {
+		content: "";
+		display: block;
+	}
+	.picker__button::after {
+		height: 3px;
 		width: 100%;
 
-		appearance: none;
-		background-color: transparent;
-		border: none;
-		border-radius: 0;
-
-		color: transparent;
-
-		font-size: 1rem;
-		font-weight: inherit;
-		padding: 0 0 0.25rem 0;
-	}
-
-	.picker__label-wrap {
-		position: relative;
-		flex: 1 1;
-	}
-	.picker__label {
-		font-size: inherit;
-		font-weight: inherit;
-		background-color: transparent;
-		border: none;
 		position: absolute;
+		top: calc(100% + 0.25 * var(--margin-bottom));
 		left: 0;
-		padding: 0 1.5rem 3px 0;
-		border-bottom: 3px solid var(--color-accent);
+
+		background-color: var(--color-accent);
 	}
-	.picker__label::after {
-		content: "";
-		display: inline-block;
-		width: 0.5rem;
-		height: 0.5rem;
+
+	.picker__button::before {
+		height: var(--carat-width);
+		width: var(--carat-width);
+		border: 2px solid var(--color-accent);
+		border-top: none;
+		border-right: none;
 
 		position: absolute;
 		top: 50%;
 		right: 0;
-
-		border-left: 2px solid currentColor;
-		border-bottom: 2px solid currentColor;
 		transform: translate(0, -50%) rotate(-45deg);
-		transform-origin: center;
-		transition: transform var(--speed-transition);
 	}
-	.picker__label:hover,
-	.picker__label:focus {
-		outline: none;
+
+	.picker__list {
+		list-style: none;
+		padding: 0;
+
+		background-color: var(--color-gray-light);
+		width: 100%;
+		max-width: 250px;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 10;
+	}
+
+	.picker__list[hidden] {
+		display: none;
+	}
+
+	.picker__list li {
+		border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+	}
+
+	.picker__sector {
+		cursor: pointer;
+		font: var(--font-size-small) / 1em var(--sans-serif-fonts);
+		border: none;
+		padding: 1rem;
+		width: 100%;
+		text-align: left;
+		background-color: transparent;
+	}
+
+	.picker__sector:is(:hover, :focus) {
+		font-weight: bold;
+		background-color: var(--color-accent);
+		color: var(--color-accent-text);
+		outline: 4px solid var(--color-accent);
+	}
+	.picker__sector:focus {
+		outline: 2px solid var(--color-accent);
 	}
 </style>
 
-<p class="picker header " arial-label="About the {value} sector">
-	About
-	<span class="picker__label-wrap">
-		<span class="picker__label">
-			{sectorHeader}
-		</span>
+<svelte:window
+	on:click={close}
+	on:keydown={e => {
+		if (["Escape", "Esc"].includes(e.key)) close();
+	}} />
 
-		<select bind:value>
+<div class="wrapper">
+	<span class="header">About</span>
+	<div class="picker" on:focusin={initArrowKeys} on:focusout={initArrowKeys}>
+		<button
+			bind:this={btn}
+			class="picker__button header"
+			aria-label="About the {value} sector"
+			aria-describedby="sector-industry-description"
+			aria-controls="sector-industry-list"
+			aria-expanded={visible}
+			on:click|stopPropagation={e => {
+				visible = !visible;
+			}}>
+			<span class="picker__label">
+				{sectorHeader}
+			</span>
+			<p id="sector-industry-description" class="visually-hidden">
+				{buttonDescription}
+			</p>
+		</button>
+		<ul id="sector-industry-list" class="picker__list" hidden={!visible}>
 			{#each Object.entries(sectors) as [value, { heading }]}
-				<option label={heading} {value} />
+				{#if value && value !== ""}
+					<li label={heading} {value}>
+						<button
+							use:initSector
+							class="picker__sector"
+							on:click={e => {
+								console.log({ value });
+								$activeSector = value;
+							}}>{heading}</button>
+					</li>
+				{/if}
 			{/each}
-		</select>
-	</span>
-</p>
+		</ul>
+	</div>
+</div>
