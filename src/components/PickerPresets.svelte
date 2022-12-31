@@ -11,7 +11,7 @@
 	export let column = false;
 
 	let scrollContainer;
-	let activePreset = null;
+	let activePreset = "initial";
 	let scrollIncrement = 100;
 	let visiblePreset = 1;
 	$: keys = Object.keys(presets);
@@ -200,6 +200,7 @@
 		background-color: transparent;
 		color: var(--color-accent);
 		border-color: 2px solid var(--color-accent);
+		cursor: unset;
 	}
 	.preset__btn:disabled::after {
 		transform: translate(-50%, 0) scale(1);
