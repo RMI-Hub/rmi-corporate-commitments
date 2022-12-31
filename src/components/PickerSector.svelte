@@ -1,5 +1,6 @@
 <script>
 	import { activeSector } from "../stores.js";
+	import X from "../icons/X.svelte";
 
 	export let sectors = {};
 	export let sectorHeader;
@@ -75,8 +76,6 @@
 	.picker {
 		flex: 1 1;
 		width: fit-content;
-		min-width: 20rem;
-		max-width: 100%;
 		position: relative;
 	}
 	.picker__button {
@@ -119,14 +118,16 @@
 	}
 
 	.picker__list {
+		/* A fixed modal-ey thing */
 		list-style: none;
-		padding: 0;
-
+		padding: var(--gap);
+		margin: 0;
 		background-color: var(--color-gray-light);
 		width: 100%;
-		max-width: 250px;
-		position: absolute;
-		top: 100%;
+		height: 100%;
+
+		position: fixed;
+		top: 0;
 		left: 0;
 		z-index: 10;
 	}
@@ -157,6 +158,48 @@
 	}
 	.picker__sector:focus {
 		outline: 2px solid var(--color-accent);
+	}
+
+	.picker__close {
+		position: fixed;
+		padding: 0;
+		cursor: pointer;
+		background-color: transparent;
+		top: 0;
+		right: 0;
+		width: var(--tap-target);
+		height: var(--tap-target);
+		min-width: 3rem;
+		min-height: 3rem;
+		z-index: 11;
+		border: none;
+		display: flex;
+	}
+
+	.picker__close[hidden] {
+		display: none;
+	}
+
+	.picker__close :global(svg) {
+		width: 45%;
+		height: 45%;
+		margin: auto;
+		stroke: var(--color-gray);
+	}
+	@media screen and (min-width: 768px) {
+		.picker__close {
+			display: none;
+		}
+
+		.picker__list {
+			/* Make a proper dropdown */
+			padding: 0;
+			margin-top: var(--gap);
+			position: absolute;
+			top: 100%;
+			max-width: 250px;
+			height: unset;
+		}
 	}
 </style>
 
@@ -201,5 +244,9 @@
 				{/if}
 			{/each}
 		</ul>
+		<button on:click={close} class="picker__close" hidden={!visible}>
+			<X title="Close this list" />
+			<span class="visually-hidden">Close this list</span>
+		</button>
 	</div>
 </div>
