@@ -13,6 +13,8 @@
 	let scrollContainer;
 	let activePreset = null;
 	let scrollIncrement = 100;
+	let visiblePreset = 1;
+	$: keys = Object.keys(presets);
 
 	// Are the first and/or last presets in the carousel visible?
 	const visible = {
@@ -30,6 +32,7 @@
 	}
 
 	function onForward(e) {
+		visiblePreset++;
 		scrollContainer.scrollBy({
 			behavior: "smooth",
 			left: scrollIncrement,
@@ -37,6 +40,7 @@
 		});
 	}
 	function onBack(e) {
+		visiblePreset--;
 		scrollContainer.scrollBy({
 			behavior: "smooth",
 			left: -1 * scrollIncrement,
@@ -44,30 +48,28 @@
 		});
 	}
 
-	function watchForPreset(element, value) {
-		if (typeof window !== "undefined" && window.IntersectionObserver && element) {
-			const observer = new IntersectionObserver(
-				entries => {
-					entries.forEach(entry => {
-						visible[value] = entry.isIntersecting;
-					});
-				},
-				{
-					rootMargin: "0px 0px 0px 0px",
-					threshold: 0.9,
-				}
-			);
-			observer.observe(element);
-		}
-	}
-
 	function initPreset(node) {
-		const { index = null } = node.dataset;
-		if (index === "0") {
-			watchForPreset(node, "first");
-		} else if (+index + 1 === Object.values(presets).length) {
-			watchForPreset(node, "last");
-		}
+		const observer = new IntersectionObserver(
+			entries => {
+				entries.forEach(entry => {
+					const { index = null } = entry.target.dataset;
+					console.log({ index });
+					if (entry.isIntersecting) {
+						visiblePreset = +index + 1;
+					}
+					if (index === "0") {
+						visible["first"] = entry.isIntersecting;
+					} else if (+index + 1 === Object.values(presets).length) {
+						visible["last"] = entry.isIntersecting;
+					}
+				});
+			},
+			{
+				rootMargin: "0px 0px 0px 0px",
+				threshold: 1,
+			}
+		);
+		observer.observe(node);
 	}
 
 	onMount(() => {
@@ -94,9 +96,6 @@
 		margin: var(--gap) 0;
 
 		display: grid;
-		grid-template: auto minmax(1px, 1fr) / var(--button-width) minmax(1px, 1fr) var(
-				--button-width
-			);
 		grid-template: auto minmax(1px, 1fr) / minmax(1px, 1fr) repeat(
 				2,
 				var(--button-width)
@@ -263,11 +262,11 @@
 		--row-list: 2;
 		--col-text: 1 / -1;
 		--col-btn-back: 1;
-		--col-btn-fwd: 2;
+		--col-btn-fwd: 3;
 
 		margin: 0;
 		padding: 0;
-		grid-template-columns: repeat(2, minmax(1px, 1fr));
+		grid-template-columns: var(--button-width) minmax(1px, 1fr) var(--button-width);
 	}
 
 	.column .btn--fwd {
@@ -283,6 +282,11 @@
 
 	.column .preset__btn::after {
 		content: none;
+	}
+
+	.column .presets_now-showing {
+		font: var(--font-size-small) / var(--line-height) var(--sans-serif-fonts);
+		text-align: center;
 	}
 </style>
 
@@ -324,7 +328,11 @@
 	<button class="btn btn--back" disabled={visible.first} on:click={onBack}>
 		<span class="visually-hidden">Move the presets carousel backwards</span>
 	</button>
-
+	{#if column}
+		<p class="presets_now-showing">
+			<strong>{visiblePreset}</strong> of <strong>{Object.keys(presets).length}</strong>
+		</p>
+	{/if}
 	<button class="btn btn--fwd" disabled={visible.last} on:click={onForward}>
 		<span class="visually-hidden">Move the presets carousel forward</span>
 	</button>

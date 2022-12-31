@@ -4,6 +4,9 @@
 </script>
 
 <style>
+	.container.stack {
+		margin-bottom: var(--gap);
+	}
 	.header {
 		font-weight: bold;
 		font-size: clamp(2.5rem, 4vw, 3rem);
