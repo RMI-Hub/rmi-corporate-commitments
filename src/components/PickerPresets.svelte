@@ -272,6 +272,11 @@
 	.column .btn--fwd {
 		justify-self: end;
 	}
+
+	.column .presets__list {
+		padding: 0;
+	}
+
 	.column .preset {
 		padding: 0;
 	}
