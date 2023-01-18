@@ -98,7 +98,6 @@
 			position: relative;
 			right: unset;
 			height: 100%;
-			overflow: visible;
 		}
 
 		.toggles__form {
@@ -113,8 +112,6 @@
 		.toggles__ui {
 			flex: 1 1;
 			max-height: calc(100% - var(--button-height));
-			overflow-y: scroll;
-			overflow-x: visible;
 		}
 
 		.toggles__buttons {
