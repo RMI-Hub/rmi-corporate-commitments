@@ -64,6 +64,8 @@
 
 	@media all and (min-width: 1024px) {
 		.container {
+			height: 98vh;
+			min-height: 800px;
 			grid-template-columns: var(--controls-width) repeat(2, minmax(1px, 1fr));
 			grid-template-rows: auto repeat(2, minmax(1px, 1fr)) auto;
 		}
@@ -80,11 +82,6 @@
 			grid-column: 1;
 		}
 
-		.container :global(.powered) {
-			grid-row: -1;
-			grid-column: 1/-1;
-		}
-
 		.container :global(.chart--cumulative) {
 			grid-row: 3;
 		}
@@ -95,7 +92,6 @@
 </style>
 
 <Intro {headline} {intro} />
-<!-- <PickerPresets {presets} {...presetsMicrocopy} /> -->
 <section class="container" aria-labelledby="sector-heading">
 	<div class="sector-heading">
 		<h2 id="sector-heading" class="visually-hidden">About {sectorHeader}</h2>
@@ -121,5 +117,5 @@
 			{presets}
 			{presetsMicrocopy} />
 	</div>
-	<PoweredBy />
 </section>
+<PoweredBy />

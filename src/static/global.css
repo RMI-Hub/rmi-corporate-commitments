@@ -148,12 +148,16 @@ a {
 	stroke-width: 0.5;
 }
 .stack .chart__wrapper {
-	margin-top: auto;
+	flex: 1 1;
+	position: relative;
 	transition: background var(--speed-transition) ease-in-out;
 }
 .chart__container {
-	height: 300px;
-	position: relative;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	transition: opacity var(--speed-transition) ease-in-out,
 		background var(--speed-transition) ease-in-out;
 	background: transparent;
