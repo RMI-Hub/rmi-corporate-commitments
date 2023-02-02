@@ -77,7 +77,6 @@
 		width: var(--btn-icon-size);
 		background-color: var(--btn-icon-bg-color);
 		border-radius: 50%;
-
 		margin: 0 0 0 auto;
 		display: flex;
 		align-items: center;
@@ -87,8 +86,8 @@
 	}
 
 	.preset__icon :global(svg) {
-		width: 65%;
-		height: 65%;
+		width: 60%;
+		height: 60%;
 		fill: var(--color-accent-text);
 	}
 
