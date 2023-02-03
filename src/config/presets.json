@@ -17,7 +17,6 @@
 	"action": {
 		"label": "Climate-Aligned Action",
 		"description": "If all of these companies follow guidance IPCC guidance for 1.5C aligned emissions, this is what emissions will look like from now until 2050.",
-		"suggestedSectors": ["Technology", "Sports", "Agriculture"],
 		"toggles": {
 			"scope": "Scope 1",
 			"sector_emission_intensity": "Min",
@@ -48,7 +47,6 @@
 	"laggards-catch": {
 		"label": "Laggards catch herd",
 		"description": "If companies with unambitious or no commitments increase their climate ambition to meet the herd, this is what emissions will look like from now until 2050.",
-		"suggestedSectors": ["Pharmaceuticals", "Technology"],
 		"toggles": {
 			"scope": "Scope 1",
 			"sector_emission_intensity": "Min",

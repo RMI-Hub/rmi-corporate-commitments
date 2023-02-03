@@ -2,24 +2,11 @@
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"title": "Microcopy for the sectors",
 	"$async": true,
-	"type": "object",
-	"additionalProperties": { "$ref": "#/$defs/sector" },
+	"type": "array",
+	"items": { "$ref": "#/$defs/sector" },
 	"$defs": {
 		"sector": {
-			"type": "object",
-			"properties": {
-				"heading": {
-					"type": "string",
-					"description": "The human-readable, short name of the sector",
-					"maxLength": 50
-				},
-				"description": {
-					"type": ["string", "null"],
-					"maxLength": 250,
-					"description": "A brief description of the sector containing relevant context and insights."
-				}
-			},
-			"required": ["heading"]
+			"type": "array"
 		}
 	}
 }
