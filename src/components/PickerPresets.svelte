@@ -1,6 +1,5 @@
 <script>
 	import { marked } from "marked";
-	import { onMount } from "svelte";
 	import Arrow from "../icons/Arrow.svelte";
 	import { activeSector, multipliers } from "../stores.js";
 	import Toggletip from "./Toggletip.svelte";
@@ -11,14 +10,13 @@
 	export let column = false;
 
 	let activePreset = "initial";
-	function activatePreset({ toggles = {}, sector_or_industry, id }) {
+	function activatePreset({ toggles = {}, id }) {
 		activePreset = id;
 
-		// Are we mandating a sector or industry?
-		if (sector_or_industry) $activeSector = sector_or_industry;
-
-		// Assign our new settings
-		$multipliers = { ...$multipliers, ...toggles };
+		// When clicking a preset, start not with the chosen
+		// multipliers, but the default settings. Assign our new settings
+		$multipliers = Object.assign({}, toggles, presets.initial.toggles);
+		// $multipliers = { ...$multipliers, ...toggles };
 	}
 </script>
 
@@ -117,7 +115,7 @@
 				<button
 					class="preset__btn"
 					on:click={e => {
-						activatePreset({ toggles, sector_or_industry, id });
+						activatePreset({ toggles, id });
 					}}>
 					{label}
 					{#if description}
