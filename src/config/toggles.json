@@ -110,14 +110,14 @@
 	},
 	{
 		"id": "herd_catch_up",
-		"label": "Herd catches up",
+		"label": "Herd catches up to the frontrunners",
 		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"buttons": [
-			{ "text": "Yes", "value": true },
 			{
 				"text": "No",
 				"value": false
-			}
+			},
+			{ "text": "Yes", "value": true }
 		]
 	}
 ]

@@ -46,6 +46,7 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 		partial_target,
 		offsets,
 		slowdown,
+		herd_catch_up,
 	} = multipliers;
 	const { Year: year, Company } = row;
 
@@ -57,10 +58,27 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 	const companyEmissionIntensity =
 		row[`${scope} Intensity (Company) (tCO2e/USD)`] || null;
 
-	// Selected intensity
-	const emissionIntensity = companyEmissionIntensity
-		? companyEmissionIntensity
-		: sectorEmissionIntensity;
+	let herdSectorEmissionIntensity;
+	let emissionIntensity;
+
+	if (herd_catch_up) {
+		herdSectorEmissionIntensity = `${scope} Intensity (Sector Min) (tCO2e/USD)`;
+		// Selected intensity
+		// TODO: Are we just overwriting emissionIntensity here?
+		emissionIntensity =
+			row["Company Type"] === "Herd"
+				? herdSectorEmissionIntensity
+				: row["S_Emission_Intensity"];
+
+		emissionIntensity =
+			companyEmissionIntensity && !row["S_Emission_Intensity"]
+				? companyEmissionIntensity
+				: sectorEmissionIntensity;
+	} else {
+		emissionIntensity = companyEmissionIntensity
+			? companyEmissionIntensity
+			: sectorEmissionIntensity;
+	}
 
 	// # Selected Annual Growth Rate (AGR)
 	const multiplierBaseline = row[`Revenue Growth (${agr})`];
