@@ -12,6 +12,9 @@
 
 	import { chartData, multipliers, activeSector } from "./stores.js";
 	import { fetchData } from "./utils/fetch-data.js";
+	import { slugify } from "./utils/slugify.js";
+
+	import { afterUpdate, onMount } from "svelte";
 
 	export let headline = "";
 	export let intro = "";
@@ -20,10 +23,11 @@
 	};
 	export let togglesMicrocopy = {};
 	export let presetsMicrocopy = {};
+	export let sectorsMicrocopy = {};
+	export let sectors = [];
 	export let charts = {};
 	export let toggles = [];
 	export let presets = {};
-	export let sectors = {};
 
 	// let activeSector = Object.keys(sectors)[0];
 
@@ -38,8 +42,9 @@
 		cumulative: ChartCumulative,
 	};
 
-	$: sectorHeader = sectors?.[$activeSector].heading ?? "";
-	$: sectorDescription = sectors?.[$activeSector].description ?? "";
+	$: sectorSlug = slugify($activeSector);
+	$: sectorHeader = sectorsMicrocopy?.[sectorSlug]?.heading ?? $activeSector;
+	$: sectorDescription = sectorsMicrocopy?.[sectorSlug]?.description ?? "";
 
 	// Handle update will run any time these store values update
 	$: ($multipliers || $activeSector) && handleUpdate();
@@ -47,7 +52,7 @@
 	// fetches data when needed
 	async function handleUpdate(e) {
 		$chartData = await fetchData({
-			activeSector: $activeSector,
+			activeSector: sectorSlug,
 			multipliers: $multipliers,
 		}).catch(console.error);
 
@@ -56,11 +61,15 @@
 		});
 		window.dispatchEvent(new Event("renderCharts"));
 	}
+
+	afterUpdate(() => {
+		console.log({ $activeSector, sectorSlug });
+	});
 </script>
 
 <style>
 	.container {
-		--controls-width: 17rem;
+		--controls-width: 18rem;
 		display: grid;
 		gap: var(--gap);
 	}

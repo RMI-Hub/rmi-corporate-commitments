@@ -6,7 +6,7 @@
 		"buttons": [
 			{ "text": "Scope 1", "value": "Scope 1" },
 			{ "text": "Scope 2", "value": "Scope 2" },
-			{ "text": "Scope 1 + 2", "value": "Scope 1&2" }
+			{ "text": "Scope 1+2", "value": "Scope 1&2" }
 		]
 	},
 	{

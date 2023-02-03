@@ -138,9 +138,10 @@
 
 	.picker__list li {
 		border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 	}
 
-	.picker__sector {
+	.picker__btn {
 		cursor: pointer;
 		font: var(--font-size-small) / 1em var(--sans-serif-fonts);
 		border: none;
@@ -150,14 +151,22 @@
 		background-color: transparent;
 	}
 
-	.picker__sector:is(:hover, :focus) {
+	.picker__btn:is(:hover, :focus) {
 		font-weight: bold;
 		background-color: var(--color-accent);
 		color: var(--color-accent-text);
 		outline: 4px solid var(--color-accent);
 	}
-	.picker__sector:focus {
+	.picker__btn:focus {
 		outline: 2px solid var(--color-accent);
+	}
+
+	.picker__btn--sector {
+		font-weight: bold;
+	}
+	.picker__btn--industry {
+		padding-left: 2rem;
+		font-size: 0.9em;
 	}
 
 	.picker__close {
@@ -199,6 +208,10 @@
 			top: 100%;
 			max-width: 250px;
 			height: unset;
+
+			max-height: 24rem;
+			overflow: scroll;
+			box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.35);
 		}
 	}
 </style>
@@ -230,17 +243,26 @@
 			</p>
 		</button>
 		<ul id="sector-industry-list" class="picker__list" hidden={!visible}>
-			{#each Object.entries(sectors) as [value, { heading }]}
+			{#each sectors as [value, industries]}
 				{#if value && value !== ""}
-					<li label={heading} {value}>
+					<li label={value} {value}>
 						<button
 							use:initSector
-							class="picker__sector"
+							class="picker__btn picker__btn--sector"
 							on:click={e => {
-								console.log({ value });
 								$activeSector = value;
-							}}>{heading}</button>
+							}}>{value} sector</button>
 					</li>
+					{#each industries as industry}
+						<li>
+							<button
+								use:initSector
+								class="picker__btn picker__btn--industry"
+								on:click={e => {
+									$activeSector = value;
+								}}>{industry} industry</button>
+						</li>
+					{/each}
 				{/if}
 			{/each}
 		</ul>

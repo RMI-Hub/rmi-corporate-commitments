@@ -54,7 +54,7 @@
 		top: calc(var(--icon-size) + 0.5rem);
 		left: 5%;
 		width: 90%;
-		z-index: 10;
+		z-index: 10000;
 
 		background: var(--color-slate);
 		padding: 0.75rem;

@@ -17,24 +17,70 @@ async function getCompanies(data) {
 	);
 }
 
-function getSectors(microcopy = {}, sectors = []) {
-	const sectorsComplete = sectors.reduce((acc, curr) => {
-		const sectorSlug = slugify(curr);
-		const { heading = null, description = null } = microcopy?.[sectorSlug] ?? {};
+// Returns a lookup of lists for sectors and industries, mashed up with provided text if available.
+function getSectors(microcopy = {}, data = []) {
+	/*
+	sectorsAndIndustries = {
+		sectorOrIndustry:{
+			heading:"",
+			description:"",
+		}
+		sectorOrIndustry:{
+			heading:"",
+			description:"",
+		}
+		sectorOrIndustry:{
+			heading:"",
+			description:"",
+		}
 
-		acc[sectorSlug] = {
-			heading: heading || curr,
-			description,
-		};
 
+*/
+
+	// Make an alphabetical list of sectors
+	/*
+[
+	[sectorName, [industry, industry, industry, ...]],
+	[sectorName, [industry, industry, industry, ...]],
+	[sectorName, [industry, industry, industry, ...]],
+]
+
+*/
+	const groupedSectors = groupBy(data, d => d.Sector);
+	const sectors = Object.entries(groupedSectors).reduce((acc, [sector, rows]) => {
+		if (!sector) return acc;
+		const industries = Array.from(new Set(rows.map(r => r.Industry))).sort();
+		acc.push([sector, industries]);
+		return acc;
+	}, []);
+
+	// Put them in alpha order
+	sectors.sort((a, b) => {
+		return a[0] < b[0] ? -1 : 1;
+	});
+
+	// Make a flat lookup for all the sectors and industry
+	const sectorsMicrocopy = sectors.flat(2).reduce((acc, curr) => {
+		const slug = slugify(curr);
+		if (microcopy[slug]) {
+			acc[slug] = microcopy[slug];
+		}
 		return acc;
 	}, {});
 
-	return fs.writeFile(
-		path.join(__dirname, "../src/config/sectors.json"),
-		JSON.stringify(sectorsComplete),
-		"utf-8"
-	);
+	// Write our sector metadata files to the config
+	return Promise.all([
+		fs.writeFile(
+			path.join(__dirname, "../src/config/sectors.json"),
+			JSON.stringify(sectors),
+			"utf-8"
+		),
+		fs.writeFile(
+			path.join(__dirname, "../src/config/sectorsMicrocopy.json"),
+			JSON.stringify(sectorsMicrocopy),
+			"utf-8"
+		),
+	]);
 }
 
 async function generateSectors() {
@@ -53,7 +99,7 @@ async function generateSectors() {
 	// Group by sector for outputting
 	const sectors = groupBy(data, d => d.Sector);
 
-	getSectors(sectorMicrocopy, Object.keys(sectors));
+	getSectors(sectorMicrocopy, data);
 
 	return Promise.all(
 		Object.entries(sectors).map(([sector, data]) => {

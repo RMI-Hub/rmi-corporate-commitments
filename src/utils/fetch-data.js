@@ -152,6 +152,7 @@ export const fetchData = throttle(
 					})
 					.catch(e => {
 						console.error(e);
+						console.error(`Trying to get ${dataURL}`);
 						reject(e);
 					});
 				sectors.set(activeSector, sectorData);

@@ -3,7 +3,8 @@ import presets from "./config/presets.json";
 import sectors from "./config/sectors.json";
 
 export const chartData = writable({});
-export const activeSector = writable(Object.keys(sectors)[0]);
+// Sectors is an array of arrays, hence this line here
+export const activeSector = writable(sectors[0][0]);
 
 // These are the default multipliers
 const { initial = null } = presets;

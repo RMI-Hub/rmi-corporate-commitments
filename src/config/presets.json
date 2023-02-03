@@ -1,13 +1,13 @@
 {
 	"key1": {
-		"label": "Lorem ipsum",
+		"label": "Climate-Aligned Action",
 		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"suggestedSectors": ["Technology", "Sports", "Agriculture"],
 		"toggles": {},
 		"sector_or_industry": "industrials"
 	},
 	"key2": {
-		"label": "Lorem ipsum",
+		"label": "Herd catches leaders",
 		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"suggestedSectors": ["Pharmaceuticals"],
 		"toggles": {
@@ -15,7 +15,7 @@
 		}
 	},
 	"key3": {
-		"label": "Lorem ipsum",
+		"label": "Laggards catch herd",
 		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"suggestedSectors": ["Pharmaceuticals", "Technology"],
 		"toggles": {
@@ -24,14 +24,14 @@
 		"sector_or_industry": "technology"
 	},
 	"key4": {
-		"label": "Lorem ipsum",
+		"label": "No further action",
 		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
 		"suggestedSectors": ["Technology", "Sports", "Agriculture"],
 		"toggles": {},
 		"sector_or_industry": "industrials"
 	},
 	"initial": {
-		"label": "The basics",
+		"label": "Current Outlook",
 		"description": "This scenario is the basic, default view",
 		"toggles": {
 			"scope": "Scope 1",
