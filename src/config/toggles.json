@@ -107,5 +107,17 @@
 				"value": 0.5
 			}
 		]
+	},
+	{
+		"id": "herd_catch_up",
+		"label": "Herd catches up",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "Yes", "value": true },
+			{
+				"text": "No",
+				"value": false
+			}
+		]
 	}
 ]

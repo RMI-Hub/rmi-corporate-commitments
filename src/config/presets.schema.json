@@ -49,16 +49,8 @@
 					"maxLength": 250,
 					"description": "Optional, short, human readable description."
 				},
-				"suggestedSectors": {
-					"type": "array",
-					"description": "An array of sector/industry slugs that get formed into the helpful sentence \"Why not try this scenario with the XXX sector?\"",
-					"items": { "type": "string" }
-				},
-				"toggles": { "$ref": "#/$defs/multipliers" },
-				"sector_or_industry": {
-					"type": "string",
-					"description": "The slug/ID of a sector or industry as part of the preset scenario"
-				}
+
+				"toggles": { "$ref": "#/$defs/multipliers" }
 			},
 			"required": ["label", "toggles"]
 		}

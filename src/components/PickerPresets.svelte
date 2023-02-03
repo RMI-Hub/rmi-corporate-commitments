@@ -16,7 +16,6 @@
 		// When clicking a preset, start not with the chosen
 		// multipliers, but the default settings. Assign our new settings
 		$multipliers = Object.assign({}, toggles, presets.initial.toggles);
-		// $multipliers = { ...$multipliers, ...toggles };
 	}
 </script>
 
