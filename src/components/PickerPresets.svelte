@@ -91,7 +91,7 @@
 	.preset--active .preset__icon,
 	.preset:is(:hover, :focus) .preset__icon {
 		--btn-icon-bg-color: var(--color-accent);
-		transform: translate(0.2rem, 0) scale(1.05);
+		transform: translate(0.37rem, 0) scale(1.05);
 	}
 	/* HOVER/FOCUS/ACTIVE */
 	.preset--active::after,

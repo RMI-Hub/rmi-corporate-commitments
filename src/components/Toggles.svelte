@@ -8,11 +8,14 @@
 	import Button from "./Button.svelte";
 	import Toggletip from "./Toggletip.svelte";
 	import PickerPresets from "./PickerPresets.svelte";
+	import ChartOverall from "./ChartOverall.svelte";
 
 	export let togglesLabel;
 	export let togglesDescription = "";
 	export let toggles = [];
 	export let defaultMultipliers = {};
+
+	export let overallMicrocopy = {};
 
 	// FOR THE PRESETS
 	export let presets = {};
@@ -101,11 +104,6 @@
 		}
 
 		.toggles__form {
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 100%;
-			width: 100%;
 			overflow: visible;
 		}
 
@@ -123,8 +121,9 @@
 </style>
 
 <button class="open" on:click={openControls}>Controls</button>
-<div class="toggles" class:visible>
+<div class="toggles stack" class:visible>
 	<button class="close" on:click={closeControls}>X</button>
+	<ChartOverall {...overallMicrocopy} />
 	<div class="toggles__form stack">
 		<PickerPresets {presets} {...presetsMicrocopy} column={true} />
 		<h2 class="header">{togglesLabel}</h2>

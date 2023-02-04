@@ -6,7 +6,6 @@
 	import PickerSector from "./components/PickerSector.svelte";
 	import ChartYearly from "./components/ChartYearly.svelte";
 	import ChartCumulative from "./components/ChartCumulative.svelte";
-	import ChartOverall from "./ChartOverall.svelte";
 
 	// UTILS
 
@@ -18,9 +17,7 @@
 
 	export let headline = "";
 	export let intro = "";
-	export let overallMicrocopy = {
-		header: "The whole picture",
-	};
+	export let overallMicrocopy = {};
 	export let togglesMicrocopy = {};
 	export let presetsMicrocopy = {};
 	export let sectorsMicrocopy = {};
@@ -121,9 +118,9 @@
 				{...chartInfo} />
 		{/each}
 	{/each}
-	<ChartOverall {...overallMicrocopy} />
 	<div class="controls">
 		<Toggles
+			{overallMicrocopy}
 			{defaultMultipliers}
 			{toggles}
 			{...togglesMicrocopy}

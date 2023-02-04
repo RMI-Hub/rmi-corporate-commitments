@@ -9,6 +9,9 @@
 		"presetsLabel": "Scenarios",
 		"presetButtonLabel": "Activate scenario"
 	},
+	"overallMicrocopy": {
+		"header": "The whole picture"
+	},
 	"charts": {
 		"baseline": {
 			"yearly": {
