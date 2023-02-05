@@ -8,6 +8,7 @@ import json from "@rollup/plugin-json";
 import replace from "@rollup/plugin-replace";
 import css from "rollup-plugin-css-only";
 import svg from "rollup-plugin-svg-import";
+
 const production = !process.env.ROLLUP_WATCH;
 const PROJECT_SLUG = path.basename(__dirname);
 
@@ -64,6 +65,7 @@ export default {
 			// process SVG to DOM Node or String. Default: false
 			stringify: true,
 		}),
+		cssImport(),
 	],
 	watch: {
 		clearScreen: false,

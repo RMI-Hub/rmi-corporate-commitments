@@ -1,5 +1,6 @@
 <script>
 	// UTILS
+	import "../config/chart-overall.css";
 	import C from "../icons/Chart.svg";
 	export let header = "";
 </script>

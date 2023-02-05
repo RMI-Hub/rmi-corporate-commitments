@@ -2,7 +2,8 @@
 public/
 src/config/companies.json
 src/config/sectors.json
-
+src/config/chart-overall.css
+src/icons/chart-overall.svg
 
 
 # Logs

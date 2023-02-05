@@ -101,7 +101,10 @@
 </style>
 
 <Intro {headline} {intro} />
-<section class="container" aria-labelledby="sector-heading">
+<section
+	class="container"
+	aria-labelledby="sector-heading"
+	data-active-sector={sectorSlug}>
 	<div class="sector-heading">
 		<h2 id="sector-heading" class="visually-hidden">About {sectorHeader}</h2>
 		<PickerSector {sectors} {sectorHeader} bind:value={$activeSector} />
