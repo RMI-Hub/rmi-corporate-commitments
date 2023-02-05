@@ -71,10 +71,14 @@ function getSectors(microcopy = {}, data = []) {
 	// Craft a little stylesheet to help the overall chart along.
 	const chartOverallStyles = sectors.flat(2).reduce((acc, curr) => {
 		const slug = slugify(curr);
-		acc = +`[data-active-sector="${slug}"] #${slug}{--color=red;}`;
+		console.log({ curr, slug });
+		acc += `[data-active-sector="${slug}"] #${slug}{
+			--color:var(--color-accent);
+		}`;
 		return acc;
 	}, "");
 
+	console.log(chartOverallStyles);
 	// Write our sector metadata files to the config
 	return Promise.all([
 		fs.writeFile(
@@ -84,7 +88,7 @@ function getSectors(microcopy = {}, data = []) {
 		),
 		fs.writeFile(
 			path.join(__dirname, "../src/config/chart-overall.css"),
-			JSON.stringify(chartOverallStyles),
+			chartOverallStyles,
 			"utf-8"
 		),
 		fs.writeFile(
