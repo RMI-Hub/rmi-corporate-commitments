@@ -1,6 +1,6 @@
 <script>
 	// UTILS
-
+	import C from "../icons/Chart.svg";
 	export let header = "";
 </script>
 
@@ -29,5 +29,8 @@
 
 <div class="chart chart--overall stack">
 	{#if header}<h3 class="header">{header}</h3>{/if}
-	<div class="chart__container" />
+	<div class="chart__container">
+		<!-- Chart -->
+		{@html C}
+	</div>
 </div>

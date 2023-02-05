@@ -7,7 +7,7 @@ import { terser } from "rollup-plugin-terser";
 import json from "@rollup/plugin-json";
 import replace from "@rollup/plugin-replace";
 import css from "rollup-plugin-css-only";
-
+import svg from "rollup-plugin-svg-import";
 const production = !process.env.ROLLUP_WATCH;
 const PROJECT_SLUG = path.basename(__dirname);
 
@@ -59,6 +59,11 @@ export default {
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
 		production && terser(),
+
+		svg({
+			// process SVG to DOM Node or String. Default: false
+			stringify: true,
+		}),
 	],
 	watch: {
 		clearScreen: false,
