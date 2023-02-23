@@ -15,6 +15,7 @@ function getYearlyMax(target, baseline, industries, d3) {
 	const stacker = stack().keys(industries);
 	for (let d of [baseline.yearly]) {
 		const s_data = stacker(d);
+		console.log(s_data);
 		maxValue = Math.max(
 			maxValue,
 			max(s_data[s_data.length - 1], d => d[1])
