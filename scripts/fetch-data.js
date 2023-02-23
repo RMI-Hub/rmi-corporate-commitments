@@ -15,6 +15,7 @@ function getYearlyMax(target, baseline, industries, d3) {
 	const stacker = stack().keys(industries);
 	for (let d of [baseline.yearly]) {
 		const s_data = stacker(d);
+		if (!s_data.length) throw new Error("stacked data has no length. Git LFS problem?");
 		console.log({ s_data, baseline });
 		maxValue = Math.max(
 			maxValue,
