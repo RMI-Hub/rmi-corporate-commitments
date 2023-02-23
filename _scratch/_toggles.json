@@ -1,0 +1,93 @@
+"toggles": [
+    {
+        "label": "Adjust scope",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "Scope 1", "value": "" },
+            { "text": "Scope 2", "value": "" },
+            { "text": "Scope 1 + 2", "value": "" }
+        ]
+    },
+    {
+        "label": "Selected sector emission intensity",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "Min", "value": "" },
+            { "text": "Mean", "value": "" },
+            { "text": "Max", "value": "" }
+        ]
+    },
+    {
+        "label": "Adjust end targets",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "Companies with no target have net zero", "value": "" },
+            {
+                "text": "50% of largest companies with no targets have net zero",
+                "value": ""
+            }
+        ]
+    },
+    {
+        "label": "Adjust interim targets",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "Current", "value": "" },
+            { "text": "None", "value": "" },
+            { "text": "All have 50% by 2030" }
+        ]
+    },
+    {
+        "label": "Adjust when companies start to act",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "2021", "value": "" },
+            { "text": "2030", "value": "" },
+            { "text": "2040", "value": "" }
+        ]
+    },
+    {
+        "label": "Adjust % of target met with offset",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "xxxx", "value": "" },
+            { "text": "xxxx", "value": "" },
+            { "text": "xxxx", "value": "" }
+        ]
+    },
+    {
+        "label": "Adjust % of target met with CDR",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "xxxx", "value": "" },
+            { "text": "xxxx", "value": "" },
+            { "text": "xxxx", "value": "" }
+        ]
+    },
+    {
+        "label": "Adjust AGR",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "S&P 500", "value": "" },
+            { "text": "Historic (NYU)", "value": "" }
+        ]
+    },
+    {
+        "label": "Adjust sector intensity indicator",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "mean", "value": "" },
+            { "text": "max", "value": "" },
+            { "text": "min", "value": "" }
+        ]
+    },
+    {
+        "label": "Adjust partial targets",
+        "definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+        "buttons": [
+            { "text": "xxxx", "value": "" },
+            { "text": "xxxx", "value": "" },
+            { "text": "xxxx", "value": "" }
+        ]
+    }
+]

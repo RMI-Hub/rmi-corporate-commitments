@@ -1,0 +1,123 @@
+[
+	{
+		"id": "scope",
+		"label": "Scope",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "Scope 1", "value": "Scope 1" },
+			{ "text": "Scope 2", "value": "Scope 2" },
+			{ "text": "Scope 1+2", "value": "Scope 1&2" }
+		]
+	},
+	{
+		"id": "sector_emission_intensity",
+		"label": "Sector emission intensity",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "Min", "value": "Min" },
+			{ "text": "Mean", "value": "Mean" },
+			{ "text": "Max", "value": "Max" }
+		]
+	},
+	{
+		"id": "agr",
+		"label": "Annual revenue growth",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "S&P", "value": "S&P" },
+			{
+				"text": "Historic",
+				"value": "NYU CAGR"
+			}
+		]
+	},
+	{
+		"id": "end_target",
+		"label": "End target",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"longform": true,
+		"buttons": [
+			{ "text": "Current", "value": "Current" },
+
+			{
+				"text": "None to NZT",
+				"value": "None to NZT"
+			},
+			{
+				"text": "Top 50% None to NZT",
+				"value": "Top 50% None to NZT"
+			}
+		]
+	},
+	{
+		"id": "interim_target",
+		"label": "Interim target",
+		"longform": true,
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "Current", "value": "Current" },
+			{ "text": "None to 50% by 2030", "value": "None to 50% by 2030" }
+		]
+	},
+	{
+		"id": "slowdown",
+		"label": "Slowdown",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "None", "value": 2022 },
+			{
+				"text": "2030",
+				"value": 2030
+			},
+			{
+				"text": "2040",
+				"value": 2040
+			}
+		]
+	},
+	{
+		"id": "partial_target",
+		"label": "Percentage of targets met",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "Zero", "value": 0 },
+			{ "text": "25%", "value": 0.25 },
+			{
+				"text": "50%",
+				"value": 0.5
+			},
+			{
+				"text": "100%",
+				"value": 1
+			}
+		]
+	},
+	{
+		"id": "offsets",
+		"label": "Targets met with offset",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{ "text": "0", "value": 0 },
+			{
+				"text": "25%",
+				"value": 0.25
+			},
+			{
+				"text": "50%",
+				"value": 0.5
+			}
+		]
+	},
+	{
+		"id": "herd_catch_up",
+		"label": "Herd catches up to the frontrunners",
+		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"buttons": [
+			{
+				"text": "No",
+				"value": false
+			},
+			{ "text": "Yes", "value": true }
+		]
+	}
+]

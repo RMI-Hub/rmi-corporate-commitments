@@ -1,0 +1,59 @@
+{
+	"$id": "/schema/presets/",
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$async": true,
+	"title": "Microcopy for the preset scenarios",
+	"type": "object",
+	"additionalProperties": {
+		"type": "object",
+		"$ref": "#/$defs/preset"
+	},
+	"$defs": {
+		"multipliers": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"scope": {
+					"type": "string",
+					"enum": ["Scope 1", "Scope 2", "Scope 1&2"]
+				},
+				"sector_emission_intensity": {
+					"type": "string",
+					"enum": ["Min", "Max", "Mean"]
+				},
+				"agr": { "type": "string", "enum": ["S&P", "NYU CAGR"] },
+				"end_target": {
+					"type": "string",
+					"enum": ["Current", "None to NZT", "Top 50 None to NZT"]
+				},
+				"interim_target": {
+					"type": "string",
+					"enum": ["Current", "None to 50% by 2030"]
+				},
+				"slowdown": { "type": "integer", "enum": [2022, 2030, 2040] },
+				"partial_target": { "type": "number", "enum": [0, 0.25, 0.5, 1] },
+				"offsets": { "type": "number", "enum": [0, 0.25, 0.5] },
+				"herd_catch_up": { "type": "boolean" }
+			}
+		},
+		"preset": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"label": {
+					"type": "string",
+					"description": "The main, human readable title for the preset.",
+					"maxLength": 50
+				},
+				"description": {
+					"type": "string",
+					"maxLength": 250,
+					"description": "Optional, short, human readable description."
+				},
+
+				"toggles": { "$ref": "#/$defs/multipliers" }
+			},
+			"required": ["label", "toggles"]
+		}
+	}
+}
