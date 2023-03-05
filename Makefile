@@ -1,3 +1,7 @@
+install:
+	npm ci
+	cd functions && npm ci
+	
 data:
 	mkdir -p public/data
 	node ./scripts/data.js
