@@ -29,11 +29,9 @@ export const fetchData = throttle(
 						});
 					}
 				}
-
 				return data;
 			})
 			.catch(console.error);
-		console.log({ data });
 		return data;
 	},
 	250,

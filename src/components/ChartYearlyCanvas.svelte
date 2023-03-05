@@ -2,7 +2,7 @@
 	// UTILS
 	import { tick } from "svelte";
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
-	import { chartData } from "../stores.js";
+	import { chartData, isLoading } from "../stores.js";
 	import throttle from "lodash.throttle";
 	import {
 		stack,
@@ -34,6 +34,7 @@
 	let tooltipX = 0;
 	let tooltipY = 0;
 	let tooltipCompany = "A";
+	let DPI = typeof window === "object" ? window.devicePixelRatio : 2;
 
 	// Placeholders, etc. for the chart
 	let container, svg, yAxisG, xAxisG, ticks, paths, canvas, ctx;
@@ -104,12 +105,12 @@
 			canvas = select(container)
 				.append("canvas")
 				.classed("chart__canvas", true)
-				.attr("height", canvasHeight * 2)
-				.attr("width", canvasWidth * 2)
+				.attr("height", canvasHeight * DPI)
+				.attr("width", canvasWidth * DPI)
 				.attr("style", `height:${canvasHeight}px;width:${canvasWidth}px;`);
 
 			ctx = canvas.node().getContext("2d");
-			ctx.scale(2, 2);
+			ctx.scale(DPI, DPI);
 
 			// Grab some style things from the stylesheet
 			const containerStyles = getComputedStyle(container);
@@ -183,6 +184,8 @@
 			.transition()
 			.duration(DURATION)
 			.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
+
+		$isLoading = false;
 	}, 500);
 
 	function mouseover(e, d) {

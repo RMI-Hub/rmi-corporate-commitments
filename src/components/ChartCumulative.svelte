@@ -1,7 +1,7 @@
 <script>
 	import { tick } from "svelte";
 
-	import { chartData } from "../stores.js";
+	import { chartData, isLoading } from "../stores.js";
 	import { scaleBand, format, scaleLinear, axisBottom, axisLeft, select } from "d3";
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
 	import throttle from "lodash.throttle";
@@ -157,6 +157,7 @@
 						.attr("height", d => canvasHeight - y(d[type]));
 				}
 			);
+		$isLoading = false;
 	}, 500);
 	function mouseover(e, d) {
 		// POSITION IT
