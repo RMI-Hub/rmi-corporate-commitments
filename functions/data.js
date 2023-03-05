@@ -178,8 +178,6 @@ const data = throttle(
 
 			const yearly_max = await getYearlyMax(target, baseline, companies);
 
-			console.log("++++++++++++++");
-			console.log({ yearly_max });
 			resolve({
 				cumulative_domain,
 				target,
