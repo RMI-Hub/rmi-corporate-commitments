@@ -67,12 +67,7 @@
 			$multipliers,
 		});
 		window.dispatchEvent(new Event("renderCharts"));
-		$isLoading = false;
 	}
-
-	// afterUpdate(() => {
-	// 	console.log({ $activeSector, sectorSlug, $highlightIndustry, $highlightSector });
-	// });
 </script>
 
 <style>
@@ -111,7 +106,6 @@
 	}
 </style>
 
-<h1>We are {$isLoading ? "" : "NOT"} loading</h1>
 <Intro {headline} {intro} />
 <section
 	class="container"
