@@ -139,7 +139,7 @@
 						.append("rect")
 						.classed("bar", true)
 						.classed("current", d => {
-							return d.year.getFullYear() === 2025;
+							return new Date(d.year).getFullYear() === 2025;
 						})
 						.attr("width", x.bandwidth())
 						.attr("x", d => x(d.year))
