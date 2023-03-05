@@ -10,6 +10,7 @@
 	import Tooltip from "./Tooltip.svelte";
 	import ChartHeader from "./ChartHeader.svelte";
 	import X from "../icons/X.svelte";
+	import Loading from "./Loading.svelte";
 
 	// Chart meta
 	export let header = "";
@@ -248,4 +249,5 @@
 				showData = false;
 			}} />
 	{/if}
+	<Loading />
 </div>

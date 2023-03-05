@@ -12,6 +12,7 @@
 
 	import {
 		chartData,
+		isLoading,
 		multipliers,
 		activeSector,
 		highlightIndustry,
@@ -55,6 +56,7 @@
 
 	// fetches data when needed
 	async function handleUpdate(e) {
+		$isLoading = true;
 		$chartData = await fetchData({
 			activeSector: sectorSlug,
 			multipliers: $multipliers,
@@ -65,6 +67,7 @@
 			$multipliers,
 		});
 		window.dispatchEvent(new Event("renderCharts"));
+		$isLoading = false;
 	}
 
 	// afterUpdate(() => {
@@ -108,6 +111,7 @@
 	}
 </style>
 
+<h1>We are {$isLoading ? "" : "NOT"} loading</h1>
 <Intro {headline} {intro} />
 <section
 	class="container"
