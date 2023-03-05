@@ -19,6 +19,19 @@ export const fetchData = throttle(
 
 		const data = await fetch(u.toString())
 			.then(d => d.json())
+			.then(data => {
+				// Coerce dates to be dates
+				for (let key of ["target", "baseline"]) {
+					for (let type of ["cumulative", "yearly"]) {
+						data[key][type] = data[key][type].map(d => {
+							d.year = new Date(d.year);
+							return d;
+						});
+					}
+				}
+
+				return data;
+			})
 			.catch(console.error);
 		console.log({ data });
 		return data;

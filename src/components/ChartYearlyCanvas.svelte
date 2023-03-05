@@ -104,10 +104,13 @@
 			canvas = select(container)
 				.append("canvas")
 				.classed("chart__canvas", true)
-				.attr("height", canvasHeight)
-				.attr("width", canvasWidth);
+				.attr("height", canvasHeight * 2)
+				.attr("width", canvasWidth * 2)
+				.attr("style", `height:${canvasHeight}px;width:${canvasWidth}px;`);
 
 			ctx = canvas.node().getContext("2d");
+			ctx.scale(2, 2);
+
 			// Grab some style things from the stylesheet
 			const containerStyles = getComputedStyle(container);
 			ctx.fillStyle = containerStyles.getPropertyValue("--color-chart");
@@ -270,6 +273,7 @@
 			</button>
 		{/if}
 		<div class="chart__container" class:hidden={chartHidden} bind:this={container} />
+		<Loading />
 	</div>
 	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__name">{tooltipCompany}</span>
@@ -285,5 +289,4 @@
 				showData = false;
 			}} />
 	{/if}
-	<Loading />
 </div>

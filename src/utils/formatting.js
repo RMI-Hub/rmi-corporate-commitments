@@ -2,7 +2,7 @@ import { timeFormat, format } from "d3";
 
 export function yearFormatter(d) {
 	try {
-		const year = new Date(d).getFullYear();
+		const year = d.getFullYear();
 		if (year % 5 === 0) {
 			return timeFormat("%Y")(d).slice(-2) === "25"
 				? timeFormat("%Y")(d)

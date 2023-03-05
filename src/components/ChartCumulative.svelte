@@ -139,7 +139,7 @@
 						.append("rect")
 						.classed("bar", true)
 						.classed("current", d => {
-							return new Date(d.year).getFullYear() === 2025;
+							return d.year.getFullYear() === 2025;
 						})
 						.attr("width", x.bandwidth())
 						.attr("x", d => x(d.year))
@@ -235,6 +235,7 @@
 			</button>
 		{/if}
 		<div class="chart__container" class:hidden={chartHidden} bind:this={container} />
+		<Loading />
 	</div>
 	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__text">{@html tooltipText}</span>
@@ -249,5 +250,4 @@
 				showData = false;
 			}} />
 	{/if}
-	<Loading />
 </div>
