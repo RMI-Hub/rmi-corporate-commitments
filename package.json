@@ -28,7 +28,6 @@
 		"svelte": "^3.53.1"
 	},
 	"dependencies": {
-		"cors": "^2.8.5",
 		"sirv-cli": "^1.0.0"
 	},
 	"scripts": {
