@@ -67,7 +67,6 @@
 	const render = throttle((e, force = false) => {
 		const data = $chartData?.[type]?.yearly;
 
-		window.chartData = data;
 		// This won't work if there is not data
 		if (!data) return;
 
@@ -277,19 +276,19 @@
 		{/if}
 		<div class="chart__container" class:hidden={chartHidden} bind:this={container} />
 		<Loading />
+		{#if chartDataTable && chartDataTable.length}
+			<ChartData
+				{type}
+				cumulative={false}
+				data={chartDataTable}
+				visible={showData}
+				on:click={e => {
+					showData = false;
+				}} />
+		{/if}
 	</div>
 	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__name">{tooltipCompany}</span>
 		<span class="tooltip__commitments">{tooltipText}</span>
 	</Tooltip>
-	{#if chartDataTable && chartDataTable.length}
-		<ChartData
-			{type}
-			cumulative={false}
-			data={chartDataTable}
-			visible={showData}
-			on:click={e => {
-				showData = false;
-			}} />
-	{/if}
 </div>

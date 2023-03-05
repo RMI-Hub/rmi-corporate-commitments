@@ -237,18 +237,18 @@
 		{/if}
 		<div class="chart__container" class:hidden={chartHidden} bind:this={container} />
 		<Loading />
+		{#if $chartData?.[type]?.cumulative}
+			<ChartData
+				{type}
+				cumulative={true}
+				data={$chartData[type].cumulative}
+				visible={showData}
+				on:click={e => {
+					showData = false;
+				}} />
+		{/if}
 	</div>
 	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__text">{@html tooltipText}</span>
 	</Tooltip>
-	{#if $chartData?.[type]?.cumulative}
-		<ChartData
-			{type}
-			cumulative={true}
-			data={$chartData[type].cumulative}
-			visible={showData}
-			on:click={e => {
-				showData = false;
-			}} />
-	{/if}
 </div>
