@@ -1,11 +1,11 @@
 import throttle from "lodash.throttle";
 
 function getDataURL() {
-	if (window.location.href.includes("local")) {
+	const { NODE_ENV = "dev" } = process.env;
+	if (NODE_ENV === "true") {
 		return "http://127.0.0.1:5001/rmi-st-corporate-commitments/us-central1/data/";
 	}
-
-	return "TKTK";
+	return "https://us-central1-rmi-st-corporate-commitments.cloudfunctions.net/data";
 }
 
 /**
