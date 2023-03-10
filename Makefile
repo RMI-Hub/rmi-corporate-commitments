@@ -9,7 +9,7 @@ data:
 	mkdir -p public
 	mkdir -p functions/data
 	node ./functions/split-data.js
-	node ./scripts/overall-chart.js
+	node ./functions/overall-chart.js
 
 build:
 	mkdir -p public
