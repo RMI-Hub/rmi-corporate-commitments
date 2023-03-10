@@ -1,5 +1,5 @@
 # Build and deploy the site
-name: Publish app
+name: Publish app and deploy cloud functions
 on:
   workflow_dispatch:
   push:
@@ -49,3 +49,20 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
+          service_account: ${{ secrets.GCP_SVC_ACCT }}
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      - id: "deploy"
+        uses: "google-github-actions/deploy-cloud-functions@v1"
+        with:
+          name: "data"
+          runtime: "nodejs16"
+
+      # Example of using the output
+      - id: "test"
+        run: 'curl "${{ steps.deploy.outputs.url }}"'
