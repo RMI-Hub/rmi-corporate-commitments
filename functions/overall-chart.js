@@ -10,7 +10,7 @@ const path = require("path");
 const { slugify } = require("./utils.js");
 const { processData } = require("./process-data.js");
 const presets = require("../src/config/presets.json");
-let sectors = require("../src/config/sectors.json");
+// let sectors = require("../src/config/sectors.json");
 const sectorLookup = require("../src/config/sectorLookup.json");
 
 async function chart() {
@@ -94,37 +94,6 @@ async function chart() {
 	);
 }
 
-// /**
-//  *
-//  * @param {string} rawData The raw, unparsed CSV
-//  * @returns d {object}
-//  * @returns d.data {object} the processed CSV, with values coerced as needed
-//  */
-// function _(rawData = "", d3 = {}) {
-// 	let data = d3.csvParse(rawData, row => {
-// 		for (let [key, value] of Object.entries(row)) {
-// 			if (!strings.includes(key)) {
-// 				row[key] = +value || null;
-// 			}
-// 		}
-// 		return row;
-// 	});
-
-// 	data = data.map(row => {
-// 		const { baseline } = getEmissionsValues({
-// 			row,
-// 			multipliers: presets.initial.toggles,
-// 		});
-// 		return {
-// 			sector: row.Sector,
-// 			industry: row.Industry,
-// 			year: row.Year,
-// 			baseline,
-// 		};
-// 	});
-
-// 	return { data };
-// }
 if (require.main === module) {
 	chart();
 }
