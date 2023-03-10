@@ -18,6 +18,8 @@ This app uses a Makefile to collect the critical command-line functions in one, 
 3. `make clean`: For when you want a clean slate in the repo. It deletes all generated content and their directories.
 4. `make test`: Runs the complete suite of tests written for this app ... mostly validating the microcopy json files.
 
+Want to start from scratch? Use`make clean data build`.
+
 ## The Data
 
 The data is one giant CSV. It is intended to be processed, sliced and minified by the node script `./scripts/data.js`. The data is split up and written to individual files for each sector and industry. (One sector has multiple industries). Cleanup/processing is pretty minimal, but a few unneeded columns are removed. These CSVs are deployed with the app and intended to be consumed by the client.
