@@ -1,6 +1,7 @@
 # Build and deploy the site
-name: Publish app
+name: Tests and checks
 on:
+  workflow_call:
   workflow_dispatch:
   pull_request:
 
