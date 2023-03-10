@@ -121,7 +121,7 @@ async function generateSectors() {
 	const { csvParse } = await import("d3");
 
 	let [data, sectorMicrocopy] = await Promise.all([
-		fs.readFile(path.join(__dirname, "../src/data/data.csv"), "utf-8").then(csvParse),
+		fs.readFile(path.join(__dirname, "/data.csv"), "utf-8").then(csvParse),
 
 		fs
 			.readFile(path.join(__dirname, "../src/data/sectors.json"), "utf-8")
@@ -150,14 +150,9 @@ async function generateSectors() {
 				delete d["A3ID"];
 				// delete d[Object.keys(d)[0]];
 			}
-
-			return fs
-				.writeFile(
-					path.join(__dirname, `../public/data/${slugify(sector)}.csv`),
-					parse(data),
-					"utf8"
-				)
-				.catch(console.error);
+			const outputPath = path.join(__dirname, `./data/${slugify(sector)}.csv`);
+			console.log(`++ Writing sector ${outputPath}`);
+			return fs.writeFile(outputPath, parse(data), "utf8").catch(console.error);
 		}),
 		Object.entries(industries).map(([industry, data]) => {
 			// Strip unused fields from each sector sheet
@@ -169,13 +164,9 @@ async function generateSectors() {
 				// delete d[Object.keys(d)[0]];
 			}
 
-			return fs
-				.writeFile(
-					path.join(__dirname, `../public/data/${slugify(industry)}.csv`),
-					parse(data),
-					"utf8"
-				)
-				.catch(console.error);
+			const outputPath = path.join(__dirname, `./data/${slugify(industry)}.csv`);
+			console.log(`++ Writing industry ${outputPath}`);
+			return fs.writeFile(outputPath, parse(data), "utf8").catch(console.error);
 		}),
 	]);
 }

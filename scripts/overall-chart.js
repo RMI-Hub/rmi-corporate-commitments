@@ -15,7 +15,7 @@ const sectorLookup = require("../src/config/sectorLookup.json");
 async function chart() {
 	const [d3, rawData] = await Promise.all([
 		import("d3"),
-		fs.readFile(path.resolve(__dirname, "../src/data/data.csv"), "utf8"),
+		fs.readFile(path.resolve(__dirname, "../functions/data.csv"), "utf8"),
 	]);
 	// // Create flat list of industries for the area chart
 	// const industries = sectors.map(s => s[1]).flat(2);
@@ -61,7 +61,6 @@ async function chart() {
 	// This will generate the areas, one per industry
 	const stacker = stack().keys(industries);
 	const s_data = stacker(data);
-	console.log("------------------------");
 
 	// ---- X -------------------------
 	const xScale = scaleTime()
@@ -94,37 +93,37 @@ async function chart() {
 	);
 }
 
-/**
- *
- * @param {string} rawData The raw, unparsed CSV
- * @returns d {object}
- * @returns d.data {object} the processed CSV, with values coerced as needed
- */
-function _(rawData = "", d3 = {}) {
-	let data = d3.csvParse(rawData, row => {
-		for (let [key, value] of Object.entries(row)) {
-			if (!strings.includes(key)) {
-				row[key] = +value || null;
-			}
-		}
-		return row;
-	});
+// /**
+//  *
+//  * @param {string} rawData The raw, unparsed CSV
+//  * @returns d {object}
+//  * @returns d.data {object} the processed CSV, with values coerced as needed
+//  */
+// function _(rawData = "", d3 = {}) {
+// 	let data = d3.csvParse(rawData, row => {
+// 		for (let [key, value] of Object.entries(row)) {
+// 			if (!strings.includes(key)) {
+// 				row[key] = +value || null;
+// 			}
+// 		}
+// 		return row;
+// 	});
 
-	data = data.map(row => {
-		const { baseline } = getEmissionsValues({
-			row,
-			multipliers: presets.initial.toggles,
-		});
-		return {
-			sector: row.Sector,
-			industry: row.Industry,
-			year: row.Year,
-			baseline,
-		};
-	});
+// 	data = data.map(row => {
+// 		const { baseline } = getEmissionsValues({
+// 			row,
+// 			multipliers: presets.initial.toggles,
+// 		});
+// 		return {
+// 			sector: row.Sector,
+// 			industry: row.Industry,
+// 			year: row.Year,
+// 			baseline,
+// 		};
+// 	});
 
-	return { data };
-}
+// 	return { data };
+// }
 
 /**
  *	Util function that takes a string and makes it a nice, slugified version. To do this, we:
