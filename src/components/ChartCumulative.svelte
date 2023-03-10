@@ -1,7 +1,7 @@
 <script>
 	import { tick } from "svelte";
 
-	import { chartData } from "../stores.js";
+	import { chartData, isLoading } from "../stores.js";
 	import { scaleBand, format, scaleLinear, axisBottom, axisLeft, select } from "d3";
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
 	import throttle from "lodash.throttle";
@@ -10,6 +10,7 @@
 	import Tooltip from "./Tooltip.svelte";
 	import ChartHeader from "./ChartHeader.svelte";
 	import X from "../icons/X.svelte";
+	import Loading from "./Loading.svelte";
 
 	// Chart meta
 	export let header = "";
@@ -156,6 +157,7 @@
 						.attr("height", d => canvasHeight - y(d[type]));
 				}
 			);
+		$isLoading = false;
 	}, 500);
 	function mouseover(e, d) {
 		// POSITION IT
@@ -234,18 +236,19 @@
 			</button>
 		{/if}
 		<div class="chart__container" class:hidden={chartHidden} bind:this={container} />
+		<Loading />
+		{#if $chartData?.[type]?.cumulative}
+			<ChartData
+				{type}
+				cumulative={true}
+				data={$chartData[type].cumulative}
+				visible={showData}
+				on:click={e => {
+					showData = false;
+				}} />
+		{/if}
 	</div>
 	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__text">{@html tooltipText}</span>
 	</Tooltip>
-	{#if $chartData?.[type]?.cumulative}
-		<ChartData
-			{type}
-			cumulative={true}
-			data={$chartData[type].cumulative}
-			visible={showData}
-			on:click={e => {
-				showData = false;
-			}} />
-	{/if}
 </div>

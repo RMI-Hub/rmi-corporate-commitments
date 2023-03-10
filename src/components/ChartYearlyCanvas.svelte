@@ -2,7 +2,7 @@
 	// UTILS
 	import { tick } from "svelte";
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
-	import { chartData } from "../stores.js";
+	import { chartData, isLoading } from "../stores.js";
 	import throttle from "lodash.throttle";
 	import {
 		stack,
@@ -21,6 +21,7 @@
 	import ChartData from "./ChartData.svelte";
 	import ChartHeader from "./ChartHeader.svelte";
 	import X from "../icons/X.svelte";
+	import Loading from "./Loading.svelte";
 
 	// Chart meta
 	export let header = "";
@@ -33,6 +34,7 @@
 	let tooltipX = 0;
 	let tooltipY = 0;
 	let tooltipCompany = "A";
+	let DPI = typeof window === "object" ? window.devicePixelRatio : 2;
 
 	// Placeholders, etc. for the chart
 	let container, svg, yAxisG, xAxisG, ticks, paths, canvas, ctx;
@@ -65,7 +67,6 @@
 	const render = throttle((e, force = false) => {
 		const data = $chartData?.[type]?.yearly;
 
-		window.chartData = data;
 		// This won't work if there is not data
 		if (!data) return;
 
@@ -103,10 +104,13 @@
 			canvas = select(container)
 				.append("canvas")
 				.classed("chart__canvas", true)
-				.attr("height", canvasHeight)
-				.attr("width", canvasWidth);
+				.attr("height", canvasHeight * DPI)
+				.attr("width", canvasWidth * DPI)
+				.attr("style", `height:${canvasHeight}px;width:${canvasWidth}px;`);
 
 			ctx = canvas.node().getContext("2d");
+			ctx.scale(DPI, DPI);
+
 			// Grab some style things from the stylesheet
 			const containerStyles = getComputedStyle(container);
 			ctx.fillStyle = containerStyles.getPropertyValue("--color-chart");
@@ -179,6 +183,8 @@
 			.transition()
 			.duration(DURATION)
 			.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
+
+		$isLoading = false;
 	}, 500);
 
 	function mouseover(e, d) {
@@ -269,19 +275,20 @@
 			</button>
 		{/if}
 		<div class="chart__container" class:hidden={chartHidden} bind:this={container} />
+		<Loading />
+		{#if chartDataTable && chartDataTable.length}
+			<ChartData
+				{type}
+				cumulative={false}
+				data={chartDataTable}
+				visible={showData}
+				on:click={e => {
+					showData = false;
+				}} />
+		{/if}
 	</div>
 	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__name">{tooltipCompany}</span>
 		<span class="tooltip__commitments">{tooltipText}</span>
 	</Tooltip>
-	{#if chartDataTable && chartDataTable.length}
-		<ChartData
-			{type}
-			cumulative={false}
-			data={chartDataTable}
-			visible={showData}
-			on:click={e => {
-				showData = false;
-			}} />
-	{/if}
 </div>

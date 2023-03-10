@@ -27,6 +27,14 @@
 		width: 100%;
 		height: 100%;
 		overflow: scroll;
+		z-index: 125;
+	}
+
+	@supports (backdrop-filter: blur(6px)) {
+		.data {
+			backdrop-filter: blur(6px);
+			background-color: rgba(255, 255, 255, 0.85);
+		}
 	}
 
 	.data__table {

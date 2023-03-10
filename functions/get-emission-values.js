@@ -7,7 +7,7 @@
  *
  * @returns {object} The values {target, baseline} for that company in that year
  */
-export function getEmissionsValues({ row = {}, multipliers = {} }) {
+function getEmissionsValues({ row = {}, multipliers = {} }) {
 	const {
 		scope = "Scope 1",
 		sector_emission_intensity = "Min",
@@ -204,3 +204,4 @@ export function getEmissionsValues({ row = {}, multipliers = {} }) {
 
 	return { baseline, target };
 }
+module.exports = { getEmissionsValues };

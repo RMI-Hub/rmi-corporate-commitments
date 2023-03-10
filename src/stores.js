@@ -15,3 +15,6 @@ export const multipliers = writable(initial.toggles);
 
 // A boolean that lets us know if the current configuration is a preset (true), or if it includes any user configuration (false)
 export const isPreset = writable(true);
+
+// Are we actively waiting for data?
+export const isLoading = writable(false);
