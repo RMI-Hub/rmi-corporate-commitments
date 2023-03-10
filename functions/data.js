@@ -191,4 +191,4 @@ const data = throttle(
 	{ leading: true }
 );
 
-module.exports = { data };
+module.exports = { data, getYearlyMax };
