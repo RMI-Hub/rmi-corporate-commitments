@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: "16"
       - name: Install dependencies
-        run: npm ci
+        run: make install
       - name: "Process data"
         run: make data
       - name: "Tests"
@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: "16"
       - name: Install dependencies
-        run: npm ci
+        run: make install
       - name: Update and process data
         run: make data
       - name: Generate bundled files

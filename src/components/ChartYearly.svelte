@@ -21,6 +21,7 @@
 	import ChartData from "./ChartData.svelte";
 	import ChartHeader from "./ChartHeader.svelte";
 	import X from "../icons/X.svelte";
+	import Loading from "./Loading.svelte";
 
 	// Chart meta
 	export let header = "";
@@ -150,7 +151,6 @@
 			.x(d => xScale(d.data.year))
 			.y0(d => yScale(d[0]))
 			.y1(d => yScale(d[1]));
-		console.log("stackedData (vector)", stackedData);
 
 		paths
 			.selectAll(".path")
@@ -165,7 +165,6 @@
 			.transition()
 			.duration(DURATION)
 			.attr("d", d => {
-				// console.log({ d });
 				return areaGenerator(d);
 			});
 
@@ -258,6 +257,7 @@
 			</button>
 		{/if}
 		<div class="chart__container" class:hidden={chartHidden} bind:this={container} />
+		<Loading />
 	</div>
 	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__name">{tooltipCompany}</span>

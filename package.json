@@ -34,10 +34,12 @@
 		"build": "rollup -c",
 		"autobuild": "rollup -c -w",
 		"dev": "run-p start:dev autobuild",
-		"start": "sirv public --single",
-		"start:dev": "sirv public --single --dev",
+		"start": "sirv public --single --cors",
+		"start:dev": "sirv public --single --dev --cors",
 		"static": "mkdir -p ./public && cp -rf src/static/* public/",
-		"test": "node --test"
+		"test": "node --test",
+		"firebase": "firebase emulators:start",
+		"firebase:dev": "run-p autobuild firebase"
 	},
 	"browserslist": "> 0.25%, not dead"
 }
