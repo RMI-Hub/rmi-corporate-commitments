@@ -57,14 +57,14 @@ jobs:
         with:
           name: "data"
           runtime: "nodejs16"
+      # Example of using the output
+      - id: "test"
+        run: 'curl "${{ steps.deploy.outputs.url }}"'
 
   deploy_github_pages:
     needs: [test, build]
     runs-on: [ubuntu-latest]
     steps:
-      # Example of using the output
-      - id: "test"
-        run: 'curl "${{ steps.deploy.outputs.url }}"'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
