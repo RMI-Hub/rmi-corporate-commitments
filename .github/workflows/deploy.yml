@@ -25,7 +25,7 @@ jobs:
     name: Test
     uses: ./.github/workflows/test.yml
     secrets: inherit
-  build_and_deploy:
+  build:
     needs: [test]
     runs-on: [ubuntu-latest]
     steps:
@@ -41,15 +41,10 @@ jobs:
         run: make data
       - name: Generate bundled files
         run: make build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          # Upload entire repository
-          path: "public"
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
-
+  deploy_cloud_functions:
+    needs: [test, build]
+    runs-on: [ubuntu-latest]
+    steps:
       - id: "auth"
         uses: "google-github-actions/auth@v1"
         with:
@@ -63,6 +58,18 @@ jobs:
           name: "data"
           runtime: "nodejs16"
 
-      # Example of using the output
-      - id: "test"
-        run: 'curl "${{ steps.deploy.outputs.url }}"'
+    deploy_github_pages:
+      needs: [test, build]
+      runs-on: [ubuntu-latest]
+      steps:
+        # Example of using the output
+        - id: "test"
+          run: 'curl "${{ steps.deploy.outputs.url }}"'
+        - name: Upload artifact
+          uses: actions/upload-pages-artifact@v1
+          with:
+            # Upload entire repository
+            path: "public"
+        - name: Deploy to GitHub Pages
+          id: deployment
+          uses: actions/deploy-pages@v1
