@@ -14,6 +14,7 @@
 		area,
 		select,
 		curveCardinal,
+		stackOrderAscending,
 	} from "d3";
 
 	// COMPONENTS
@@ -137,7 +138,7 @@
 				.attr("transform", `translate(${MARGINS.left}, ${MARGINS.top + canvasHeight})`);
 		}
 
-		const stackedData = stack().keys(companies)(data);
+		const stackedData = stack().keys(companies).order(stackOrderAscending)(data);
 
 		// console.log("stackedData (canvas)", stackedData);
 		const xScale = scaleTime()
@@ -165,8 +166,6 @@
 			.y1(d => yScale(d[1]))
 			.context(ctx);
 
-		// ctx.fillStyle = "#ffffff";
-		// ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		stackedData.forEach((d, i) => {
 			ctx.beginPath();
