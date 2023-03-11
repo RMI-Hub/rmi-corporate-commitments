@@ -10,10 +10,10 @@ defaults:
     shell: bash
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+# permissions:
+#   contents: read
+#   pages: write
+#   id-token: write
 
 # Allow one concurrent deployment
 concurrency:
@@ -27,23 +27,54 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
+          cache: "npm"
           node-version: "16"
+
+      # Cache node modules for use later
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            ./node_modules
+            ./functions/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: List the state of node modules
+        if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
+        continue-on-error: true
+        run: make install
+
       - name: Install dependencies
         run: make install
-      - name: "Process data"
+
+      - name: Update and process data
         run: make data
-      - name: "Tests"
+
+      - name: Tests
         run: make test
+
   test_build:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
+          cache: "npm"
           node-version: "16"
-      - name: Install dependencies
-        run: make install
+
+      # Restore node_modules from previous job in this workflow run
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            ./node_modules
+            ./functions/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      # - name: Install dependencies
+      #   run: make install
       - name: Update and process data
         run: make data
+
       - name: Generate bundled files
         run: make build
