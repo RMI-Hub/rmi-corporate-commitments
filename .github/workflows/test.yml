@@ -25,10 +25,12 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
+        with:
+          lfs: true
       - uses: actions/setup-node@v3
         with:
-          cache: "npm"
-          node-version: "16"
+          cache: npm
+          node-version: 16
 
       # Cache node modules for use later
       - uses: actions/cache@v3
@@ -49,10 +51,13 @@ jobs:
     needs: [install]
     steps:
       - uses: actions/checkout@v3
+        with:
+          lfs: true
+
       - uses: actions/setup-node@v3
         with:
           cache: "npm"
-          node-version: "16"
+          node-version: 16
 
       # Cache node modules for use later
       - uses: actions/cache@v3
@@ -74,10 +79,13 @@ jobs:
     needs: [install]
     steps:
       - uses: actions/checkout@v3
+        with:
+          lfs: true
+
       - uses: actions/setup-node@v3
         with:
           cache: "npm"
-          node-version: "16"
+          node-version: 16
 
       # Restore node_modules from previous job in this workflow run
       - uses: actions/cache@v3
