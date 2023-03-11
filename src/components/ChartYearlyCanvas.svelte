@@ -166,12 +166,21 @@
 			.y1(d => yScale(d[1]))
 			.context(ctx);
 
+		// We want to cycle through these colors. They do not convey data, but are used to add
+		// visual clarity to the chart.
+		const colors = ["#113c63", "#00a091", "#55c4c5", "#3c7438", "#55a646", "#9caf3b"];
+		let colorCounter = 0;
+
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		stackedData.forEach((d, i) => {
+			ctx.fillStyle = colors[colorCounter];
 			ctx.beginPath();
 			areaGenerator(d);
 			ctx.fill();
 			ctx.stroke();
+
+			// If we are at the last color, then reset our color counter. Otherwise, increment it.
+			colorCounter = colorCounter === colors.length - 1 ? 0 : colorCounter + 1;
 		});
 
 		// Update Axes
@@ -186,21 +195,21 @@
 		$isLoading = false;
 	}, 500);
 
-	function mouseover(e, d) {
-		tooltipCompany = d.key;
-		tooltipHidden = false;
-		this.classList.add("highlight");
-	}
+	// function mouseover(e, d) {
+	// 	tooltipCompany = d.key;
+	// 	tooltipHidden = false;
+	// 	this.classList.add("highlight");
+	// }
 
-	const mousemove = e => {
-		const { clientX, clientY } = e;
-		tooltipX = clientX;
-		tooltipY = clientY;
-	};
-	function mouseleave(e) {
-		tooltipHidden = true;
-		this.classList.remove("highlight");
-	}
+	// const mousemove = e => {
+	// 	const { clientX, clientY } = e;
+	// 	tooltipX = clientX;
+	// 	tooltipY = clientY;
+	// };
+	// function mouseleave(e) {
+	// 	tooltipHidden = true;
+	// 	this.classList.remove("highlight");
+	// }
 </script>
 
 <style>
