@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  data_validation:
+  install:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
@@ -44,8 +44,29 @@ jobs:
         continue-on-error: true
         run: make install
 
-      - name: Install dependencies
-        run: make install
+  data_validation:
+    runs-on: [ubuntu-latest]
+    needs: [install]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: "npm"
+          node-version: "16"
+
+      # Cache node modules for use later
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            ./node_modules
+            ./functions/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      # - name: Install if needed
+      #   if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
+      #   continue-on-error: true
+      #   run: make install
 
       - name: Update and process data
         run: make data
@@ -55,6 +76,7 @@ jobs:
 
   test_build:
     runs-on: [ubuntu-latest]
+    needs: [install]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -71,10 +93,10 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install if needed
-        if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
-        continue-on-error: true
-        run: make install
+      # - name: Install if needed
+      #   if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
+      #   continue-on-error: true
+      #   run: make install
 
       - name: Update and process data
         run: make data
