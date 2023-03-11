@@ -14,7 +14,7 @@
 		area,
 		select,
 		curveCardinal,
-		stackOrderAscending,
+		stackOrderDescending,
 	} from "d3";
 
 	// COMPONENTS
@@ -138,7 +138,12 @@
 				.attr("transform", `translate(${MARGINS.left}, ${MARGINS.top + canvasHeight})`);
 		}
 
-		const stackedData = stack().keys(companies).order(stackOrderAscending)(data);
+		const stackedData = stack()
+			.keys(companies)
+			.order(stackOrderDescending)(data)
+			.sort((a, b) => {
+				return a[0][1] > b[0][1] ? 1 : 0;
+			});
 
 		// console.log("stackedData (canvas)", stackedData);
 		const xScale = scaleTime()
@@ -171,13 +176,14 @@
 		const colors = ["#113c63", "#00a091", "#55c4c5", "#3c7438", "#55a646", "#9caf3b"];
 		let colorCounter = 0;
 
+		console.log({ stackedData });
+
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		stackedData.forEach((d, i) => {
 			ctx.fillStyle = colors[colorCounter];
 			ctx.beginPath();
 			areaGenerator(d);
 			ctx.fill();
-			ctx.stroke();
 
 			// If we are at the last color, then reset our color counter. Otherwise, increment it.
 			colorCounter = colorCounter === colors.length - 1 ? 0 : colorCounter + 1;
