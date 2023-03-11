@@ -7,16 +7,21 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const fs = require("fs/promises");
 const path = require("path");
-const { slugify } = require("./utils.js");
+const { slugify } = require("./slugify.js");
 const { processData } = require("./process-data.js");
-const presets = require("../src/config/presets.json");
-// let sectors = require("../src/config/sectors.json");
-const sectorLookup = require("../src/config/sectorLookup.json");
+const presets = require("../../src/config/presets.json");
+const sectorLookup = require("../../src/config/sectorLookup.json");
+
+/**
+ * 	Primary function to pre-render a static SVG area chart of our entire dataset. Writes the file to `./src` for inclusion with the dashboard
+ *
+ * @returns Promise<SVG>
+ */
 
 async function chart() {
 	const [d3, rawData] = await Promise.all([
 		import("d3"),
-		fs.readFile(path.resolve(__dirname, "../functions/data.csv"), "utf8"),
+		fs.readFile(path.resolve(__dirname, "../data.csv"), "utf8"),
 	]);
 	// // Create flat list of industries for the area chart
 	// const industries = sectors.map(s => s[1]).flat(2);
@@ -88,7 +93,7 @@ async function chart() {
 		.attr("d", areaGenerator);
 
 	return fs.writeFile(
-		path.resolve(__dirname, "../src/icons/chart-overall.svg"),
+		path.join(__dirname, "../../src/icons/chart-overall.svg"),
 		body.html(),
 		"utf8"
 	);

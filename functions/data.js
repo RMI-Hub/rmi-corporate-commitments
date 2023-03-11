@@ -1,44 +1,50 @@
 const throttle = require("lodash.throttle");
 const groupBy = require("lodash.groupby");
-const { getEmissionsValues } = require("./get-emission-values.js");
+const { getEmissionsValues } = require("./utils/get-emission-values.js");
+const { getYearlyMax } = require("./utils/get-yearly-max.js");
 const fs = require("fs/promises");
 const path = require("path");
 
 // THis is our data cache
 const sectors = new Map();
 
-/**
- *
- * Takes our two data sets and convers them into a stack, so we can get the overall domain and set each chart to the same scale
- * @param {*} target
- * @param {*} baseline
- * @param {*} companies
- * @returns
- */
-async function getYearlyMax(target, baseline, companies) {
-	const { stack, max } = await import("d3");
-	let maxValue = 0;
-	const stacker = stack().keys(companies);
-	for (let d of [target.yearly, baseline.yearly]) {
-		const s_data = stacker(d);
-		maxValue = Math.max(
-			maxValue,
-			max(s_data[s_data.length - 1], d => d[1])
-		);
-	}
-	// Nudge the max value a little higher so the scale definitely encapsulates it
-	return maxValue * 1.1;
-}
+// /**
+//  *
+//  * Takes our two data sets and convers them into a stack, so we can get the overall domain and set each chart to the same scale
+//  * @param {*} target
+//  * @param {*} baseline
+//  * @param {*} companies
+//  * @returns
+//  */
+// async function getYearlyMax(target, baseline, companies) {
+// 	const { stack, max } = await import("d3");
+// 	let maxValue = 0;
+// 	const stacker = stack().keys(companies);
+// 	for (let d of [target.yearly, baseline.yearly]) {
+// 		const s_data = stacker(d);
+// 		maxValue = Math.max(
+// 			maxValue,
+// 			max(s_data[s_data.length - 1], d => d[1])
+// 		);
+// 	}
+// 	// Nudge the max value a little higher so the scale definitely encapsulates it
+// 	return maxValue * 1.1;
+// }
 
 /**
- * Looks at the `activeSector` and loads the appropriate data file from our cache. If the data is not in the cache,
- * then it goes and gets it. This function is throttle to once every 250ms.
+ * THIS IS THE MAIN THING FOR THE CLOUD FUNCTIONS. THIS PARENT FUNCTION WILL GRAB
+ * RAW DATA AND CREATE SOMETHING CHARTABLE.
+ *
+ * Looks at the `activeSector` and loads the appropriate data file from our cache.
+ * If the data is not in the cache, then it goes and gets it. This function
+ * is throttle to once every 250ms.
  */
 const data = throttle(
 	async ({ activeSector, multipliers = DEFAULT_MULTIPLIERS }) => {
 		return new Promise(async (resolve, reject) => {
 			// Get D3
-			const { csvParse } = await import("d3");
+			const d3 = await import("d3");
+			const { csvParse } = d3;
 
 			// Check the cache for our data, or fetch it.
 			let sectorData;
@@ -176,7 +182,7 @@ const data = throttle(
 				}),
 			};
 
-			const yearly_max = await getYearlyMax(target, baseline, companies);
+			const yearly_max = await getYearlyMax(target, baseline, companies, d3, false);
 
 			resolve({
 				cumulative_domain,
@@ -191,4 +197,4 @@ const data = throttle(
 	{ leading: true }
 );
 
-module.exports = { data, getYearlyMax };
+module.exports = { data };

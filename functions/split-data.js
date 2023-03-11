@@ -2,7 +2,7 @@ const fs = require("node:fs/promises");
 const path = require("node:path");
 const { parse } = require("json2csv");
 const groupBy = require("lodash.groupby");
-const { slugify } = require("./utils.js");
+const { slugify } = require("./utils/slugify.js");
 
 async function getCompanies(data) {
 	// Generate a list of our unique company names
