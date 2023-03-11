@@ -63,11 +63,6 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      # - name: Install if needed
-      #   if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
-      #   continue-on-error: true
-      #   run: make install
-
       - name: Update and process data
         run: make data
 
@@ -92,11 +87,6 @@ jobs:
             ./node_modules
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      # - name: Install if needed
-      #   if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
-      #   continue-on-error: true
-      #   run: make install
 
       - name: Update and process data
         run: make data
