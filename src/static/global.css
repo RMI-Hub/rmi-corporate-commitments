@@ -9,8 +9,10 @@
 	--color-gray-very-light: #eee;
 	--color-apricot-light: #f7f3ee;
 	--color-blue-baby: #90ddf0;
-	--color-blue-dark: #003b63;
-	--color-blue-medium: #87a3b6;
+	/* --color-blue-dark: #003b63; */
+	--color-blue-dark: #113c63;
+	/* --color-blue-medium: #87a3b6; */
+	--color-blue-medium: #55c4c5;
 	--color-green: #2c666e;
 	--color-purple: #7f7caf;
 	--color-red: #b42e34;
@@ -22,8 +24,8 @@
 	--color-accent: var(--color-blue-dark);
 	--color-accent-text: var(--color-white);
 	--color-background-controls: var(--color-gray-light);
-	--color-chart: var(--color-blue-medium);
-	--color-chart-highlight: var(--color-blue-dark);
+	--color-chart: var(--color-blue-dark);
+	--color-chart-highlight: var(--color-blue-medium);
 
 	/* TYPE */
 
