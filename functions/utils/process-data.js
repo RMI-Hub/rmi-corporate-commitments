@@ -1,15 +1,15 @@
 const groupBy = require("lodash.groupby");
 const { getEmissionsValues } = require("./get-emission-values.js");
-let sectors = require("../src/config/sectors.json");
+let sectors = require("../../src/config/sectors.json");
 
-// /**
-//  *
-//  * Takes our two data sets and convers them into a stack, so we can get the overall domain and set each chart to the same scale
-//  * @param {*} target
-//  * @param {*} baseline
-//  * @param {*} industries
-//  * @returns
-//  */
+/**
+ *
+ * Takes our two data sets and convers them into a stack, so we can get the overall domain and set each chart to the same scale
+ * @param {*} target
+ * @param {*} baseline
+ * @param {*} industries
+ * @returns
+ */
 function getYearlyMax(target, baseline, industries, d3) {
 	const { stack, max } = d3;
 	let maxValue = 0;
@@ -28,8 +28,9 @@ function getYearlyMax(target, baseline, industries, d3) {
 }
 
 /**
- * Looks at the `activeSector` and loads the appropriate data file from our cache. If the data is not in the cache,
- * then it goes and gets it. This function is throttle to once every 250ms.
+ * This is a modified version of our primary `data()` function. It's tweaked to handle the entire universe
+ * of data. It returns a data object suitable for charting as our static overall chart.
+ *
  */
 function processData(rawData, multipliers = {}, d3) {
 	const strings = ["A3ID", "Company", "Sector", "Industry", "Year", "Company Type"];
@@ -146,7 +147,7 @@ function processData(rawData, multipliers = {}, d3) {
 		}),
 	};
 
-	const yearly_max = getYearlyMax(target, baseline, industries, d3);
+	const yearly_max = getYearlyMax(target, baseline, industries, d3, true);
 	return {
 		// cumulative_domain,
 		// target,

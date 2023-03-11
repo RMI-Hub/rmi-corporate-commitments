@@ -9,7 +9,7 @@ data:
 	mkdir -p public
 	mkdir -p functions/data
 	node ./functions/split-data.js
-	node ./functions/overall-chart.js
+	node ./functions/utils/overall-chart.js
 
 build:
 	mkdir -p public
@@ -17,7 +17,7 @@ build:
 	npm run build
 
 overall:
-	node ./scripts/overall-chart.js
+	node ./functions/utils/overall-chart.js
 
 clean:
 	# Removes all generated stuff
