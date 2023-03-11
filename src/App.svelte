@@ -4,7 +4,6 @@
 	import Toggles from "./components/Toggles.svelte";
 	import Intro from "./components/Intro.svelte";
 	import PickerSector from "./components/PickerSector.svelte";
-	import ChartYearly from "./components/ChartYearly.svelte";
 	import ChartYearlyCanvas from "./components/ChartYearlyCanvas.svelte";
 	import ChartCumulative from "./components/ChartCumulative.svelte";
 
@@ -82,7 +81,7 @@
 			height: 98vh;
 			min-height: 800px;
 			grid-template-columns: var(--controls-width) repeat(2, minmax(1px, 1fr));
-			grid-template-rows: auto repeat(2, minmax(1px, 1fr)) auto;
+			grid-template-rows: auto minmax(1px, 4fr) minmax(1px, 3fr) auto;
 		}
 
 		.sector-heading {
