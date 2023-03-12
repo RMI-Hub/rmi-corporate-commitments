@@ -25,27 +25,6 @@ jobs:
     name: Test
     uses: ./.github/workflows/test.yml
     secrets: inherit
-
-  # deploy_cloud_functions:
-  #   needs: [test, build]
-  #   runs-on: [ubuntu-latest]
-  #   steps:
-  #     - id: "auth"
-  #       uses: "google-github-actions/auth@v1"
-  #       with:
-  #         # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
-  #         service_account: ${{ secrets.GCP_SVC_ACCT }}
-  #         credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-
-  #     - id: "deploy"
-  #       uses: "google-github-actions/deploy-cloud-functions@v1"
-  #       with:
-  #         name: "data"
-  #         runtime: "nodejs16"
-  #     # Example of using the output
-  #     - id: "test"
-  #       run: 'curl "${{ steps.deploy.outputs.url }}"'
-
   build:
     needs: [test]
     runs-on: [ubuntu-latest]
@@ -109,12 +88,11 @@ jobs:
             src/icons/chart-overall.svg
           key: ${{ runner.os }}-build-${{ hashFiles('./functions/data.csv') }}
 
-      - name: Check for cache
+      - name: Generate files
         if: ${{ steps.data-cache.outputs.cache-hit != 'true' }}
         continue-on-error: true
         run: |
-          echo "No cache hit"
-          ls .
+          make build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
@@ -125,3 +103,23 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
+
+    # deploy_cloud_functions:
+    #   needs: [test, build]
+    #   runs-on: [ubuntu-latest]
+    #   steps:
+    #     - id: "auth"
+    #       uses: "google-github-actions/auth@v1"
+    #       with:
+    #         # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
+    #         service_account: ${{ secrets.GCP_SVC_ACCT }}
+    #         credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+    #     - id: "deploy"
+    #       uses: "google-github-actions/deploy-cloud-functions@v1"
+    #       with:
+    #         name: "data"
+    #         runtime: "nodejs16"
+    #     # Example of using the output
+    #     - id: "test"
+    #       run: 'curl "${{ steps.deploy.outputs.url }}"'
