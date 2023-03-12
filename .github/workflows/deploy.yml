@@ -68,7 +68,7 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
-      - Name: Generate
+      - name: Generate
         run: make data
 
       - name: Build
