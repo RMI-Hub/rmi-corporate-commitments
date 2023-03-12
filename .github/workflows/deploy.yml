@@ -25,33 +25,6 @@ jobs:
     name: Test
     uses: ./.github/workflows/test.yml
     secrets: inherit
-  build:
-    needs: [test]
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          lfs: true
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: npm
-
-      # Cache node modules for use later
-      - uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: |
-            ./node_modules
-            ./functions/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Update and process data
-        run: make data
-
-      - name: Generate bundled files
-        run: make build
 
   # deploy_cloud_functions:
   #   needs: [test, build]
@@ -73,15 +46,52 @@ jobs:
   #     - id: "test"
   #       run: 'curl "${{ steps.deploy.outputs.url }}"'
 
-  # deploy_github_pages:
-  #   needs: [test, build]
-  #   runs-on: [ubuntu-latest]
-  #   steps:
-  #     - name: Upload artifact
-  #       uses: actions/upload-pages-artifact@v1
-  #       with:
-  #         # Upload entire repository
-  #         path: "public"
-  #     - name: Deploy to GitHub Pages
-  #       id: deployment
-  #       uses: actions/deploy-pages@v1
+  deploy_github_pages:
+    needs: [test]
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v3
+        with:
+          cache: npm
+          node-version: 16
+
+      # - name: Restore cached node modules
+      #   id: npm-cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: |
+      #       ./node_modules
+      #       ./functions/node_modules
+      #     key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Restore the cached data
+        id: data-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./functions/data/*
+            ./public/*
+            ./src/config/*
+            ./src/icons/chart-overall.svg
+          key: ${{ runner.os }}-build-${{ hashFiles('./functions/*') }}
+
+      - name: Check for cache
+        if: ${{ steps.data-cache.outputs.cache-hit != 'true' }}
+        continue-on-error: true
+        run: |
+          echo "No cache hit"
+          ls .
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: "public"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

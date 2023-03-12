@@ -74,17 +74,6 @@ jobs:
       - name: Tests
         run: make test
 
-      - name: Cache the generated files
-        id: data-cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./functions/data/*
-            ./public/*
-            ./src/config/*
-            ./src/icons/chart-overall.svg
-          key: ${{ runner.os }}-build-${{ hashFiles('./functions/*') }}
-
   test_build:
     runs-on: [ubuntu-latest]
     needs: [install]
@@ -108,7 +97,7 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Restore the cached data
+      - name: Cache generated files
         id: data-cache
         uses: actions/cache@v3
         with:
@@ -118,13 +107,6 @@ jobs:
             ./src/config/*
             ./src/icons/chart-overall.svg
           key: ${{ runner.os }}-build-${{ hashFiles('./functions/*') }}
-
-      - name: Check for cache
-        if: ${{ steps.data-cache.outputs.cache-hit != 'true' }}
-        continue-on-error: true
-        run: |
-          echo "No cache hit"
-          ls .
 
       - name: Generate bundled files
         run: make build
