@@ -32,14 +32,14 @@ jobs:
           cache: npm
           node-version: 16
 
-      # Cache node modules for use later
-      - uses: actions/cache@v3
+      - name: Cache node modules
         id: npm-cache
+        uses: actions/cache@v3
         with:
           path: |
             ./node_modules
             ./functions/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install if needed
         if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
@@ -59,20 +59,31 @@ jobs:
           cache: "npm"
           node-version: 16
 
-      # Cache node modules for use later
       - uses: actions/cache@v3
+        name: Restore the node modules from cache
         id: npm-cache
         with:
           path: |
             ./node_modules
             ./functions/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
       - name: Update and process data
         run: make data
 
       - name: Tests
         run: make test
+
+      - name: Cache the generated files
+        id: data-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./functions/data
+            ./public
+            ./src/config
+            ./src/icons/chart-overall.svg
+          key: ${{ runner.os }}-build-${{ hashFiles('./functions/*') }}
 
   test_build:
     runs-on: [ubuntu-latest]
@@ -89,15 +100,27 @@ jobs:
 
       # Restore node_modules from previous job in this workflow run
       - uses: actions/cache@v3
+        name: Restore the cached node modules
         id: npm-cache
         with:
           path: |
             ./node_modules
             ./functions/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Update and process data
-        run: make data
+      - name: Restore the cached data
+        id: data-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./functions/data
+            ./public
+            ./src/config
+            ./src/icons/chart-overall.svg
+          key: ${{ runner.os }}-build-${{ hashFiles('./functions/*') }}
+
+      # - name: Update and process data
+      #   run: make data
 
       - name: Generate bundled files
         run: make build
