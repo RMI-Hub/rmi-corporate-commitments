@@ -97,6 +97,14 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Generate data and related files
+        run: make data
+
+      - name: Generate bundled files
+        run: make build
+
+      # We have generated the needed files a couple times already, but let's use _this_
+      # version in subsequent jobs (mostly for deployment)
       - name: Cache generated files
         id: data-cache
         uses: actions/cache@v3
@@ -107,6 +115,3 @@ jobs:
             ./src/config/*
             ./src/icons/chart-overall.svg
           key: ${{ runner.os }}-build-${{ hashFiles('./functions/*') }}
-
-      - name: Generate bundled files
-        run: make build
