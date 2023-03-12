@@ -79,9 +79,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ./functions/data
-            ./public
-            ./src/config
+            ./functions/data/*
+            ./public/*
+            ./src/config/*
             ./src/icons/chart-overall.svg
           key: ${{ runner.os }}-build-${{ hashFiles('./functions/*') }}
 
@@ -113,14 +113,18 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ./functions/data
-            ./public
-            ./src/config
+            ./functions/data/*
+            ./public/*
+            ./src/config/*
             ./src/icons/chart-overall.svg
           key: ${{ runner.os }}-build-${{ hashFiles('./functions/*') }}
 
-      # - name: Update and process data
-      #   run: make data
+      - name: Check for cache
+        if: ${{ steps.data-cache.outputs.cache-hit != 'true' }}
+        continue-on-error: true
+        run: |
+          echo "No cache hit"
+          ls .
 
       - name: Generate bundled files
         run: make build
