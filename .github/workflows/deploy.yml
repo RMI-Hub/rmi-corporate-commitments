@@ -46,7 +46,7 @@ jobs:
   #     - id: "test"
   #       run: 'curl "${{ steps.deploy.outputs.url }}"'
 
-  deploy_github_pages:
+  build:
     needs: [test]
     runs-on: [ubuntu-latest]
     steps:
@@ -59,16 +59,22 @@ jobs:
           cache: npm
           node-version: 16
 
-      # - name: Restore cached node modules
-      #   id: npm-cache
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: |
-      #       ./node_modules
-      #       ./functions/node_modules
-      #     key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+      - name: Restore cached node modules
+        id: npm-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./node_modules
+            ./functions/node_modules
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Restore the cached data
+      - Name: Generate
+        run: make data
+
+      - name: Build
+        run: make build
+
+      - name: Cache for later use
         id: data-cache
         uses: actions/cache@v3
         with:
@@ -77,7 +83,31 @@ jobs:
             ./public/*
             ./src/config/*
             ./src/icons/chart-overall.svg
-          key: ${{ runner.os }}-build-${{ hashFiles('./functions/*') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('./functions/data.csv') }}
+
+  deploy_github_pages:
+    needs: [test, build]
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v3
+        with:
+          cache: npm
+          node-version: 16
+
+      - name: Restore the cached data
+        id: data-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            functions/data/*
+            public/*
+            src/config/*
+            src/icons/chart-overall.svg
+          key: ${{ runner.os }}-build-${{ hashFiles('./functions/data.csv') }}
 
       - name: Check for cache
         if: ${{ steps.data-cache.outputs.cache-hit != 'true' }}
