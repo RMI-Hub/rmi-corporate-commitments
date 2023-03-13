@@ -1,8 +1,6 @@
 {
 	"headline": "Corporate Commitments and Emissions Explorer",
-	"intro": "Use this tool to see how nearly 7,000 companies across 14 sectors can help drive climate transitions. This visual uses data derived from self-reported emissions data provided by CDP and publicly accessible data on commitments and economic indicators. 
- 
-	For further information about our methods please see [documentation here](https://www.rmi.org).",
+	"intro": "Use this tool to see how nearly 7,000 companies across 14 sectors can help drive climate transitions. This visual uses data derived from self-reported emissions data provided by CDP and publicly accessible data on commitments and economic indicators. \n For further information about our methods please see [documentation here](https://www.rmi.org).",
 	"togglesMicrocopy": {
 		"togglesLabel": "Explore",
 		"togglesDescription": "Create your own scenarios with these controls."
@@ -28,11 +26,11 @@
 		"target": {
 			"yearly": {
 				"header": "Cumulative baseline emissions",
-				"definition": "If companies in this sector continue to emit at current rates, we estimate that cumulative emissions will continue to increase following this trajectory. We account for emissions starting in 2019. Cumulative, rather than annual, emissions are what matter for climate change mitigation. This is why the most important year to reduce emissions is this year [link to https://rmi.org/what-is-needed-to-meet-us-climate-commitments/]."
+				"definition": "If companies in this sector continue to emit at current rates, we estimate that cumulative emissions will continue to increase following this trajectory. We account for emissions starting in 2019. Cumulative, rather than annual, emissions are what matter for climate change mitigation. This is why the most important year to reduce emissions is (this year)[https://rmi.org/what-is-needed-to-meet-us-climate-commitments/]."
 			},
 			"cumulative": {
 				"header": "Cumulative target emmissions",
-				"definition": "According to current corporate targets and toggles selected, we estimate that cumulative emissions from this sector may follow this trajectory. We account for emissions starting in 2019. Cumulative, rather than annual, emissions are what matter for climate change mitigation. This is why the most important year to reduce emissions is this year [link to https://rmi.org/what-is-needed-to-meet-us-climate-commitments/]."
+				"definition": "According to current corporate targets and toggles selected, we estimate that cumulative emissions from this sector may follow this trajectory. We account for emissions starting in 2019. Cumulative, rather than annual, emissions are what matter for climate change mitigation. This is why the most important year to reduce emissions is (this year)[https://rmi.org/what-is-needed-to-meet-us-climate-commitments/]."
 			}
 		}
 	}
