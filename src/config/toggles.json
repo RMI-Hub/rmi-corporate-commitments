@@ -2,7 +2,7 @@
 	{
 		"id": "scope",
 		"label": "Scope",
-		"definition": "Set the emissions scope to be illustrated in the visual. Scope 1 emissions are direct emissions from operations. Scope 2 emissions are indirect emissions attributed to energy consumption. This dataset does not include scope 3 emissions. More information on emissions scopes can be found here: [link to https://rmi.org/wp-content/uploads/2022/02/reimagining_greenhouse_gas_disclosures.pdf]",
+		"definition": "Set the emissions scope to be illustrated in the visual. Scope 1 emissions are direct emissions from operations. Scope 2 emissions are indirect emissions attributed to energy consumption. This dataset does not include scope 3 emissions. More information on emissions scopes can be found (here)[https://rmi.org/wp-content/uploads/2022/02/reimagining_greenhouse_gas_disclosures.pdf].",
 		"buttons": [
 			{ "text": "Scope 1", "value": "Scope 1" },
 			{ "text": "Scope 2", "value": "Scope 2" },
@@ -22,7 +22,7 @@
 	{
 		"id": "agr",
 		"label": "Annual revenue growth",
-		"definition": "Set the annual revenue growth rate for each company to the historical sectoral growth rate of the S&P500 Index (reflecting years 2018-2019) or the historical industry growth rate of companies (reflecting years 2015-2019), sourced from NYU Stern School of Business (link here: https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histgr.html)",
+		"definition": "Set the annual revenue growth rate for each company to the historical sectoral growth rate of the S&P500 Index (reflecting years 2018-2019) or the historical industry growth rate of companies (reflecting years 2015-2019), sourced from (NYU Stern School of Business)[https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histgr.html].",
 		"buttons": [
 			{ "text": "S&P", "value": "S&P" },
 			{
