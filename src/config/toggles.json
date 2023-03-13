@@ -2,7 +2,7 @@
 	{
 		"id": "scope",
 		"label": "Scope",
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"definition": "Set the emissions scope to be illustrated in the visual. Scope 1 emissions are direct emissions from operations. Scope 2 emissions are indirect emissions attributed to energy consumption. This dataset does not include scope 3 emissions. More information on emissions scopes can be found here: [link to https://rmi.org/wp-content/uploads/2022/02/reimagining_greenhouse_gas_disclosures.pdf]",
 		"buttons": [
 			{ "text": "Scope 1", "value": "Scope 1" },
 			{ "text": "Scope 2", "value": "Scope 2" },
@@ -12,7 +12,7 @@
 	{
 		"id": "sector_emission_intensity",
 		"label": "Sector emission intensity",
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"definition": "Set an emissions intensity equal to the sectoral minimum, mean, or maximum for companies that do not volunarily self-report emissions data to CDP. Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
 		"buttons": [
 			{ "text": "Min", "value": "Min" },
 			{ "text": "Mean", "value": "Mean" },
@@ -22,7 +22,7 @@
 	{
 		"id": "agr",
 		"label": "Annual revenue growth",
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"definition": "Set the annual revenue growth rate for each company to the historical sectoral growth rate of the S&P500 Index (reflecting years 2018-2019) or the historical industry growth rate of companies (reflecting years 2015-2019), sourced from NYU Stern School of Business (link here: https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histgr.html)",
 		"buttons": [
 			{ "text": "S&P", "value": "S&P" },
 			{
@@ -34,7 +34,7 @@
 	{
 		"id": "end_target",
 		"label": "End target",
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"definition": "Set the 2050 end targets for the companies in this sector. "Current" applies each company's current self-reported and quantifiable target to its emissions trajectory. "None to Net-zero Target" applies a net-zero target to company's that do not have an existing quantifiable climate target. "Top 50% to Net-zero Target" applies net-zero targets to companies that are in the top half of their sector by market capitalization. For both "None to Net-zero Target" and "Top 50% to Net-zero Target", companies outside of the specified group are set to their current end targets.",
 		"longform": true,
 		"buttons": [
 			{ "text": "Current", "value": "Current" },
@@ -53,7 +53,7 @@
 		"id": "interim_target",
 		"label": "Interim target",
 		"longform": true,
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"definition": "Set the 2030 interim targets for the companies in this sector. "Current" applies each company's current self-reported and quantifiable interim target to its emissions trajectory. "None to 50% by 2030" applies a target of 50% reduction by 2030 to companies that do not have interim targets. Companies that have quantifiable interim targets are set to those targets.",
 		"buttons": [
 			{ "text": "Current", "value": "Current" },
 			{ "text": "None to 50% by 2030", "value": "None to 50% by 2030" }
@@ -62,7 +62,7 @@
 	{
 		"id": "slowdown",
 		"label": "Slowdown",
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"definition": "Set the year that companies begin to take action. "No Slowdown" keeps companies along their target trajectory across all years. "2030" slows climate action, allowing companies to increase emissions along their baseline until 2030, when their begin reducing emissions. "2040" slows down action further, with no action until 2040.",
 		"buttons": [
 			{ "text": "None", "value": 2022 },
 			{
@@ -78,7 +78,7 @@
 	{
 		"id": "partial_target",
 		"label": "Percentage of targets met",
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"definition": "Set the percent of emission reduction targets met by each company. Without specific roadmaps and strategy, companies will be unable to meet 100% of their emission reduction targets. This illustrates what happens to sectoral emissions if companies fail to meet their climate goals.",
 		"buttons": [
 			{ "text": "Zero", "value": 0 },
 			{ "text": "25%", "value": 0.25 },
@@ -95,7 +95,7 @@
 	{
 		"id": "offsets",
 		"label": "Targets met with offset",
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"definition": "Set the percent of companies in this sector that meet their voluntary emissions target by using carbon offsets. For example, "50%" results in companies only reducing real emissions by 50% and relying on offsets to account for the other 50% of emissions to reach the climate commitments displayed in the Target Scenario.",
 		"buttons": [
 			{ "text": "0", "value": 0 },
 			{
@@ -111,7 +111,7 @@
 	{
 		"id": "herd_catch_up",
 		"label": "Herd catches up to the frontrunners",
-		"definition": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui corrupti incidunt soluta harum quis consectetur accusantium.",
+		"definition": "Set the future behavior of companies with less ambitious targets than leaders. Select "no" to estimate the impact of herd companies remaining on their existing emissions pathways. Select "yes" to estimate the impact of herd companies further reducing their emissions.",
 		"buttons": [
 			{
 				"text": "No",
