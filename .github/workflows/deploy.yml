@@ -121,8 +121,9 @@ jobs:
 
       - run: make data
       - run: ls functions/data
-      # - name: "Deploy functions"
-      #   uses: "google-github-actions/deploy-cloud-functions@v1"
-      #   with:
-      #     name: "data"
-      #     runtime: "nodejs16"
+
+      - name: "Deploy functions"
+        uses: "google-github-actions/deploy-cloud-functions@v1"
+        with:
+          name: "data"
+          # runtime: "nodejs16"
