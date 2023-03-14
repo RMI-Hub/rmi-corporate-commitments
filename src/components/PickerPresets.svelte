@@ -12,7 +12,7 @@
 	let activePreset = "initial";
 	function activatePreset({ toggles = {}, id }) {
 		activePreset = id;
-
+		console.log({ initial: presets.initial.toggles, toggles });
 		// When clicking a preset, start not with the chosen
 		// multipliers, but the default settings. Assign our new settings
 		$multipliers = Object.assign({}, presets.initial.toggles, toggles);

@@ -2,13 +2,11 @@
 	import Toggle from "./Toggle.svelte";
 
 	// UTILS
-	import { slugify } from "../utils/slugify.js";
-	import { multipliers, isPreset } from "../stores.js";
+	import { multipliers } from "../stores.js";
 	import { marked } from "marked";
 
 	// COMPONENTS
 	import Button from "./Button.svelte";
-	import Toggletip from "./Toggletip.svelte";
 	import PickerPresets from "./PickerPresets.svelte";
 	import ChartOverall from "./ChartOverall.svelte";
 

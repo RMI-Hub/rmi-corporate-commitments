@@ -61,10 +61,12 @@
 			multipliers: $multipliers,
 		}).catch(console.error);
 
-		console.log("NEW DATA", {
-			$chartData,
-			$multipliers,
-		});
+		if (window.location.href.includes("localhost")) {
+			console.log("NEW DATA", {
+				$chartData,
+				$multipliers,
+			});
+		}
 		window.dispatchEvent(new Event("renderCharts"));
 	}
 </script>
