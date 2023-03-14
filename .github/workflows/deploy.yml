@@ -62,7 +62,7 @@ jobs:
 
       - name: Restore cached node modules
         id: npm-cache
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         with:
           path: |
             ./node_modules
@@ -108,7 +108,7 @@ jobs:
 
       - name: Restore cached node modules
         id: npm-cache
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         with:
           path: |
             ./node_modules
@@ -120,7 +120,6 @@ jobs:
         run: make install
 
       - run: make data
-      - run: ls functions/data
 
       - name: "Deploy functions"
         uses: "google-github-actions/deploy-cloud-functions@v1"
