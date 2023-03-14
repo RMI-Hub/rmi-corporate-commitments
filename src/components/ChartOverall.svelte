@@ -11,7 +11,7 @@
 	}
 
 	.chart {
-		--color: var(--color-chart);
+		--color: var(--color-blue-medium);
 		height: unset;
 		position: sticky;
 		top: 0;
