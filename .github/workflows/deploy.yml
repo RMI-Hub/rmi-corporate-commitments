@@ -60,6 +60,15 @@ jobs:
           cache: npm
           node-version: 16
 
+      - name: Restore cached node modules
+        id: npm-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./node_modules
+            ./functions/node_modules
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+
       - run: make data
       - run: make build
 
