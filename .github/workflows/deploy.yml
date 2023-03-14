@@ -54,12 +54,11 @@ jobs:
 
       - name: Cache generated stuff
         id: generated-cache
-        uses: actions/cache@v3
+        uses: actions/cache/save@v3
         with:
           path: |
             ./public
           key: cache-${{ github.run_id }}-${{ github.run_attempt }}
-          fail-on-cache-miss: true
 
   deploy_github_pages:
     needs: [test, install]
