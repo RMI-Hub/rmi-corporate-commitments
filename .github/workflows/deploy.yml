@@ -58,6 +58,7 @@ jobs:
         with:
           path: |
             ./public
+            ./functions/data
           key: cache-${{ github.run_id }}-${{ github.run_attempt }}
 
   deploy_github_pages:
@@ -94,7 +95,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
+          # Upload entire project
           path: public
 
       - name: Deploy to GitHub Pages
@@ -114,12 +115,14 @@ jobs:
           cache: npm
           node-version: 16
 
-      - id: "auth"
-        uses: "google-github-actions/auth@v1"
+      - name: Restore generated stuff
+        id: generated-cache
+        uses: actions/cache/restore@v3
         with:
-          # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
-          service_account: ${{ secrets.GCP_SVC_ACCT }}
-          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          path: |
+            ./functions/data
+          key: cache-${{ github.run_id }}-${{ github.run_attempt }}
+          fail-on-cache-miss: true
 
       - name: Restore cached node modules
         id: npm-cache
@@ -130,11 +133,19 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
-      - name: install npm
-        if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: make install
+      # - name: install npm
 
-      - run: make data
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
+          service_account: ${{ secrets.GCP_SVC_ACCT }}
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      #   if: steps.npm-cache.outputs.cache-hit != 'true'
+      #   run: make install
+
+      # - run: make data
 
       - name: "Deploy functions"
         uses: "google-github-actions/deploy-cloud-functions@v1"
