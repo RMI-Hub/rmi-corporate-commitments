@@ -25,7 +25,7 @@ jobs:
     name: Test
     uses: ./.github/workflows/test.yml
     secrets: inherit
-  build:
+  install:
     needs: [test]
     runs-on: [ubuntu-latest]
     steps:
@@ -47,34 +47,21 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Generate
-        run: make data
-
-      - name: Build
-        run: make build
-
-      - name: Cache public folder
-        id: public-cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            public
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
-
   deploy_github_pages:
-    needs: [test, build]
+    needs: [test, install]
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
         with:
           lfs: true
 
-      - name: Restore public folder
-        id: public-cache
-        uses: actions/cache@v3
+      - uses: actions/setup-node@v3
         with:
-          path: public
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+          cache: npm
+          node-version: 16
+
+      - run: make data
+      - run: make build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
@@ -87,7 +74,7 @@ jobs:
         uses: actions/deploy-pages@v1
 
   deploy_cloud_functions:
-    needs: [test, build]
+    needs: [test, install]
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/setup-node@v3
@@ -112,9 +99,9 @@ jobs:
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
       - run: make data
-
-      - name: "Deploy functions"
-        uses: "google-github-actions/deploy-cloud-functions@v1"
-        with:
-          name: "data"
-          runtime: "nodejs16"
+      - run: ls functions/data
+      # - name: "Deploy functions"
+      #   uses: "google-github-actions/deploy-cloud-functions@v1"
+      #   with:
+      #     name: "data"
+      #     runtime: "nodejs16"
