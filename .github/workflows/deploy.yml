@@ -69,6 +69,10 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
+      - name: install npm
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: make install
+
       - run: make data
       - run: make build
 
@@ -106,6 +110,10 @@ jobs:
             ./node_modules
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+
+      - name: install npm
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: make install
 
       - run: make data
       - run: ls functions/data
