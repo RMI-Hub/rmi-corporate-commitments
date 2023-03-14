@@ -1,4 +1,6 @@
 <script>
+	import Toggle from "./Toggle.svelte";
+
 	// UTILS
 	import { slugify } from "../utils/slugify.js";
 	import { multipliers, isPreset } from "../stores.js";
@@ -14,6 +16,10 @@
 	export let togglesDescription = "";
 	export let toggles = [];
 	export let defaultMultipliers = {};
+
+	export let reportingLabel = "Estimated data";
+	export let reportingLabelSecondary =
+		"Only show companies that report data directly to CPM";
 
 	export let overallMicrocopy = {};
 
@@ -126,31 +132,15 @@
 	<ChartOverall {...overallMicrocopy} />
 	<div class="toggles__form stack">
 		<PickerPresets {presets} {...presetsMicrocopy} column={true} />
+		<h2 class="header">{reportingLabel}</h2>
+		{#each toggles.filter(t => t.id === "use_estimated") as t}
+			<Toggle {...t} />
+		{/each}
 		<h2 class="header">{togglesLabel}</h2>
 		{#if togglesDescription}{@html marked.parse(togglesDescription)}{/if}
 		<div class="toggles__ui stack--margin">
-			{#each toggles as { label, definition, id, buttons = [], longform = false }}
-				<div class="toggles__btn-group" class:longform>
-					<h3 class="label">
-						{label}
-						<Toggletip text={definition} />
-					</h3>
-					{#each buttons as { text, value }}
-						<label class="toggles__label sans-serif" for={slugify(text)}>
-							<input
-								class="toggles__btn"
-								type="radio"
-								id={slugify(text)}
-								name={slugify(label)}
-								on:click={e => {
-									$isPreset = false;
-								}}
-								{value}
-								bind:group={$multipliers[id]} />
-							{text}
-						</label>
-					{/each}
-				</div>
+			{#each toggles.filter(t => t.id !== "use_estimated") as t}
+				<Toggle {...t} />
 			{/each}
 		</div>
 		<div class="toggles__buttons">
