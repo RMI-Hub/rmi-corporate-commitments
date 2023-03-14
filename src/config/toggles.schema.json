@@ -23,7 +23,6 @@
 				},
 				"definition": {
 					"type": "string",
-					"maxLength": 300,
 					"description": "Optional description of the toggle. Text appears in a tooltip"
 				},
 				"buttons": {
