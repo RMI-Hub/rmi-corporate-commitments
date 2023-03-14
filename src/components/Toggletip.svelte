@@ -106,7 +106,7 @@
 <span class="more">
 	<button
 		bind:this={btn}
-		on:click={handleClick}
+		on:click|stopPropagation={handleClick}
 		on:keydown={handleKeyDown}
 		on:blur={close}
 		class="more__btn"

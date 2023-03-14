@@ -1,9 +1,6 @@
 install:
 	npm ci
 	cd functions && npm ci
-	
-dataFunctions:
-	echo "Eventually this will do data stuff"
 
 data:
 	mkdir -p public
