@@ -126,5 +126,5 @@ jobs:
         uses: "google-github-actions/deploy-cloud-functions@v1"
         with:
           name: data
-          entry_point: data
           runtime: nodejs16
+          source_dir: functions
