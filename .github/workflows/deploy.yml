@@ -38,6 +38,7 @@ jobs:
           cache: npm
           node-version: 16
 
+      # Praise the lord this page was helpful: https://github.com/actions/cache/blob/main/caching-strategies.md
       - name: Restore cached node modules
         id: npm-cache
         uses: actions/cache@v3
@@ -46,6 +47,19 @@ jobs:
             ./node_modules
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+          fail-on-cache-miss: true
+
+      - run: make data
+      - run: make build
+
+      - name: Cache generated stuff
+        id: generated-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./public
+          key: cache-${{ github.run_id }}-${{ github.run_attempt }}
+          fail-on-cache-miss: true
 
   deploy_github_pages:
     needs: [test, install]
@@ -69,12 +83,14 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
-      - name: install npm
-        if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: make install
-
-      - run: make data
-      - run: make build
+      - name: Restore generated stuff
+        id: generated-cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            ./public
+          key: cache-${{ github.run_id }}-${{ github.run_attempt }}
+          fail-on-cache-miss: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
