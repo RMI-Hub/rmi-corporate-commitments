@@ -1,6 +1,7 @@
 <script>
 	// UTILS
 	import { tick } from "svelte";
+	import { fly, fade } from "svelte/transition";
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
 	import { chartData, isLoading } from "../stores.js";
 	import throttle from "lodash.throttle";
@@ -250,6 +251,24 @@
 	}
 
 	/* FULLSCREEN */
+
+	.chart__wrapper__fullscreen-header {
+		position: absolute;
+		transform: translate(-50%, 0);
+		left: 50%;
+		top: 2rem;
+		z-index: 100;
+
+		font: bold 1.25rem/1.3em var(--sans-serif-fonts);
+		font-weight: bold;
+		text-align: center;
+		margin: 0;
+
+		padding: 0.5rem;
+		background: #fff;
+		outline: 1px solid;
+		width: clamp(150px, 50%, 300px);
+	}
 </style>
 
 <svelte:window
@@ -287,6 +306,13 @@
 				}}>
 				<X title="Shrink this visualization back to regular size" />
 			</button>
+			<p
+				aria-hidden="true"
+				in:fly={{ y: -50 }}
+				out:fade={{ duration: 100 }}
+				class="chart__wrapper__fullscreen-header">
+				{@html header}
+			</p>
 		{/if}
 		<div class="chart__container" class:hidden={chartHidden} bind:this={container} />
 		<Loading />
