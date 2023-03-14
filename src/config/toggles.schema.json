@@ -40,7 +40,7 @@
 				"text": {
 					"type": "string",
 					"description": "The human-readable label for the radio button",
-					"maxLength": 40
+					"maxLength": 100
 				},
 				"value": {
 					"type": ["number", "string", "boolean"],

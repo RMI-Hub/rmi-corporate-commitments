@@ -25,10 +25,10 @@
 	{
 		"id": "sector_emission_intensity",
 		"label": "Sector emission intensity",
-		"definition": "Set an emissions intensity equal to the sectoral minimum, mean, or maximum for companies that do not volunarily self-report emissions data to CDP. Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
+		"definition": "Set an emissions intensity equal to the sectoral minimum, median, or maximum for companies that do not volunarily self-report emissions data to CDP. Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
 		"buttons": [
 			{ "text": "Min", "value": "Min" },
-			{ "text": "Mean", "value": "Mean" },
+			{ "text": "Median", "value": "Median" },
 			{ "text": "Max", "value": "Max" }
 		]
 	},

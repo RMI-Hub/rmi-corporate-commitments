@@ -19,7 +19,7 @@
 				},
 				"sector_emission_intensity": {
 					"type": "string",
-					"enum": ["Min", "Max", "Mean"]
+					"enum": ["Min", "Max", "Median"]
 				},
 				"agr": { "type": "string", "enum": ["S&P", "NYU CAGR"] },
 				"end_target": {
@@ -33,7 +33,8 @@
 				"slowdown": { "type": "integer", "enum": [2022, 2030, 2040] },
 				"partial_target": { "type": "number", "enum": [0, 0.25, 0.5, 1] },
 				"offsets": { "type": "number", "enum": [0, 0.25, 0.5] },
-				"herd_catch_up": { "type": "boolean" }
+				"herd_catch_up": { "type": "boolean" },
+				"use_estimated": { "type": "boolean" }
 			}
 		},
 		"preset": {
