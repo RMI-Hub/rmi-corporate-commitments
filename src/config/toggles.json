@@ -1,5 +1,18 @@
 [
 	{
+		"id": "use_estimated",
+		"label": "Use estimated data",
+		"definition": "TKTKTKTKTKTKTK",
+		"longform": true,
+		"buttons": [
+			{
+				"text": "Use industry median values when data for a company is not available",
+				"value": true
+			},
+			{ "text": "Only display data directly reported to CDP", "value": false }
+		]
+	},
+	{
 		"id": "scope",
 		"label": "Scope",
 		"definition": "Set the emissions scope to be illustrated in the visual. Scope 1 emissions are direct emissions from operations. Scope 2 emissions are indirect emissions attributed to energy consumption. This dataset does not include scope 3 emissions. More information on emissions scopes can be found [here](https://rmi.org/wp-content/uploads/2022/02/reimagining_greenhouse_gas_disclosures.pdf).",
@@ -12,10 +25,10 @@
 	{
 		"id": "sector_emission_intensity",
 		"label": "Sector emission intensity",
-		"definition": "Set an emissions intensity equal to the sectoral minimum, mean, or maximum for companies that do not volunarily self-report emissions data to CDP. Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
+		"definition": "Set an emissions intensity equal to the sectoral minimum, median, or maximum for companies that do not volunarily self-report emissions data to CDP. Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
 		"buttons": [
 			{ "text": "Min", "value": "Min" },
-			{ "text": "Mean", "value": "Mean" },
+			{ "text": "Median", "value": "Median" },
 			{ "text": "Max", "value": "Max" }
 		]
 	},
