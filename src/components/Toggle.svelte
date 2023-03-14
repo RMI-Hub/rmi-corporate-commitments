@@ -32,7 +32,7 @@
 	.toggles__label {
 		display: flex;
 		align-items: flex-start;
-		gap: 0.25rem;
+		gap: 0.5rem;
 		cursor: pointer;
 	}
 	.longform .toggles__label {
