@@ -7,6 +7,11 @@ src/config/sectorLookup.json
 src/config/sectorsMicrocopy.json
 src/icons/chart-overall.svg
 
+# FIREBASE
+firebase-debug.log
+firebase-debug.*.log
+
+node_modules
 
 # Logs
 logs
