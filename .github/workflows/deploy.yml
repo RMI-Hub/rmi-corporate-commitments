@@ -95,6 +95,13 @@ jobs:
           cache: npm
           node-version: 16
 
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
+          service_account: ${{ secrets.GCP_SVC_ACCT }}
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
       - name: Restore cached node modules
         id: npm-cache
         uses: actions/cache@v3
@@ -105,13 +112,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
       - run: make data
-
-      - id: "auth"
-        uses: "google-github-actions/auth@v1"
-        with:
-          # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
-          service_account: ${{ secrets.GCP_SVC_ACCT }}
-          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
       - name: "Deploy functions"
         uses: "google-github-actions/deploy-cloud-functions@v1"
