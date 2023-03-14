@@ -11,7 +11,8 @@
 			"slowdown": 2022,
 			"partial_target": 0,
 			"offsets": 0,
-			"herd_catch_up": false
+			"herd_catch_up": false,
+			"use_estimated": true
 		}
 	},
 	"action": {
