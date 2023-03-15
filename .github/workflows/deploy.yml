@@ -54,7 +54,7 @@ jobs:
 
       - name: Cache generated stuff
         id: generated-cache
-        uses: actions/cache/save@v3
+        uses: actions/cache@v3
         with:
           path: |
             ./public
@@ -76,7 +76,7 @@ jobs:
 
       - name: Restore cached node modules
         id: npm-cache
-        uses: actions/cache/restore@v3
+        uses: actions/cache@v3
         with:
           path: |
             ./node_modules
@@ -85,7 +85,7 @@ jobs:
 
       - name: Restore generated stuff
         id: generated-cache
-        uses: actions/cache/restore@v3
+        uses: actions/cache@v3
         with:
           path: |
             ./public
@@ -101,55 +101,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-
-  deploy_cloud_functions:
-    needs: [test, install]
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          lfs: true
-
-      - uses: actions/setup-node@v3
-        with:
-          cache: npm
-          node-version: 16
-
-      - name: Restore generated stuff
-        id: generated-cache
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            ./functions/data
-          key: cache-${{ github.run_id }}-${{ github.run_attempt }}
-          fail-on-cache-miss: true
-
-      - name: Restore cached node modules
-        id: npm-cache
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            ./node_modules
-            ./functions/node_modules
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
-
-      # - name: install npm
-
-      - id: "auth"
-        uses: "google-github-actions/auth@v1"
-        with:
-          # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
-          service_account: ${{ secrets.GCP_SVC_ACCT }}
-          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-
-      #   if: steps.npm-cache.outputs.cache-hit != 'true'
-      #   run: make install
-
-      # - run: make data
-
-      - name: "Deploy functions"
-        uses: "google-github-actions/deploy-cloud-functions@v1"
-        with:
-          name: data
-          runtime: nodejs16
-          source_dir: functions
