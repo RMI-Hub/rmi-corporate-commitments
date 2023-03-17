@@ -68,6 +68,11 @@
 					"description": "The human-readable chart label",
 					"maxLength": 60
 				},
+				"subheader": {
+					"type": "string",
+					"description": "The human-readable chart sublabel",
+					"maxLength": 200
+				},
 				"definition": {
 					"type": "string",
 					"description": "OPTIONAL: The context and definition of what that chart does. Information will be available in a tooltip",

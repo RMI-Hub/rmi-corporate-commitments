@@ -2,24 +2,31 @@
 	{
 		"id": "use_estimated",
 		"label": "Use estimated data",
-		"definition": "TKTKTKTKTKTKTK",
 		"longform": true,
 		"buttons": [
 			{
-				"text": "Use industry median values when data for a company is not available",
+				"text": "**Include estimates:** Use industry median values when data for a company is not available",
 				"value": true
 			},
-			{ "text": "Only display data directly reported to CDP", "value": false }
+			{
+				"text": "**No estimates:** Only display data directly reported to CDP",
+				"value": false
+			}
 		]
 	},
+
 	{
 		"id": "scope",
 		"label": "Scope",
-		"definition": "Set the emissions scope to be illustrated in the visual. Scope 1 emissions are direct emissions from operations. Scope 2 emissions are indirect emissions attributed to energy consumption. This dataset does not include scope 3 emissions. More information on emissions scopes can be found [here](https://rmi.org/wp-content/uploads/2022/02/reimagining_greenhouse_gas_disclosures.pdf).",
+		"longform": true,
+		"definition": "More information on emissions scopes can be found [here](https://rmi.org/wp-content/uploads/2022/02/reimagining_greenhouse_gas_disclosures.pdf).",
 		"buttons": [
-			{ "text": "Scope 1", "value": "Scope 1" },
-			{ "text": "Scope 2", "value": "Scope 2" },
-			{ "text": "Scope 1+2", "value": "Scope 1&2" }
+			{ "text": "**Scope 1:** Direct emissions from operations", "value": "Scope 1" },
+			{
+				"text": "**Scope 2:** Indirect emissions attributed to energy consumption",
+				"value": "Scope 2"
+			},
+			{ "text": "**Scope 1+2 combined**", "value": "Scope 1&2" }
 		]
 	},
 	{

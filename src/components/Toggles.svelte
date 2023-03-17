@@ -12,12 +12,9 @@
 
 	export let togglesLabel;
 	export let togglesDescription = "";
+	export let dataLabel = "";
 	export let toggles = [];
 	export let defaultMultipliers = {};
-
-	export let reportingLabel = "Estimated data";
-	export let reportingLabelSecondary =
-		"Only show companies that report data directly to CPM";
 
 	export let overallMicrocopy = {};
 
@@ -130,7 +127,7 @@
 	<ChartOverall {...overallMicrocopy} />
 	<div class="toggles__form stack">
 		<PickerPresets {presets} {...presetsMicrocopy} column={true} />
-		<h2 class="header">{reportingLabel}</h2>
+		<h2 class="header">{dataLabel}</h2>
 		{#each toggles.filter(t => t.id === "use_estimated") as t}
 			<Toggle {...t} />
 		{/each}

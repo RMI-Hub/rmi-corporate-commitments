@@ -27,6 +27,7 @@
 
 	// Chart meta
 	export let header = "";
+	export let subheader = "";
 	export let definition = "";
 	export let type; // "baseline" or "target"
 	export let DURATION = 500;
@@ -288,6 +289,7 @@
 		id="chart-yearly-{type}"
 		{header}
 		{definition}
+		{subheader}
 		on:showData={e => {
 			showData = true;
 		}}

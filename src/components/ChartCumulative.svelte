@@ -14,6 +14,7 @@
 
 	// Chart meta
 	export let header = "";
+	export let subheader = "";
 	export let definition = "";
 	export let type; // "baseline" or "target"
 	export let DURATION = 500;
@@ -224,6 +225,7 @@
 		flip={type === "target"}
 		id="chart-cumulative-{type}"
 		{header}
+		{subheader}
 		{definition} />
 	<div class="chart__wrapper">
 		{#if fullscreen}

@@ -2,6 +2,7 @@
 	// UTILS
 	import { slugify } from "../utils/slugify.js";
 	import { multipliers, isPreset } from "../stores.js";
+	import { marked } from "marked";
 
 	// COMPONENTS
 	import Toggletip from "./Toggletip.svelte";
@@ -14,7 +15,7 @@
 </script>
 
 <style>
-	.toggles__btn-group {
+	.toggle {
 		position: relative; /* contains toggle tip*/
 		display: flex;
 		align-items: flex-start;
@@ -25,21 +26,28 @@
 		border-bottom: 1px solid var(--color-gray);
 	}
 
-	.toggles__btn-group > * {
-		flex: 1 1;
+	.toggle__label {
+		font-size: var(--font-size);
+		flex: 0 0 100%;
+		margin: 0;
+	}
+	.toggle__sublabel {
+		flex: 0 0 100%;
+		margin: 0;
 	}
 
-	.toggles__label {
+	.toggle__container {
 		display: flex;
 		align-items: flex-start;
 		gap: 0.5rem;
 		cursor: pointer;
 	}
-	.longform .toggles__label {
+
+	.longform .toggle__container {
 		flex: 1 1 100%;
 	}
 
-	.toggles__btn {
+	.toggle__container__btn {
 		clip-path: inset(50%);
 		height: 1px;
 		overflow: hidden;
@@ -48,13 +56,7 @@
 		width: 1px;
 	}
 
-	.label {
-		font-size: var(--font-size-small);
-		flex-basis: 100%;
-		margin: 0;
-	}
-
-	.toggles__box {
+	.toggle__container__box {
 		flex: 0 0;
 		position: relative;
 		display: block;
@@ -64,19 +66,19 @@
 		max-height: 1.5em;
 	}
 
-	.toggles__box::after,
-	.toggles__box::before {
+	.toggle__container__box::after,
+	.toggle__container__box::before {
 		display: block;
 		content: "";
 		position: absolute;
 		border-radius: 50%;
 	}
-	.toggles__box::before {
+	.toggle__container__box::before {
 		border: 2px solid var(--color-font);
 		inset: 0;
 	}
 
-	.toggles__box::after {
+	.toggle__container__box::after {
 		width: 50%;
 		height: 50%;
 		top: 50%;
@@ -85,20 +87,26 @@
 		transform: translate(-50%, -50%) scale(0);
 		transition: transform var(--speed-transition) ease-in-out;
 	}
-	input:checked + .toggles__box::after {
+	input:checked + .toggle__container__box::after {
 		transform: translate(-50%, -50%) scale(1);
+	}
+
+	.toggle__container__text {
+		margin: 0;
+		font: var(--font-size-small) / 1.3em var(--sans-serif-fonts);
 	}
 </style>
 
-<div class="toggles__btn-group" class:longform>
-	<h3 class="label">
+<div class="toggle" class:longform>
+	<h3 class="label toggle__label">
 		{label}
-		<Toggletip text={definition} />
+		<!-- <Toggletip text={definition} /> -->
 	</h3>
+	<p class="toggle__sublabel sans-serif">{@html marked.parseInline(definition)}</p>
 	{#each buttons as { text, value }}
-		<label class="toggles__label sans-serif" for={slugify(text)}>
+		<label class="toggle__container sans-serif" for={slugify(text)}>
 			<input
-				class="toggles__btn "
+				class="toggle__container__btn"
 				type="radio"
 				id={slugify(text)}
 				name={slugify(label)}
@@ -107,8 +115,8 @@
 				}}
 				{value}
 				bind:group={$multipliers[id]} />
-			<span class="toggles__box" />
-			{text}
+			<span class="toggle__container__box" />
+			<p class="toggle__container__text">{@html marked.parseInline(text)}</p>
 		</label>
 	{/each}
 </div>

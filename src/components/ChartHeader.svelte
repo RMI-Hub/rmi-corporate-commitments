@@ -7,6 +7,7 @@
 	import Toggletip from "./Toggletip.svelte";
 
 	export let header = "";
+	export let subheader = "";
 	export let definition = "";
 	export let id = "";
 	export let flip = false;
@@ -71,6 +72,12 @@
 		font: bold var(--font-size) / 1.3em var(--sans-serif-fonts);
 		margin: 0;
 	}
+
+	.header__subhead {
+		margin-top: 0.25rem;
+		display: block;
+	}
+
 	.header__controls {
 		display: flex;
 		flex-flow: row-reverse nowrap;
@@ -83,6 +90,9 @@
 			{@html header}
 			{#if definition}
 				<Toggletip text={definition} {id} {flip} />
+			{/if}
+			{#if subheader}
+				<span class="sans-serif header__subhead">{@html subheader}</span>
 			{/if}
 		</h2>
 	{/if}
