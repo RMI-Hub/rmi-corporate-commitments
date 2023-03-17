@@ -32,7 +32,7 @@
 	{
 		"id": "sector_emission_intensity",
 		"label": "Sector emission intensity",
-		"_definition": "Set an emissions intensity equal to the sectoral minimum, median, or maximum for companies that do not volunarily self-report emissions data to CDP. Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
+		"definition": "Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
 		"buttons": [
 			{
 				"text": "**Minimum:** Set an emissions intensity equal to the sector minimum for companies that do not volunarily self-report emissions data to CDP.",
@@ -139,7 +139,7 @@
 	{
 		"id": "offsets",
 		"label": "Targets met with offset",
-		"definition": "Set the percent of companies in this sector that meet their voluntary emissions target by using carbon offsets. For example, \"50%\" results in companies only reducing real emissions by 50% and relying on offsets to account for the other 50% of emissions to reach the climate commitments displayed in the Target Scenario.",
+		"_definition": "Set the percent of companies in this sector that meet their voluntary emissions target by using carbon offsets. For example, \"50%\" results in companies only reducing real emissions by 50% and relying on offsets to account for the other 50% of emissions to reach the climate commitments displayed in the Target Scenario.",
 		"buttons": [
 			{ "text": "**Zero:** Companies meet all goals without offsets.", "value": 0 },
 			{
