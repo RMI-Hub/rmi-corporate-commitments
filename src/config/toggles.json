@@ -32,21 +32,33 @@
 	{
 		"id": "sector_emission_intensity",
 		"label": "Sector emission intensity",
-		"definition": "Set an emissions intensity equal to the sectoral minimum, median, or maximum for companies that do not volunarily self-report emissions data to CDP. Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
+		"_definition": "Set an emissions intensity equal to the sectoral minimum, median, or maximum for companies that do not volunarily self-report emissions data to CDP. Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
 		"buttons": [
-			{ "text": "Min", "value": "Min" },
-			{ "text": "Median", "value": "Median" },
-			{ "text": "Max", "value": "Max" }
+			{
+				"text": "**Minimum:** Set an emissions intensity equal to the sector minimum for companies that do not volunarily self-report emissions data to CDP.",
+				"value": "Min"
+			},
+			{
+				"text": "**Median:** Set emissions intensity to the sector median for companies that do not self-report.",
+				"value": "Median"
+			},
+			{
+				"text": "**Maximum:** Set emissions intensity to the sector maximum for companies that do not self-report.",
+				"value": "Max"
+			}
 		]
 	},
 	{
 		"id": "agr",
 		"label": "Annual revenue growth",
-		"definition": "Set the annual revenue growth rate for each company to the historical sectoral growth rate of the S&P500 Index (reflecting years 2018-2019) or the historical industry growth rate of companies (reflecting years 2015-2019), sourced from [NYU Stern School of Business](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histgr.html).",
+		"definition": "Sourced from [NYU Stern School of Business](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histgr.html).",
 		"buttons": [
-			{ "text": "S&P", "value": "S&P" },
 			{
-				"text": "Historic",
+				"text": "**S&P:** Set the annual revenue growth rate for each company to the historical sectoral growth rate of the S&P 500 Index (2018-19)",
+				"value": "S&P"
+			},
+			{
+				"text": "**Historic:** Set the annual revenue growth rate for each company to the historical industry growth rate of companies (2015-19).",
 				"value": "NYU CAGR"
 			}
 		]
@@ -54,17 +66,20 @@
 	{
 		"id": "end_target",
 		"label": "End target",
-		"definition": "Set the 2050 end targets for the companies in this sector. \"Current\" applies each company's current self-reported and quantifiable target to its emissions trajectory. \"None to Net-zero Target\" applies a net-zero target to company's that do not have an existing quantifiable climate target. \"Top 50% to Net-zero Target\" applies net-zero targets to companies that are in the top half of their sector by market capitalization. For both \"None to Net-zero Target\" and \"Top 50% to Net-zero Target\", companies outside of the specified group are set to their current end targets.",
+		"definition": "Set the 2050 end targets for the companies. For both \"None to Net-zero Target\" and \"Top 50% to Net-zero Target\", companies outside of the specified group are set to their current end targets.",
 		"longform": true,
 		"buttons": [
-			{ "text": "Current", "value": "Current" },
+			{
+				"text": "**Current:** Use each company's current self-reported and quantifiable target to its emissions trajectory.",
+				"value": "Current"
+			},
 
 			{
-				"text": "None to NZT",
+				"text": "**None to NZT:** Apply a net-zero target to companyies that do not have an existing quantifiable climate target.",
 				"value": "None to NZT"
 			},
 			{
-				"text": "Top 50% None to NZT",
+				"text": "**Top 50% None to NZT:** Apply net-zero targets to companies that are in the top half of their sector by market capitalization.",
 				"value": "Top 50% None to NZT"
 			}
 		]
@@ -73,24 +88,33 @@
 		"id": "interim_target",
 		"label": "Interim target",
 		"longform": true,
-		"definition": "Set the 2030 interim targets for the companies in this sector. \"Current\" applies each company's current self-reported and quantifiable interim target to its emissions trajectory. \"None to 50% by 2030\" applies a target of 50% reduction by 2030 to companies that do not have interim targets. Companies that have quantifiable interim targets are set to those targets.",
+		"definition": "Set the 2030 interim targets for the companies in this sector.",
 		"buttons": [
-			{ "text": "Current", "value": "Current" },
-			{ "text": "None to 50% by 2030", "value": "None to 50% by 2030" }
+			{
+				"text": "**Current:** Apply each company's current self-reported and quantifiable interim target to its emissions trajectory.",
+				"value": "Current"
+			},
+			{
+				"text": "**None to 50% by 2030:** Apply a target of 50% reduction by 2030 to companies that do not have interim targets. Companies that have quantifiable interim targets are set to those targets.",
+				"value": "None to 50% by 2030"
+			}
 		]
 	},
 	{
 		"id": "slowdown",
 		"label": "Slowdown",
-		"definition": "Set the year that companies begin to take action. \"No Slowdown\" keeps companies along their target trajectory across all years. \"2030\" slows climate action, allowing companies to increase emissions along their baseline until 2030, when their begin reducing emissions. \"2040\" slows down action further, with no action until 2040.",
+		"definition": "Set the year that companies begin to take action.",
 		"buttons": [
-			{ "text": "None", "value": 2022 },
 			{
-				"text": "2030",
+				"text": "**None:** Companies remain on target trajectory across all years. ",
+				"value": 2022
+			},
+			{
+				"text": "**2030:** Slow climate action, allowing companies to increase emissions along their baseline until 2030, when they begin reducing emissions.",
 				"value": 2030
 			},
 			{
-				"text": "2040",
+				"text": "**2040:** No climate action until 2040.",
 				"value": 2040
 			}
 		]
@@ -117,13 +141,13 @@
 		"label": "Targets met with offset",
 		"definition": "Set the percent of companies in this sector that meet their voluntary emissions target by using carbon offsets. For example, \"50%\" results in companies only reducing real emissions by 50% and relying on offsets to account for the other 50% of emissions to reach the climate commitments displayed in the Target Scenario.",
 		"buttons": [
-			{ "text": "0", "value": 0 },
+			{ "text": "**Zero:** Companies meet all goals without offsets.", "value": 0 },
 			{
-				"text": "25%",
+				"text": "**25%:** Companies only reduce real emissions by 75% and rely on offsets for the rest.",
 				"value": 0.25
 			},
 			{
-				"text": "50%",
+				"text": "**50%:** Companies only reduce real emissions by 50% and rely on offsets for the rest.",
 				"value": 0.5
 			}
 		]
@@ -131,13 +155,16 @@
 	{
 		"id": "herd_catch_up",
 		"label": "Herd catches up to the frontrunners",
-		"definition": "Set the future behavior of companies with less ambitious targets than leaders. Select \"no\" to estimate the impact of herd companies remaining on their existing emissions pathways. Select \"yes\" to estimate the impact of herd companies further reducing their emissions.",
+		"definition": "Set the future behavior of companies with less ambitious targets than leaders.",
 		"buttons": [
 			{
-				"text": "No",
+				"text": "**No:** Estimate the impact of herd companies remaining on their existing emissions pathways",
 				"value": false
 			},
-			{ "text": "Yes", "value": true }
+			{
+				"text": "**Yes:** Estimate the impact of herd companies further reducing their emissions.",
+				"value": true
+			}
 		]
 	}
 ]
