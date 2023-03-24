@@ -17,7 +17,7 @@
 		position: fixed;
 		top: var(--y);
 		left: var(--x);
-		z-index: 10;
+		z-index: 1000;
 	}
 
 	.tooltip[hidden] {

@@ -36,18 +36,20 @@
 	let tooltipHidden = true;
 	let tooltipX = 0;
 	let tooltipY = 0;
-	let tooltipCompany = "A";
+	let tooltipCompany = "Company name";
 	let DPI = typeof window === "object" ? window.devicePixelRatio : 2;
 
 	// Placeholders, etc. for the chart
 	let container, svg, yAxisG, xAxisG, ticks, paths, canvas, ctx;
 	let canvasHeight, canvasWidth;
+	let xScale, yScale;
 
 	// config state
 	let showData = false;
 	let fullscreen = false;
 	let chartHidden = false;
 	let chartDataTable = [];
+
 	// CONFIG
 	const ENLARGE_DURATION = 200;
 	const tooltips = {};
@@ -148,7 +150,7 @@
 			});
 
 		// console.log("stackedData (canvas)", stackedData);
-		const xScale = scaleTime()
+		xScale = scaleTime()
 			.domain(extent(data, d => d.year))
 			.range([0, canvasWidth]);
 
@@ -157,9 +159,7 @@
 			.tickSize(tickDimension)
 			.ticks(10);
 
-		const yScale = scaleLinear()
-			.domain([0, $chartData.yearly_max])
-			.range([canvasHeight, 0]);
+		yScale = scaleLinear().domain([0, $chartData.yearly_max]).range([canvasHeight, 0]);
 
 		const yAxis = axisLeft(yScale)
 			.ticks(10)
@@ -199,23 +199,40 @@
 			.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
 
 		$isLoading = false;
+
+		// SET UP INTERACTIONS
+		canvas.on("mouseover", onMouseover);
+		canvas.on("mousemove", onMousemove);
+		canvas.on("mouseleave", onMouseleave);
 	}, 500);
+	function onMouseover(e) {
+		console.log("over");
+		tooltipHidden = false;
+		this.classList.add("highlight");
+	}
 
-	// function mouseover(e, d) {
-	// 	tooltipCompany = d.key;
-	// 	tooltipHidden = false;
-	// 	this.classList.add("highlight");
-	// }
+	const onMousemove = e => {
+		// var mouse = d3.mouse(this),
 
-	// const mousemove = e => {
-	// 	const { clientX, clientY } = e;
-	// 	tooltipX = clientX;
-	// 	tooltipY = clientY;
-	// };
-	// function mouseleave(e) {
-	// 	tooltipHidden = true;
-	// 	this.classList.remove("highlight");
-	// }
+		// highlight.attr("cx", x(closest[0])).attr("cy", y(closest[1]));
+
+		const { clientX, clientY } = e;
+		const closest = tree.find([xScale.invert(clientX), yScale.invert(clientY)]);
+		console.log("move", {
+			clientX,
+			clientY,
+			closest,
+			x: xScale.invert(clientX),
+			y: yScale.invert(clientY),
+		});
+		tooltipX = clientX;
+		tooltipY = clientY;
+	};
+	function onMouseleave(e) {
+		console.log("leave");
+		tooltipHidden = true;
+		this.classList.remove("highlight");
+	}
 </script>
 
 <style>
