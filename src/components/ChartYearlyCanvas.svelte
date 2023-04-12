@@ -40,7 +40,8 @@
 	let DPI = typeof window === "object" ? window.devicePixelRatio : 2;
 
 	// Placeholders, etc. for the chart
-	let container, svg, yAxisG, xAxisG, ticks, paths, canvas, ctx;
+	let container, svg, hiddenCanvas, yAxisG, xAxisG, ticks, canvas, ctx, hiddenCtx;
+	let dict = new Map();
 	let canvasHeight, canvasWidth;
 	let xScale, yScale;
 
@@ -94,6 +95,9 @@
 			// Start by clearing out the container for a new chart
 			container.innerHTML = "";
 
+			// Clear out the lookup
+			dict = new Map();
+
 			const { height, width } = container.getBoundingClientRect();
 			canvasHeight = height - MARGINS.top - MARGINS.bottom;
 			canvasWidth = width - MARGINS.left - MARGINS.right;
@@ -113,14 +117,14 @@
 				.attr("width", canvasWidth * DPI)
 				.attr("style", `height:${canvasHeight}px;width:${canvasWidth}px;`);
 
-			ctx = canvas.node().getContext("2d");
-			ctx.scale(DPI, DPI);
+			// Make a hidden canvas for interactivity
+			hiddenCanvas = select(container)
+				.append("canvas")
+				.classed("hidden-canvas", true)
+				.attr("height", canvasHeight * DPI)
+				.attr("width", canvasWidth * DPI)
+				.attr("style", `height:${canvasHeight}px;width:${canvasWidth}px;`);
 
-			// Grab some style things from the stylesheet
-			const containerStyles = getComputedStyle(container);
-			ctx.fillStyle = containerStyles.getPropertyValue("--color-chart");
-			ctx.strokeStyle = "white";
-			ctx.lineWidth = 1;
 			// Fullwidth ticks
 			ticks = svg
 				.append("g")
@@ -166,28 +170,8 @@
 			.tickSize(tickDimension)
 			.tickFormat(emissionsNumberFormatter);
 
-		const areaGenerator = area()
-			.curve(curveCardinal)
-			.x(d => xScale(d.data.year))
-			.y0(d => yScale(d[0]))
-			.y1(d => yScale(d[1]))
-			.context(ctx);
-
-		// We want to cycle through these colors. They do not convey data, but are used to add
-		// visual clarity to the chart.
-		const colors = ["#113c63", "#00a091", "#55c4c5", "#3c7438", "#55a646", "#9caf3b"];
-		let colorCounter = 0;
-
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-		stackedData.forEach((d, i) => {
-			ctx.fillStyle = colors[colorCounter];
-			ctx.beginPath();
-			areaGenerator(d);
-			ctx.fill();
-
-			// If we are at the last color, then reset our color counter. Otherwise, increment it.
-			colorCounter = colorCounter === colors.length - 1 ? 0 : colorCounter + 1;
-		});
+		draw(stackedData, canvas, false);
+		draw(stackedData, hiddenCanvas, true);
 
 		// Update Axes
 		xAxisG.transition().duration(DURATION).call(xAxis);
@@ -205,33 +189,127 @@
 		canvas.on("mousemove", onMousemove);
 		canvas.on("mouseleave", onMouseleave);
 	}, 500);
+
+	/**
+	 *
+	 *
+	 * Cribbed from: https://bocoup.com/blog/2d-picking-in-canvas
+	 * @param data
+	 * @param canvas
+	 * @param hidden
+	 */
+	function draw(data, canvas, hidden) {
+		// We want to cycle through these colors. They do not convey data, but are used to add
+		// visual clarity to the chart.
+		const colors = ["#113c63", "#00a091", "#55c4c5", "#3c7438", "#55a646", "#9caf3b"];
+		let colorCounter = 0;
+
+		// Get the context of the canvas in question and clear out the rectangle
+		const ctx = canvas.node().getContext("2d");
+		ctx.scale(DPI, DPI);
+
+		if (!hidden) {
+			// Grab styles from container to use CSS vars as set.
+			const containerStyles = getComputedStyle(container);
+
+			// Set some visual styles
+			ctx.fillStyle = containerStyles.getPropertyValue("--color-chart");
+			ctx.strokeStyle = "white";
+			ctx.lineWidth = 1;
+		}
+
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+		const areaGenerator = area()
+			.curve(curveCardinal)
+			.x(d => xScale(d.data.year))
+			.y0(d => yScale(d[0]))
+			.y1(d => yScale(d[1]))
+			.context(ctx);
+
+		data.forEach((node, i) => {
+			if (hidden) {
+				const c = randomColor();
+				dict.set(c, node);
+
+				ctx.fillStyle = c;
+			} else {
+				ctx.fillStyle = colors[colorCounter];
+			}
+			ctx.beginPath();
+			areaGenerator(node);
+			ctx.fill();
+
+			if (!hidden) {
+				// If we are at the last color, then reset our color counter. Otherwise, increment it.
+				colorCounter = colorCounter === colors.length - 1 ? 0 : colorCounter + 1;
+			}
+		});
+
+		console.log(dict);
+	}
+
 	function onMouseover(e) {
-		console.log("over");
 		tooltipHidden = false;
 		this.classList.add("highlight");
 	}
 
-	const onMousemove = e => {
-		// var mouse = d3.mouse(this),
-
-		// highlight.attr("cx", x(closest[0])).attr("cy", y(closest[1]));
-
+	function onMousemove(e) {
 		const { clientX, clientY } = e;
-		const closest = tree.find([xScale.invert(clientX), yScale.invert(clientY)]);
-		console.log("move", {
-			clientX,
-			clientY,
-			closest,
-			x: xScale.invert(clientX),
-			y: yScale.invert(clientY),
-		});
+
 		tooltipX = clientX;
 		tooltipY = clientY;
-	};
+
+		const ctx = hiddenCanvas.node().getContext("2d");
+		ctx.scale(DPI, DPI);
+
+		const color = ctx.getImageData(clientX, clientY, 1, 1, {
+			colorSpace: "srgb",
+		}).data;
+
+		const rgb = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+		const name = dict.get(rgb)?.key;
+		console.log("move", {
+			rgb,
+			name,
+			color,
+			clientX,
+			clientY,
+		});
+		if (name) {
+			tooltipHidden = false;
+			tooltipCompany = name;
+		}
+	}
 	function onMouseleave(e) {
-		console.log("leave");
 		tooltipHidden = true;
 		this.classList.remove("highlight");
+	}
+
+	/**
+	 * Returns a random rgb color value.
+	 * */
+	function randomColor() {
+		return `rgb(${generateRandom(0, 255)}, ${generateRandom(0, 255)}, ${generateRandom(
+			0,
+			255
+		)})`;
+	}
+
+	function generateRandom(min = 0, max = 100) {
+		// find diff
+		let difference = max - min;
+
+		// generate random number
+		let rand = Math.random();
+
+		// multiply with difference
+		rand = Math.floor(rand * difference);
+
+		// add with min value
+		rand = rand + min;
+
+		return rand;
 	}
 </script>
 
@@ -264,6 +342,11 @@
 		top: var(--canvas-top, 0);
 		right: var(--canvas-right, 0);
 		z-index: 100;
+	}
+
+	:global(.hidden-canvas) {
+		outline: 2px solid red;
+		/* display: none; */
 	}
 
 	/* FULLSCREEN */
