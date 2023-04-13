@@ -38,13 +38,14 @@
 	let tooltipY = 0;
 	let tooltipCompany = "Company name";
 	let DPI = typeof window === "object" ? window.devicePixelRatio : 2;
-
+	// DPI = 1;
 	// Placeholders, etc. for the chart
 	let container, svg, hiddenCanvas, yAxisG, xAxisG, ticks, canvas, ctx, hiddenCtx;
 	let dict = new Map();
 	let canvasHeight, canvasWidth;
 	let xScale, yScale;
 
+	let cx, cy, ox, oy;
 	// config state
 	let showData = false;
 	let fullscreen = false;
@@ -58,7 +59,7 @@
 	$: tickDimension = fullscreen ? 8 : 0;
 	$: MARGINS = fullscreen
 		? { top: 10, right: 10, bottom: 25, left: 60 }
-		: { top: 10, right: 20, bottom: 15, left: 35 };
+		: { top: 10, right: 20, bottom: 15, left: 45 };
 	$: fullscreen, forceRender();
 
 	async function forceRender() {
@@ -120,7 +121,8 @@
 			// Make a hidden canvas for interactivity
 			hiddenCanvas = select(container)
 				.append("canvas")
-				.classed("hidden-canvas", true)
+				.classed("chart__canvas", true)
+				.attr("hidden", true)
 				.attr("height", canvasHeight * DPI)
 				.attr("width", canvasWidth * DPI)
 				.attr("style", `height:${canvasHeight}px;width:${canvasWidth}px;`);
@@ -153,7 +155,6 @@
 				return a[0][1] > b[0][1] ? 1 : 0;
 			});
 
-		// console.log("stackedData (canvas)", stackedData);
 		xScale = scaleTime()
 			.domain(extent(data, d => d.year))
 			.range([0, canvasWidth]);
@@ -186,7 +187,7 @@
 
 		// SET UP INTERACTIONS
 		canvas.on("mouseover", onMouseover);
-		canvas.on("mousemove", onMousemove);
+		hiddenCanvas.on("mousemove", onMousemove);
 		canvas.on("mouseleave", onMouseleave);
 	}, 500);
 
@@ -194,6 +195,10 @@
 	 *
 	 *
 	 * Cribbed from: https://bocoup.com/blog/2d-picking-in-canvas
+	 *
+	 * https://medium.com/free-code-camp/d3-and-canvas-in-3-steps-8505c8b27444
+	 * https://www.datamake.io/blog/d3-canvas-full#manual
+	 * https://github.com/nbremer/occupationscanvas/blob/gh-pages/js/script.js
 	 * @param data
 	 * @param canvas
 	 * @param hidden
@@ -208,16 +213,6 @@
 		const ctx = canvas.node().getContext("2d");
 		ctx.scale(DPI, DPI);
 
-		if (!hidden) {
-			// Grab styles from container to use CSS vars as set.
-			const containerStyles = getComputedStyle(container);
-
-			// Set some visual styles
-			ctx.fillStyle = containerStyles.getPropertyValue("--color-chart");
-			ctx.strokeStyle = "white";
-			ctx.lineWidth = 1;
-		}
-
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
 		const areaGenerator = area()
@@ -227,10 +222,13 @@
 			.y1(d => yScale(d[1]))
 			.context(ctx);
 
-		data.forEach((node, i) => {
+		data.forEach(node => {
 			if (hidden) {
-				const c = randomColor();
-				dict.set(c, node);
+				let c = randomColor();
+
+				c = randomColor();
+
+				dict.set(c, node.key);
 
 				ctx.fillStyle = c;
 			} else {
@@ -245,45 +243,42 @@
 				colorCounter = colorCounter === colors.length - 1 ? 0 : colorCounter + 1;
 			}
 		});
-
-		console.log(dict);
+		window.dict = dict;
 	}
 
 	function onMouseover(e) {
-		tooltipHidden = false;
-		this.classList.add("highlight");
+		// tooltipHidden = false;
+		// this.classList.add("highlight");
+		canvas.node().addEventListener("mousemove", onMousemove);
 	}
 
 	function onMousemove(e) {
-		const { clientX, clientY } = e;
+		const { clientX, clientY, offsetX, offsetY } = e;
 
 		tooltipX = clientX;
 		tooltipY = clientY;
 
-		const ctx = hiddenCanvas.node().getContext("2d");
-		ctx.scale(DPI, DPI);
+		cx = clientX;
+		cy = clientY;
+		ox = offsetX;
+		oy = offsetY;
 
-		const color = ctx.getImageData(clientX, clientY, 1, 1, {
+		const ctx = hiddenCanvas.node().getContext("2d");
+
+		const color = ctx.getImageData(offsetX, offsetY, 1, 1, {
 			colorSpace: "srgb",
 		}).data;
 
 		const rgb = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
-		const name = dict.get(rgb)?.key;
-		console.log("move", {
-			rgb,
-			name,
-			color,
-			clientX,
-			clientY,
-		});
-		if (name) {
-			tooltipHidden = false;
-			tooltipCompany = name;
-		}
+		const name = dict.get(rgb);
+
+		tooltipCompany = name || null;
+		// tooltipText = rgb || null;
 	}
 	function onMouseleave(e) {
-		tooltipHidden = true;
-		this.classList.remove("highlight");
+		tooltipCompany = null;
+		// this.classList.remove("highlight");
+		canvas.node().removeEventListener("mousemove", onMousemove);
 	}
 
 	/**
@@ -344,9 +339,8 @@
 		z-index: 100;
 	}
 
-	:global(.hidden-canvas) {
-		outline: 2px solid red;
-		/* display: none; */
+	.chart :global(.chart__canvas[hidden]) {
+		display: none;
 	}
 
 	/* FULLSCREEN */
@@ -368,6 +362,19 @@
 		outline: 1px solid;
 		width: clamp(150px, 50%, 300px);
 	}
+
+	.debug {
+		z-index: 100000000;
+		background: #eee;
+		position: absolute;
+		top: 0;
+		left: 0;
+		font: bold 12px/1em sans-serif;
+		list-style: none;
+		margin: 0;
+		padding: 0.5rem;
+		gap: 0.5rem;
+	}
 </style>
 
 <svelte:window
@@ -383,6 +390,14 @@
 	style:--canvas-top="{MARGINS.top}px"
 	style:--canvas-right="{MARGINS.right}px"
 	aria-labelledby="chart-yearly-{type}">
+	<ul
+		class="debug"
+		style:display={window.location.href.includes("debug") ? "flex" : "none"}>
+		<li>cx: {cx}</li>
+		<li>cy: {cy}</li>
+		<li>ox: {ox}</li>
+		<li>oy: {oy}</li>
+	</ul>
 	<ChartHeader
 		type="{type}-yearly"
 		flip={type === "target"}
@@ -427,7 +442,7 @@
 				}} />
 		{/if}
 	</div>
-	<Tooltip hidden={tooltipHidden} flip={type === "target"} x={tooltipX} y={tooltipY}>
+	<Tooltip hidden={!tooltipCompany} flip={type === "target"} x={tooltipX} y={tooltipY}>
 		<span class="tooltip__name">{tooltipCompany}</span>
 		<span class="tooltip__commitments">{tooltipText}</span>
 	</Tooltip>
