@@ -199,6 +199,7 @@
 	 * https://medium.com/free-code-camp/d3-and-canvas-in-3-steps-8505c8b27444
 	 * https://www.datamake.io/blog/d3-canvas-full#manual
 	 * https://github.com/nbremer/occupationscanvas/blob/gh-pages/js/script.js
+	 * https://www.visualcinnamon.com/2015/11/learnings-from-a-d3-js-addict-on-starting-with-canvas/
 	 * @param data
 	 * @param canvas
 	 * @param hidden
