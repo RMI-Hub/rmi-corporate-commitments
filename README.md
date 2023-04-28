@@ -20,6 +20,13 @@ This app uses a Makefile to collect the critical command-line functions in one, 
 
 Want to start from scratch? Use`make clean data build`.
 
+## Running locally
+
+1. Be sure you have the app cloned (including the large data.csv with `git-lfs`) and fully installed with `make install`. 
+1. Generate everything you need with `make clean data build`. This will result in the JS and css bundles as well as an html file all in the `/public/` subdirectory. This also will prep the data for the cloud function.
+1. Run the app locally with `npm run dev`. This will expose the app on `localhost:5000`
+1. In a new terminal window, run the cloud functions locally with `npm run firebase`. This exposes the function on `localhost:4000`.
+
 ## The Data
 
 The data is one giant CSV. It is intended to be processed, sliced and minified by the node script `./scripts/data.js`. The data is split up and written to individual files for each sector and industry. (One sector has multiple industries). Cleanup/processing is pretty minimal, but a few unneeded columns are removed. These CSVs are deployed with the app and intended to be consumed by the client.
