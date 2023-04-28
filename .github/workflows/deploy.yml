@@ -25,7 +25,7 @@ jobs:
     name: Test
     uses: ./.github/workflows/test.yml
     secrets: inherit
-  install:
+  build_and_deploy:
     needs: [test]
     runs-on: [ubuntu-latest]
     steps:
@@ -51,46 +51,6 @@ jobs:
 
       - run: make data
       - run: make build
-
-      - name: Cache generated stuff
-        id: generated-cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./public
-            ./functions/data
-          key: cache-${{ github.run_id }}-${{ github.run_attempt }}
-
-  deploy_github_pages:
-    needs: [test, install]
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          lfs: true
-
-      - uses: actions/setup-node@v3
-        with:
-          cache: npm
-          node-version: 16
-
-      - name: Restore cached node modules
-        id: npm-cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./node_modules
-            ./functions/node_modules
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Restore generated stuff
-        id: generated-cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./public
-          key: cache-${{ github.run_id }}-${{ github.run_attempt }}
-          fail-on-cache-miss: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
