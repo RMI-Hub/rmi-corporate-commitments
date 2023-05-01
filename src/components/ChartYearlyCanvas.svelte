@@ -36,7 +36,7 @@
 	let tooltipHidden = true;
 	let tooltipX = 0;
 	let tooltipY = 0;
-	let tooltipCompany = "Company name";
+	let tooltipCompany = null;
 	let DPI = typeof window === "object" ? window.devicePixelRatio : 2;
 	// DPI = 1;
 	// Placeholders, etc. for the chart
@@ -61,6 +61,10 @@
 		? { top: 10, right: 10, bottom: 25, left: 60 }
 		: { top: 10, right: 20, bottom: 15, left: 45 };
 	$: fullscreen, forceRender();
+
+	let color = [];
+
+	let c = "#eee";
 
 	async function forceRender() {
 		chartHidden = true;
@@ -111,18 +115,19 @@
 				.attr("preserveAspectRatio", "xMinYMid")
 				.attr("role", "img");
 
-			canvas = select(container)
-				.append("canvas")
-				.classed("chart__canvas", true)
-				.attr("height", canvasHeight * DPI)
-				.attr("width", canvasWidth * DPI)
-				.attr("style", `height:${canvasHeight}px;width:${canvasWidth}px;`);
-
 			// Make a hidden canvas for interactivity
 			hiddenCanvas = select(container)
 				.append("canvas")
 				.classed("chart__canvas", true)
+				.classed("chart__canvas--hidden", true)
 				.attr("hidden", true)
+				.attr("height", canvasHeight * DPI)
+				.attr("width", canvasWidth * DPI)
+				.attr("style", `height:${canvasHeight}px;width:${canvasWidth}px;`);
+
+			canvas = select(container)
+				.append("canvas")
+				.classed("chart__canvas", true)
 				.attr("height", canvasHeight * DPI)
 				.attr("width", canvasWidth * DPI)
 				.attr("style", `height:${canvasHeight}px;width:${canvasWidth}px;`);
@@ -146,6 +151,10 @@
 				.classed("axis", true)
 				.classed("x", true)
 				.attr("transform", `translate(${MARGINS.left}, ${MARGINS.top + canvasHeight})`);
+
+			// SET UP INTERACTIONS
+			canvas.on("mouseover", onMouseover);
+			canvas.on("mouseleave", onMouseleave);
 		}
 
 		const stackedData = stack()
@@ -184,11 +193,6 @@
 			.call(yAxis.tickFormat("").tickSize(canvasWidth + MARGINS.right, 0, 0));
 
 		$isLoading = false;
-
-		// SET UP INTERACTIONS
-		canvas.on("mouseover", onMouseover);
-		hiddenCanvas.on("mousemove", onMousemove);
-		canvas.on("mouseleave", onMouseleave);
 	}, 500);
 
 	/**
@@ -223,12 +227,9 @@
 			.y1(d => yScale(d[1]))
 			.context(ctx);
 
-		data.forEach(node => {
+		data.forEach((node, i) => {
 			if (hidden) {
 				let c = randomColor();
-
-				c = randomColor();
-
 				dict.set(c, node.key);
 
 				ctx.fillStyle = c;
@@ -244,13 +245,10 @@
 				colorCounter = colorCounter === colors.length - 1 ? 0 : colorCounter + 1;
 			}
 		});
-		window.dict = dict;
 	}
 
 	function onMouseover(e) {
-		// tooltipHidden = false;
-		// this.classList.add("highlight");
-		canvas.node().addEventListener("mousemove", onMousemove);
+		canvas.on("mousemove", onMousemove);
 	}
 
 	function onMousemove(e) {
@@ -258,41 +256,38 @@
 
 		tooltipX = clientX;
 		tooltipY = clientY;
-
 		cx = clientX;
 		cy = clientY;
-		ox = offsetX;
-		oy = offsetY;
+		// Be sure to increase by DPI because _that_ is actually how big the canvas is when we create it.
+		ox = offsetX * DPI;
+		oy = offsetY * DPI;
 
 		const ctx = hiddenCanvas.node().getContext("2d");
 
-		const color = ctx.getImageData(offsetX, offsetY, 1, 1, {
+		const { data } = ctx.getImageData(ox, oy, 1, 1, {
 			colorSpace: "srgb",
-		}).data;
+		});
 
-		const rgb = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+		const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+		c = rgb; // For the debug
 		const name = dict.get(rgb);
-
 		tooltipCompany = name || null;
-		// tooltipText = rgb || null;
 	}
 	function onMouseleave(e) {
 		tooltipCompany = null;
-		// this.classList.remove("highlight");
-		canvas.node().removeEventListener("mousemove", onMousemove);
+		canvas.on("mousemove", null);
 	}
 
 	/**
 	 * Returns a random rgb color value.
 	 * */
 	function randomColor() {
-		return `rgb(${generateRandom(0, 255)}, ${generateRandom(0, 255)}, ${generateRandom(
-			0,
-			255
-		)})`;
+		return `rgb(${generateRandom()}, ${generateRandom()}, ${generateRandom()})`;
 	}
 
-	function generateRandom(min = 0, max = 100) {
+	function generateRandom(min = 1, max = 255) {
+		if (min >= max) return null;
+
 		// find diff
 		let difference = max - min;
 
@@ -338,10 +333,12 @@
 		top: var(--canvas-top, 0);
 		right: var(--canvas-right, 0);
 		z-index: 100;
+		opacity: 0.1;
 	}
 
 	.chart :global(.chart__canvas[hidden]) {
-		display: none;
+		display: block;
+		opacity: 1;
 	}
 
 	/* FULLSCREEN */
@@ -366,7 +363,7 @@
 
 	.debug {
 		z-index: 100000000;
-		background: #eee;
+		background: var(--background, #eee);
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -375,6 +372,7 @@
 		margin: 0;
 		padding: 0.5rem;
 		gap: 0.5rem;
+		transform: translate(0, -125%);
 	}
 </style>
 
@@ -392,6 +390,7 @@
 	style:--canvas-right="{MARGINS.right}px"
 	aria-labelledby="chart-yearly-{type}">
 	<ul
+		style:--background={c}
 		class="debug"
 		style:display={window.location.href.includes("debug") ? "flex" : "none"}>
 		<li>cx: {cx}</li>
