@@ -333,12 +333,10 @@
 		top: var(--canvas-top, 0);
 		right: var(--canvas-right, 0);
 		z-index: 100;
-		opacity: 0.1;
 	}
 
 	.chart :global(.chart__canvas[hidden]) {
-		display: block;
-		opacity: 1;
+		display: none;
 	}
 
 	/* FULLSCREEN */
