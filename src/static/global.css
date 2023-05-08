@@ -155,6 +155,8 @@ a {
 	flex: 1 1;
 	position: relative;
 	transition: background var(--speed-transition) ease-in-out;
+	aspect-ratio: 16 / 9;
+	min-height: 200px;
 }
 .chart__container {
 	position: absolute;
