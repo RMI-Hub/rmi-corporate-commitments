@@ -37,6 +37,7 @@
 	}
 	.preset {
 		position: relative;
+		margin: 0;
 	}
 	.preset__btn {
 		/* Sit atop the animated hover element */
