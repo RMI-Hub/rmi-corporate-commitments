@@ -59,7 +59,7 @@
 	$: tickDimension = fullscreen ? 8 : 0;
 	$: MARGINS = fullscreen
 		? { top: 10, right: 10, bottom: 25, left: 60 }
-		: { top: 10, right: 20, bottom: 15, left: 45 };
+		: { top: 10, right: 20, bottom: 15, left: 75 };
 	$: fullscreen, forceRender();
 
 	let color = [];
@@ -331,7 +331,7 @@
 	.chart :global(.chart__canvas) {
 		position: absolute;
 		top: var(--canvas-top, 0);
-		right: var(--canvas-right, 0);
+		right: calc(var(--canvas-right, 0) / 2);
 		z-index: 100;
 	}
 
