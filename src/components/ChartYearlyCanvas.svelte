@@ -59,7 +59,7 @@
 	$: tickDimension = fullscreen ? 8 : 0;
 	$: MARGINS = fullscreen
 		? { top: 10, right: 10, bottom: 25, left: 60 }
-		: { top: 10, right: 20, bottom: 15, left: 75 };
+		: { top: 10, right: 20, bottom: 15, left: 45 };
 	$: fullscreen, forceRender();
 
 	let color = [];

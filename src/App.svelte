@@ -78,6 +78,10 @@
 		gap: var(--gap);
 	}
 
+	.controls {
+		background: var(--color-background-controls);
+	}
+
 	@media all and (min-width: 1024px) {
 		.container {
 			height: 98vh;
@@ -93,7 +97,6 @@
 
 		.controls {
 			padding: var(--gap);
-			background: var(--color-background-controls);
 			grid-row: 1 / -2;
 			grid-column: 1;
 		}

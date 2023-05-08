@@ -17,6 +17,7 @@
 		top: 0;
 		z-index: 3;
 		padding: 0 0 0.5rem 0;
+		display: none;
 	}
 
 	.chart::before {
@@ -39,6 +40,12 @@
 
 	.chart--overall :global(svg .path) {
 		fill: var(--color);
+	}
+
+	@media all and (min-width: 1024px) {
+		.chart {
+			display: block;
+		}
 	}
 </style>
 

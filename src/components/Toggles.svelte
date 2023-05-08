@@ -1,4 +1,6 @@
 <script>
+	import ButtonToggles from "./ButtonToggles.svelte";
+
 	import Toggle from "./Toggle.svelte";
 
 	// UTILS
@@ -26,13 +28,15 @@
 
 	const doc = document ? document.body : null;
 	function openControls(e) {
-		if (doc) doc.classList.add("scroll-lock");
-		visible = true;
+		if (visible) {
+			if (doc) doc.classList.remove("scroll-lock");
+			visible = false;
+		} else {
+			if (doc) doc.classList.add("scroll-lock");
+			visible = true;
+		}
 	}
-	function closeControls(e) {
-		if (doc) doc.classList.remove("scroll-lock");
-		visible = false;
-	}
+
 	function onReset(e) {
 		$multipliers = defaultMultipliers;
 	}
@@ -40,11 +44,12 @@
 
 <style>
 	.toggles {
+		background: inherit;
 		height: 100%;
 		width: 100%;
 		position: fixed;
 		top: 0;
-
+		z-index: 1000;
 		transition: right var(--speed-transition) ease-in-out;
 		right: 100%;
 
@@ -55,8 +60,8 @@
 		right: 0;
 	}
 
-	.toggles__btn-group {
-		position: relative; /* contains toggle tip*/
+	/* .toggles__btn-group {
+		position: relative; 
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
@@ -64,9 +69,9 @@
 		flex-wrap: wrap;
 		padding-bottom: var(--gap);
 		border-bottom: 1px solid var(--color-gray);
-	}
+	} */
 
-	.toggles__btn-group > * {
+	/* .toggles__btn-group > * {
 		flex: 1 1;
 	}
 
@@ -89,10 +94,13 @@
 		font-size: var(--font-size-small);
 		flex-basis: 100%;
 		margin: 0;
+	} */
+
+	.toggles__form {
+		padding: 1rem;
 	}
 
 	@media all and (min-width: 1024px) {
-		.open,
 		.close {
 			display: none;
 		}
@@ -105,6 +113,7 @@
 		}
 
 		.toggles__form {
+			padding: 0;
 			overflow: visible;
 		}
 
@@ -121,9 +130,8 @@
 	}
 </style>
 
-<button class="open" on:click={openControls}>Controls</button>
+<ButtonToggles {visible} on:click={openControls} />
 <div class="toggles stack" class:visible>
-	<button class="close" on:click={closeControls}>X</button>
 	<ChartOverall {...overallMicrocopy} />
 	<div class="toggles__form stack">
 		<PickerPresets {presets} {...presetsMicrocopy} column={true} />
@@ -140,7 +148,6 @@
 		</div>
 		<div class="toggles__buttons">
 			<Button on:click={onReset}>Reset</Button>
-			<!-- <Button type="submit" active={true}>Submit</Button> -->
 		</div>
 	</div>
 </div>
