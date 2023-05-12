@@ -11,7 +11,7 @@
 		width: max(3rem, 44px);
 		aspect-ratio: 1/1;
 
-		border: none;
+		border: 3px solid rgba(255, 255, 255, 0.8);
 		border-radius: 50%;
 
 		background-color: var(--color-accent);
@@ -25,7 +25,7 @@
 		cursor: pointer;
 	}
 
-	svg {
+	.icon {
 		fill: var(--color-accent-text);
 		width: 50%;
 		height: 50%;
@@ -35,7 +35,11 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 	}
-
+	.icon--check {
+		fill: none;
+		stroke-width: 30px;
+		stroke: var(--color-accent-text);
+	}
 	@media all and (min-width: 1024px) {
 		.open {
 			display: none;
@@ -45,10 +49,26 @@
 
 <button class="open" on:click>
 	{#if visible}
-		*
+		<svg
+			transition:fade={{ duration: 75 }}
+			class="icon icon--check"
+			width="100%"
+			height="100%"
+			viewBox="0 0 500 500"
+			version="1.1"
+			xmlns="http://www.w3.org/2000/svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
+			xml:space="preserve"
+			xmlns:serif="http://www.serif.com/"
+			style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+			<g transform="matrix(2.84379,0,0,2.84379,-318.032,-345.468)">
+				<path d="M125.791,226.241L166.694,267.144L275.789,158.049" />
+			</g>
+		</svg>
 	{:else}
 		<svg
 			transition:fade={{ duration: 75 }}
+			class="icon icon--filters"
 			role="img"
 			width="100%"
 			height="100%"
