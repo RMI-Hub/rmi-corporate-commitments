@@ -42,7 +42,6 @@ jobs:
             ./node_modules
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
-          fail-on-cache-miss: true
 
       - name: Update and process data
         run: make data
