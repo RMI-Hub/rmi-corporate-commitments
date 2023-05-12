@@ -12,7 +12,6 @@
 	let activePreset = "initial";
 	function activatePreset({ toggles = {}, id }) {
 		activePreset = id;
-		console.log({ initial: presets.initial.toggles, toggles });
 		// When clicking a preset, start not with the chosen
 		// multipliers, but the default settings. Assign our new settings
 		$multipliers = Object.assign({}, presets.initial.toggles, toggles);
@@ -39,10 +38,11 @@
 		position: relative;
 		margin: 0;
 	}
+
+	/* The actual button element */
 	.preset__btn {
 		/* Sit atop the animated hover element */
-		position: relative;
-		z-index: 2;
+
 		font: bold var(--font-size-small) / var(--line-height) var(--sans-serif-fonts);
 		text-align: left;
 		background-color: transparent;
@@ -58,21 +58,23 @@
 		display: flex;
 		align-items: center;
 		gap: var(--gap);
+
+		background: linear-gradient(from left, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 1));
 	}
 
-	.preset::after {
+	.preset__btn::before {
 		content: "";
 		position: absolute;
 		top: 0;
 		right: var(--btn-hover-bg-right);
 		width: 0;
 		height: 100%;
-		max-width: calc(100% - var(--btn-hover-bg-right));
 		background-color: var(--btn-bg-color);
 		transition: width var(--speed-transition) ease-in-out;
+		z-index: -1;
 	}
 
-	.preset__icon {
+	.preset__btn__icon {
 		height: var(--btn-icon-size);
 		width: var(--btn-icon-size);
 		background-color: var(--btn-icon-bg-color);
@@ -85,21 +87,21 @@
 		transition: transform var(--speed-transition) ease-in-out;
 	}
 
-	.preset__icon :global(svg) {
+	.preset__btn__icon :global(svg) {
 		width: 60%;
 		height: 60%;
 		fill: var(--color-accent-text);
 	}
 
-	.preset--active .preset__icon,
-	.preset:is(:hover, :focus) .preset__icon {
+	.preset--active .preset__btn__icon,
+	.preset:is(:hover, :focus) .preset__btn__icon {
 		--btn-icon-bg-color: var(--color-accent);
 		transform: translate(0.37rem, 0) scale(1.05);
 	}
 	/* HOVER/FOCUS/ACTIVE */
-	.preset--active::after,
-	.preset:is(:hover, :focus)::after {
-		width: 100%;
+	.preset--active .preset__btn::before,
+	.preset:is(:hover, :focus) .preset__btn::before {
+		width: var(--controls-width);
 	}
 	.preset--active {
 		--btn-bg-color: white;
@@ -111,7 +113,7 @@
 	{#if presetsDescription}{@html marked.parse(presetsDescription)}{/if}
 
 	<ul class="presets__list stack">
-		{#each Object.entries(presets) as [id, { label = "", description = "", toggles = { }, sector_or_industry = null }], index (id)}
+		{#each Object.entries(presets) as [id, { label = "", description = "", toggles = { } }], index (id)}
 			{@const isActive = id === activePreset}
 			<li class="preset" class:preset--active={isActive && $isPreset}>
 				<button
@@ -119,11 +121,11 @@
 					on:click={e => {
 						activatePreset({ toggles, id });
 					}}>
-					{label}
+					<span class="preset__btn__label">{label}</span>
 					{#if description}
 						<Toggletip text={description} {id} flip={false} />
 					{/if}
-					<span class="preset__icon">
+					<span class="preset__btn__icon">
 						<Arrow />
 					</span>
 				</button>
