@@ -44,7 +44,7 @@
 
 	@media all and (min-width: 1024px) {
 		.chart {
-			display: block;
+			display: flex;
 		}
 	}
 </style>

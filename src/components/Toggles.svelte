@@ -60,56 +60,17 @@
 		right: 0;
 	}
 
-	/* .toggles__btn-group {
-		position: relative; 
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-between;
-		gap: calc(var(--gap) / 2) var(--gap);
-		flex-wrap: wrap;
-		padding-bottom: var(--gap);
-		border-bottom: 1px solid var(--color-gray);
-	} */
-
-	/* .toggles__btn-group > * {
-		flex: 1 1;
-	}
-
-	.toggles__label {
-		display: flex;
-		align-items: flex-start;
-		gap: 0.25rem;
-		cursor: pointer;
-	}
-	.longform .toggles__label {
-		flex: 1 1 100%;
-	}
-
-	.toggles__btn {
-		font-size: 1em;
-		accent-color: var(--color-accent);
-	}
-
-	.label {
-		font-size: var(--font-size-small);
-		flex-basis: 100%;
-		margin: 0;
-	} */
-
 	.toggles__form {
 		padding: 1rem;
 	}
 
 	@media all and (min-width: 1024px) {
-		.close {
-			display: none;
-		}
-
 		.toggles {
 			--button-height: 3rem;
 			position: relative;
 			right: unset;
 			height: 100%;
+			padding-bottom: var(--gap);
 		}
 
 		.toggles__form {

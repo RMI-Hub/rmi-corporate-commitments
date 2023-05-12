@@ -96,7 +96,7 @@
 		}
 
 		.controls {
-			padding: var(--gap);
+			padding: var(--gap) var(--gap) 0 var(--gap);
 			grid-row: 1 / -2;
 			grid-column: 1;
 		}
