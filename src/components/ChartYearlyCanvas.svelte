@@ -38,7 +38,7 @@
 	let tooltipY = 0;
 	let tooltipCompany = null;
 	let DPI = typeof window === "object" ? window.devicePixelRatio : 2;
-	// DPI = 1;
+
 	// Placeholders, etc. for the chart
 	let container, svg, hiddenCanvas, yAxisG, xAxisG, ticks, canvas, ctx, hiddenCtx;
 	let dict = new Map();
@@ -59,7 +59,7 @@
 	$: tickDimension = fullscreen ? 8 : 0;
 	$: MARGINS = fullscreen
 		? { top: 10, right: 10, bottom: 25, left: 60 }
-		: { top: 10, right: 20, bottom: 15, left: 45 };
+		: { top: 10, right: 20, bottom: 15, left: 35 };
 	$: fullscreen, forceRender();
 
 	let color = [];
@@ -216,8 +216,12 @@
 
 		// Get the context of the canvas in question and clear out the rectangle
 		const ctx = canvas.node().getContext("2d");
-		ctx.scale(DPI, DPI);
 
+		// ctx.scale() will multiply the effect with each chart render, so set the transform matrix explicitly
+		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform
+		ctx.setTransform(DPI, 0, 0, DPI, 0, 0);
+
+		// Clear out the chart for a new drawing
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
 		const areaGenerator = area()
