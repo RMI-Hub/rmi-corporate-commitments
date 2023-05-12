@@ -190,7 +190,7 @@ a {
 	height: 100%;
 	padding: max(5vw, var(--gap));
 	background: rgba(255, 255, 255, 0.9);
-	z-index: 200;
+	z-index: 2000;
 }
 
 .fullscreen .chart__container {
