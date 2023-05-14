@@ -2,6 +2,7 @@
 	import { activeSector, highlightIndustry, highlightSector } from "../stores.js";
 	import { slugify } from "../utils/slugify.js";
 	import X from "../icons/X.svelte";
+	import { fireEvent } from "../utils/analytics.js";
 
 	export let sectors = {};
 	export let sectorHeader;
@@ -238,6 +239,7 @@
 			aria-controls="sector-industry-list"
 			aria-expanded={visible}
 			on:click|stopPropagation={e => {
+				fireEvent("sector picker opened");
 				visible = !visible;
 			}}>
 			<span class="picker__label">
@@ -260,6 +262,7 @@
 								$activeSector = sector;
 								$highlightSector = sectorSlug;
 								$highlightIndustry = null;
+								fireEvent(`New sector/industry chosen: ${sector}`);
 							}}>{sector}</button>
 					</li>
 					{#each industries as industry}
@@ -273,6 +276,7 @@
 									$highlightIndustry = industrySlug;
 									$highlightSector = null;
 									$activeSector = industry;
+									fireEvent(`New sector/industry chosen: ${sector}/${industry}`);
 								}}>{industry}</button>
 						</li>
 					{/each}

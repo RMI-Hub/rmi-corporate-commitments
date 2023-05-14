@@ -5,6 +5,7 @@
 	import Expand from "../icons/Expand.svelte";
 	import Share from "../icons/Share.svelte";
 	import Toggletip from "./Toggletip.svelte";
+	import { fireEvent } from "../utils/analytics.js";
 
 	export let header = "";
 	export let subheader = "";
@@ -25,7 +26,7 @@
 	 */
 
 	function onShare(e) {
-		console.log("sharing");
+		fireEvent("Sharing");
 
 		navigator
 			.share({
@@ -39,10 +40,12 @@
 
 	function onShowData(e) {
 		dispatch("showData", { type });
+		fireEvent("Chart data displayed");
 	}
 
 	function onEnlarge(e) {
 		dispatch("enlarge", {});
+		fireEvent("Fullscreen mode activated");
 	}
 
 	function testForWebShare() {

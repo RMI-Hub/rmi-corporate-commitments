@@ -11,6 +11,7 @@
 	import Button from "./Button.svelte";
 	import PickerPresets from "./PickerPresets.svelte";
 	import ChartOverall from "./ChartOverall.svelte";
+	import { fireEvent } from "../utils/analytics";
 
 	export let togglesLabel;
 	export let togglesDescription = "";
@@ -39,6 +40,7 @@
 
 	function onReset(e) {
 		$multipliers = defaultMultipliers;
+		fireEvent("Toggles reset");
 	}
 </script>
 

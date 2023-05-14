@@ -3,9 +3,7 @@
 	import { slugify } from "../utils/slugify.js";
 	import { multipliers, isPreset } from "../stores.js";
 	import { marked } from "marked";
-
-	// COMPONENTS
-	import Toggletip from "./Toggletip.svelte";
+	import { fireEvent } from "../utils/analytics.js";
 
 	export let longform = false;
 	export let label = "";
@@ -100,7 +98,6 @@
 <div class="toggle" class:longform>
 	<h3 class="label toggle__label">
 		{label}
-		<!-- <Toggletip text={definition} /> -->
 	</h3>
 	<p class="toggle__sublabel sans-serif">{@html marked.parseInline(definition)}</p>
 	{#each buttons as { text, value }}
@@ -112,6 +109,7 @@
 				name={slugify(label)}
 				on:click={e => {
 					$isPreset = false;
+					fireEvent("Toggle used");
 				}}
 				{value}
 				bind:group={$multipliers[id]} />

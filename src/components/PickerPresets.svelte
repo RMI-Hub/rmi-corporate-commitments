@@ -2,6 +2,7 @@
 	import { marked } from "marked";
 	import { multipliers, isPreset } from "../stores.js";
 	import ButtonPreset from "./ButtonPreset.svelte";
+	import { fireEvent } from "../utils/analytics.js";
 
 	export let presets = {};
 	export let presetsLabel = "";
@@ -16,6 +17,8 @@
 		$multipliers = Object.assign({}, presets.initial.toggles, toggles);
 
 		$isPreset = true;
+
+		fireEvent("Preset selected");
 	}
 </script>
 

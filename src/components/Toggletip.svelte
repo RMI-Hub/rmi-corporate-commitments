@@ -6,6 +6,7 @@
 	import { onMount } from "svelte";
 	import { fly } from "svelte/transition";
 	import { marked } from "marked";
+	import { fireEvent } from "../utils/analytics.js";
 
 	// Concepts cribbed from here:
 	// - https://inclusive-components.design/tooltips-toggletips/
@@ -20,6 +21,7 @@
 
 	function handleClick(e) {
 		showInfo = true;
+		fireEvent("toggletip opened");
 	}
 
 	function handleCloseClick(e) {

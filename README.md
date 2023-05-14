@@ -68,3 +68,18 @@ A few small SVG icons are used in this app, and are written directly into svelte
 ## Deploying
 
 Currently in a development state, this app is served via github pages. Any merge to the `main` branch will trigger the Github Actions workflow `deploy.yml`. This action processes the data, builds the bundles and uploads a Github Pages-compatible artifact. It also can be triggered manually from the [actions tab](https://github.com/ryanbmarx/rmi-corporate-commitments/actions).
+
+
+## Analytics
+
+Action | Event
+---|---
+Toggletip (`i` button) opened | tktktk
+Chart-based share buttons opened | tktktk
+Fullscreen mode clicked | tktktk
+Chart data table displayed | tktktk
+Preset activated | tktktk
+Sector/industry selector opened | tktktk
+New sector/industry selected | tktktk
+Toggle used | tktktktk
+Toggles reset | tktktktk
