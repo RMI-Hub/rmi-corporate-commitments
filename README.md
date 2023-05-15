@@ -59,7 +59,7 @@ The display names and descriptions for each sector and industry should be added 
 
 ### Master chart
 
-TK
+One sub-task of the data update step is to generate an overall chart of the entire dataset. Using server-side d3 and the same data processing algorithm as the client-side charts (using the default multipliers for the annnual baseline chart), a standalone SVG is created and deposited in `./src/icons/chart-overall.svg`. From there, it is imported and bundled into the main app. As the user selects new sectors and industries, its appearance is modified via a CSS file which also is generated during this step (`./public/chart-overall.css`).
 
 ### SVGs
 
