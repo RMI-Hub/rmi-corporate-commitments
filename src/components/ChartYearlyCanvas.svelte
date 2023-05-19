@@ -161,7 +161,7 @@
 			.keys(companies)
 			.order(stackOrderDescending)(data)
 			.sort((a, b) => {
-				return a[0][1] > b[0][1] ? 1 : 0;
+				return a[0][1] > b[0][1] ? 1 : -1;
 			});
 
 		xScale = scaleTime()
