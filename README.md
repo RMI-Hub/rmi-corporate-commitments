@@ -39,6 +39,16 @@ The primary data client function is `src/utils/fetch-data.js`. It fetches the da
 
 The initial view of the app is a preset, found in `./src/config/presets.json`. This is done so the default view is validated against a json schema.
 
+### Updating the data
+
+Everything runs off of the aforementioned CSV: `./functions/data.csv`. Replace that file with a new version (using the same name) and push it to the remote repo. The Github Actions will process and deploy it at that point.
+
+1. Replace the file in the code.
+1. **Commit** the new file with `git commit ./functions/data.csv`
+1. **Push** the new file to the remote repo (i.e. the cloud) with `git push origin main`.
+1. Wait a while for the processing to complete.
+1. If you have a green checkmark on [this page](https://github.com/ryanbmarx/rmi-corporate-commitments/actions), then all is good.
+
 ## The app
 
 This dashboard is written in [Svelte.js](https://svelte.dev) and uses [D3](https://d3js.org) for the charting. The overarching command `make build` will process all javascript imports and generate `/public/bundle.js` and `/public/bundle.css`. It also moves the current `./src/static/global.css` into the public folder, too. 
