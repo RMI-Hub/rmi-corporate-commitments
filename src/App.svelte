@@ -73,7 +73,7 @@
 
 <style>
 	.rmi-container {
-		--controls-width: 18rem;
+		--controls-width: 100%;
 		display: grid;
 		gap: var(--gap);
 	}
@@ -84,6 +84,7 @@
 
 	@media all and (min-width: 1024px) {
 		.rmi-container {
+			--controls-width: 18rem;
 			height: 98vh;
 			min-height: 800px;
 			grid-template-columns: var(--controls-width) repeat(2, minmax(1px, 1fr));
