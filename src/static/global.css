@@ -145,6 +145,11 @@ a {
 	overflow: visible;
 	height: 100%;
 }
+
+.chart.stack {
+	--gap: 0.5rem;
+}
+
 .chart .tick {
 	font-size: var(--font-size-chart);
 	font-weight: var(--font-weight-chart);
