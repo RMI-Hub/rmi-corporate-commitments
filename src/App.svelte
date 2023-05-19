@@ -72,7 +72,7 @@
 </script>
 
 <style>
-	.container {
+	.rmi-container {
 		--controls-width: 18rem;
 		display: grid;
 		gap: var(--gap);
@@ -83,7 +83,7 @@
 	}
 
 	@media all and (min-width: 1024px) {
-		.container {
+		.rmi-container {
 			height: 98vh;
 			min-height: 800px;
 			grid-template-columns: var(--controls-width) repeat(2, minmax(1px, 1fr));
@@ -101,10 +101,10 @@
 			grid-column: 1;
 		}
 
-		.container :global(.chart--cumulative) {
+		.rmi-container :global(.chart--cumulative) {
 			grid-row: 3;
 		}
-		.container :global(.chart--baseline) {
+		.rmi-container :global(.chart--baseline) {
 			grid-column: 2;
 		}
 	}
@@ -112,7 +112,7 @@
 
 <Intro {headline} {intro} />
 <section
-	class="container"
+	class="rmi-container"
 	aria-labelledby="sector-heading"
 	data-highlight-sector={$highlightSector}
 	data-highlight-industry={$highlightIndustry}>

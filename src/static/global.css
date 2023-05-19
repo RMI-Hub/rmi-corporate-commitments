@@ -116,7 +116,7 @@ a {
 
 /* SCAFFOLDING FUN */
 
-.container {
+.rmi-container {
 	padding: 0 var(--container-padding-h);
 }
 
