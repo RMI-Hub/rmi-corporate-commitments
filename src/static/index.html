@@ -9,6 +9,8 @@
   <title>Svelte app</title>
 
   <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet"
+    href="	https://staging-climatewayfinder.kinsta.cloud/wp-content/themes/wayfinder/public/styles/app.css?id=15ea275cb1ff17dfe39e" />
   <link rel="stylesheet" href="global.css" />
   <link rel="stylesheet" href="chart-overall.css" />
   <link rel="stylesheet" href="bundle.css" />
@@ -24,7 +26,18 @@
 
 <body>
 
-  <div id="rmi" class="app"></div>
+  <main id="main" class="main">
+    <div class="container mt-12">
+      <div class="page-header">
+        <h1 class="font-bold text-darkBlue">Commitments Dashboard</h1>
+      </div>
+    </div>
+    <div class="container">
+      <div class="content mb-12" data-aos="fade-up">
+        <div id="rmi" class="app"></div>
+      </div>
+    </div>
+  </main>
 </body>
 
 </html>

@@ -117,7 +117,7 @@ a {
 /* SCAFFOLDING FUN */
 
 .rmi-container {
-	padding: 0 var(--container-padding-h);
+	padding: 0;
 }
 
 .stack {
@@ -155,7 +155,7 @@ a {
 	flex: 1 1;
 	position: relative;
 	transition: background var(--speed-transition) ease-in-out;
-	aspect-ratio: 16 / 9;
+	/* aspect-ratio: 16 / 9; */
 	min-height: 200px;
 }
 .chart__container {
