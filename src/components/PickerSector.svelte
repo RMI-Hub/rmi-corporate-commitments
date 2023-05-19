@@ -131,8 +131,8 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		z-index: 10;
 		z-index: 1000; /* Enough to sit atop everything, one hopes */
+		overflow: scroll;
 	}
 
 	.picker__list[hidden] {
@@ -142,6 +142,7 @@
 	.picker__list li {
 		border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+		margin: 0;
 	}
 
 	.picker__btn {
@@ -216,7 +217,6 @@
 			height: unset;
 
 			max-height: 24rem;
-			overflow: scroll;
 			box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.35);
 		}
 	}
