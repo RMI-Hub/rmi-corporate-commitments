@@ -109,7 +109,7 @@
 				name={slugify(label)}
 				on:click={e => {
 					$isPreset = false;
-					fireEvent("Toggle used");
+					fireEvent(`Toggle used ${id}/${value}`);
 				}}
 				{value}
 				bind:group={$multipliers[id]} />

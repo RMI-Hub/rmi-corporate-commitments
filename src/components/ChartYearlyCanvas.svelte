@@ -60,9 +60,6 @@
 	$: MARGINS = fullscreen
 		? { top: 10, right: 10, bottom: 25, left: 60 }
 		: { top: 10, right: 20, bottom: 15, left: 35 };
-	$: fullscreen, forceRender();
-
-	let color = [];
 
 	let c = "#eee";
 
@@ -412,6 +409,7 @@
 		}}
 		on:enlarge={async e => {
 			fullscreen = true;
+			forceRender();
 		}} />
 
 	<div class="chart__wrapper">
@@ -420,6 +418,7 @@
 				class="control control--close"
 				on:click={async e => {
 					fullscreen = false;
+					forceRender();
 				}}>
 				<X title="Shrink this visualization back to regular size" />
 			</button>

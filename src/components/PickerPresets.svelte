@@ -18,7 +18,7 @@
 
 		$isPreset = true;
 
-		fireEvent("Preset selected");
+		fireEvent(`Preset selected: ${id}`);
 	}
 </script>
 

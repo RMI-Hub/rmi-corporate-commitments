@@ -36,7 +36,7 @@
 	let fullscreen = false;
 	let chartHidden = false;
 
-	const ENLARGE_DURATION = 200;
+	const ENLARGE_DURATION = 0;
 
 	$: tickDimension = fullscreen ? 8 : 0;
 	$: MARGINS = fullscreen
@@ -221,6 +221,7 @@
 		}}
 		on:enlarge={async e => {
 			fullscreen = true;
+			forceRender();
 		}}
 		flip={type === "target"}
 		id="chart-cumulative-{type}"
@@ -233,6 +234,7 @@
 				class="control control--close"
 				on:click={async e => {
 					fullscreen = false;
+					forceRender();
 				}}>
 				<X title="Shrink this visualization back to regular size" />
 			</button>
