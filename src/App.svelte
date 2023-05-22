@@ -61,23 +61,30 @@
 			multipliers: $multipliers,
 		}).catch(console.error);
 
-		console.log("NEW DATA", {
-			$chartData,
-			$multipliers,
-		});
+		if (window.location.href.includes("localhost")) {
+			console.log("NEW DATA", {
+				$chartData,
+				$multipliers,
+			});
+		}
 		window.dispatchEvent(new Event("renderCharts"));
 	}
 </script>
 
 <style>
-	.container {
-		--controls-width: 18rem;
+	.rmi-container {
+		--controls-width: 100%;
 		display: grid;
 		gap: var(--gap);
 	}
 
+	.controls {
+		background: var(--color-background-controls);
+	}
+
 	@media all and (min-width: 1024px) {
-		.container {
+		.rmi-container {
+			--controls-width: 18rem;
 			height: 98vh;
 			min-height: 800px;
 			grid-template-columns: var(--controls-width) repeat(2, minmax(1px, 1fr));
@@ -90,16 +97,15 @@
 		}
 
 		.controls {
-			padding: var(--gap);
-			background: var(--color-background-controls);
+			padding: var(--gap) var(--gap) 0 var(--gap);
 			grid-row: 1 / -2;
 			grid-column: 1;
 		}
 
-		.container :global(.chart--cumulative) {
+		.rmi-container :global(.chart--cumulative) {
 			grid-row: 3;
 		}
-		.container :global(.chart--baseline) {
+		.rmi-container :global(.chart--baseline) {
 			grid-column: 2;
 		}
 	}
@@ -107,7 +113,7 @@
 
 <Intro {headline} {intro} />
 <section
-	class="container"
+	class="rmi-container"
 	aria-labelledby="sector-heading"
 	data-highlight-sector={$highlightSector}
 	data-highlight-industry={$highlightIndustry}>

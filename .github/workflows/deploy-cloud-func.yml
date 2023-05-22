@@ -1,9 +1,8 @@
 # Build and deploy the site
-name: Publish app and deploy cloud functions
+name: Deploy cloud functions
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
+  workflow_call:
 
 defaults:
   run:
@@ -15,13 +14,8 @@ permissions:
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
@@ -43,25 +37,24 @@ jobs:
             ./functions/node_modules
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install dependencies, if needed
-        if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
-        continue-on-error: true
+      - name: install node modules, if needed
         run: make install
+        if: steps.npm-cache.outputs.cache-hit != true
 
-      - name: Update and process data
-        run: make data
+      - run: make data
 
       - run: make build
 
-      - name: Tests
-        run: make test
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
         with:
-          # Upload entire project
-          path: public
+          # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
+          service_account: ${{ secrets.GCP_SVC_ACCT }}
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+      - name: "Deploy functions"
+        uses: "google-github-actions/deploy-cloud-functions@v1"
+        with:
+          name: data
+          runtime: nodejs16
+          source_dir: functions

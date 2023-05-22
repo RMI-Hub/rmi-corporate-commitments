@@ -12,17 +12,14 @@ function getDataURL() {
  */
 export const fetchData = throttle(
 	async ({ activeSector, multipliers }) => {
-		console.debug("++ BEGINNING FETCH");
 		const u = new URL(getDataURL());
 		u.searchParams.set("sector", activeSector);
 		u.searchParams.set("multipliers", JSON.stringify(multipliers));
 
-		console.debug(`++ FETCHING ${u.toString()}`);
 		const data = await fetch(u.toString())
 			.then(d => d.json())
 			.then(data => {
 				// Coerce dates to be dates
-				console.debug(`++ Coercing dates`);
 				for (let key of ["target", "baseline"]) {
 					for (let type of ["cumulative", "yearly"]) {
 						data[key][type] = data[key][type].map(d => {

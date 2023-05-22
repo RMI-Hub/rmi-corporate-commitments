@@ -5,8 +5,10 @@
 	import Expand from "../icons/Expand.svelte";
 	import Share from "../icons/Share.svelte";
 	import Toggletip from "./Toggletip.svelte";
+	import { fireEvent } from "../utils/analytics.js";
 
 	export let header = "";
+	export let subheader = "";
 	export let definition = "";
 	export let id = "";
 	export let flip = false;
@@ -24,7 +26,7 @@
 	 */
 
 	function onShare(e) {
-		console.log("sharing");
+		fireEvent("Sharing");
 
 		navigator
 			.share({
@@ -38,10 +40,12 @@
 
 	function onShowData(e) {
 		dispatch("showData", { type });
+		fireEvent("Chart data displayed");
 	}
 
 	function onEnlarge(e) {
 		dispatch("enlarge", {});
+		fireEvent("Fullscreen mode activated");
 	}
 
 	function testForWebShare() {
@@ -71,6 +75,12 @@
 		font: bold var(--font-size) / 1.3em var(--sans-serif-fonts);
 		margin: 0;
 	}
+
+	.header__subhead {
+		margin-top: 0.25rem;
+		display: block;
+	}
+
 	.header__controls {
 		display: flex;
 		flex-flow: row-reverse nowrap;
@@ -83,6 +93,9 @@
 			{@html header}
 			{#if definition}
 				<Toggletip text={definition} {id} {flip} />
+			{/if}
+			{#if subheader}
+				<span class="sans-serif header__subhead">{@html subheader}</span>
 			{/if}
 		</h2>
 	{/if}

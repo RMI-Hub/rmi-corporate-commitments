@@ -14,6 +14,7 @@
 
 	// Chart meta
 	export let header = "";
+	export let subheader = "";
 	export let definition = "";
 	export let type; // "baseline" or "target"
 	export let DURATION = 500;
@@ -35,12 +36,12 @@
 	let fullscreen = false;
 	let chartHidden = false;
 
-	const ENLARGE_DURATION = 200;
+	const ENLARGE_DURATION = 0;
 
 	$: tickDimension = fullscreen ? 8 : 0;
 	$: MARGINS = fullscreen
 		? { top: 10, right: 10, bottom: 25, left: 60 }
-		: { top: 10, right: 20, bottom: 15, left: 35 };
+		: { top: 10, right: 20, bottom: 15, left: 30 };
 	$: fullscreen, forceRender();
 
 	async function forceRender() {
@@ -220,10 +221,12 @@
 		}}
 		on:enlarge={async e => {
 			fullscreen = true;
+			forceRender();
 		}}
 		flip={type === "target"}
 		id="chart-cumulative-{type}"
 		{header}
+		{subheader}
 		{definition} />
 	<div class="chart__wrapper">
 		{#if fullscreen}
@@ -231,6 +234,7 @@
 				class="control control--close"
 				on:click={async e => {
 					fullscreen = false;
+					forceRender();
 				}}>
 				<X title="Shrink this visualization back to regular size" />
 			</button>

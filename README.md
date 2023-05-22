@@ -20,6 +20,13 @@ This app uses a Makefile to collect the critical command-line functions in one, 
 
 Want to start from scratch? Use`make clean data build`.
 
+## Running locally
+
+1. Be sure you have the app cloned (including the large data.csv with `git-lfs`) and fully installed with `make install`. 
+1. Generate everything you need with `make clean data build`. This will result in the JS and css bundles as well as an html file all in the `/public/` subdirectory. This also will prep the data for the cloud function.
+1. Run the app locally with `npm run dev`. This will expose the app on `localhost:5000`
+1. In a new terminal window, run the cloud functions locally with `npm run firebase`. This exposes the function on `localhost:4000`.
+
 ## The Data
 
 The data is one giant CSV. It is intended to be processed, sliced and minified by the node script `./scripts/data.js`. The data is split up and written to individual files for each sector and industry. (One sector has multiple industries). Cleanup/processing is pretty minimal, but a few unneeded columns are removed. These CSVs are deployed with the app and intended to be consumed by the client.
@@ -31,6 +38,16 @@ The primary data client function is `src/utils/fetch-data.js`. It fetches the da
 `fetchData()` uses a utility function — `getEmissionsValues()` — to generate, for each year, the baseline and target emissions values based on the user-selected multipliers. The algorithm is devised by [Jun Ukita Shepard](https://rmi.org/people/jun-ukita-shepard/) of RMI and has been ported to Javascript from its original Python. The year-bt-year data it outputs is transformed to a format suitable for the d3 area charts. That data is then combined into data blobs good for the cumulative bar charts.
 
 The initial view of the app is a preset, found in `./src/config/presets.json`. This is done so the default view is validated against a json schema.
+
+### Updating the data
+
+Everything runs off of the aforementioned CSV: `./functions/data.csv`. Replace that file with a new version (using the same name) and push it to the remote repo. The Github Actions will process and deploy it at that point.
+
+1. Replace the file in the code.
+1. **Commit** the new file with `git commit ./functions/data.csv`
+1. **Push** the new file to the remote repo (i.e. the cloud) with `git push origin main`.
+1. Wait a while for the processing to complete.
+1. If you have a green checkmark on [this page](https://github.com/ryanbmarx/rmi-corporate-commitments/actions), then all is good.
 
 ## The app
 
@@ -52,7 +69,7 @@ The display names and descriptions for each sector and industry should be added 
 
 ### Master chart
 
-TK
+One sub-task of the data update step is to generate an overall chart of the entire dataset. Using server-side d3 and the same data processing algorithm as the client-side charts (using the default multipliers for the annnual baseline chart), a standalone SVG is created and deposited in `./src/icons/chart-overall.svg`. From there, it is imported and bundled into the main app. As the user selects new sectors and industries, its appearance is modified via a CSS file which also is generated during this step (`./public/chart-overall.css`).
 
 ### SVGs
 
@@ -61,3 +78,18 @@ A few small SVG icons are used in this app, and are written directly into svelte
 ## Deploying
 
 Currently in a development state, this app is served via github pages. Any merge to the `main` branch will trigger the Github Actions workflow `deploy.yml`. This action processes the data, builds the bundles and uploads a Github Pages-compatible artifact. It also can be triggered manually from the [actions tab](https://github.com/ryanbmarx/rmi-corporate-commitments/actions).
+
+
+## Analytics
+
+Action | Event
+---|---
+Toggletip (`i` button) opened | tktktk
+Chart-based share buttons opened | tktktk
+Fullscreen mode clicked | tktktk
+Chart data table displayed | tktktk
+Preset activated | tktktk
+Sector/industry selector opened | tktktk
+New sector/industry selected | tktktk
+Toggle used | tktktktk
+Toggles reset | tktktktk

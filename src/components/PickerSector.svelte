@@ -2,6 +2,7 @@
 	import { activeSector, highlightIndustry, highlightSector } from "../stores.js";
 	import { slugify } from "../utils/slugify.js";
 	import X from "../icons/X.svelte";
+	import { fireEvent } from "../utils/analytics.js";
 
 	export let sectors = {};
 	export let sectorHeader;
@@ -130,8 +131,8 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		z-index: 10;
 		z-index: 1000; /* Enough to sit atop everything, one hopes */
+		overflow: scroll;
 	}
 
 	.picker__list[hidden] {
@@ -141,6 +142,7 @@
 	.picker__list li {
 		border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+		margin: 0;
 	}
 
 	.picker__btn {
@@ -215,7 +217,6 @@
 			height: unset;
 
 			max-height: 24rem;
-			overflow: scroll;
 			box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.35);
 		}
 	}
@@ -238,6 +239,7 @@
 			aria-controls="sector-industry-list"
 			aria-expanded={visible}
 			on:click|stopPropagation={e => {
+				fireEvent("sector picker opened");
 				visible = !visible;
 			}}>
 			<span class="picker__label">
@@ -260,6 +262,7 @@
 								$activeSector = sector;
 								$highlightSector = sectorSlug;
 								$highlightIndustry = null;
+								fireEvent(`New sector/industry chosen: ${sector}`);
 							}}>{sector}</button>
 					</li>
 					{#each industries as industry}
@@ -273,6 +276,7 @@
 									$highlightIndustry = industrySlug;
 									$highlightSector = null;
 									$activeSector = industry;
+									fireEvent(`New sector/industry chosen: ${sector}/${industry}`);
 								}}>{industry}</button>
 						</li>
 					{/each}

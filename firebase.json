@@ -3,8 +3,14 @@
 		{
 			"source": "functions",
 			"codebase": "default",
-			"ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log"],
-			"predeploy": ["make dataFunctions"]
+			"ignore": [
+				"data.csv",
+				"node_modules",
+				".git",
+				"firebase-debug.log",
+				"firebase-debug.*.log"
+			],
+			"predeploy": []
 		}
 	]
 }
