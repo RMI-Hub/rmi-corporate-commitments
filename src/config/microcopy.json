@@ -35,7 +35,7 @@
 			"cumulative": {
 				"header": "Cumulative Target Emissions",
 				"subheader": "Estimated target emissions (MMTCO&#8322;e/year)",
-				"definition": "According to current corporate targets and toggles selected, we estimate that cumulative emissions from this sector may follow this trajectory. We account for emissions starting in 2019. Cumulative, rather than annual, emissions are what matter for climate change mitigation. This is why the most important year to reduce emissions is (this year)[https://rmi.org/what-is-needed-to-meet-us-climate-commitments/]."
+				"definition": "According to current corporate targets and toggles selected, we estimate that cumulative emissions from this sector may follow this trajectory. We account for emissions starting in 2019. Cumulative, rather than annual, emissions are what matter for climate change mitigation. This is why the most important year to reduce emissions is [this year[(https://rmi.org/what-is-needed-to-meet-us-climate-commitments/.)"
 			}
 		}
 	}
