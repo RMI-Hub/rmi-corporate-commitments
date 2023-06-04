@@ -27,13 +27,10 @@
 	export let overallMicrocopy = {};
 	export let togglesMicrocopy = {};
 	export let presetsMicrocopy = {};
-	export let sectorsMicrocopy = {};
 	export let sectors = [];
 	export let charts = {};
 	export let toggles = [];
 	export let presets = {};
-
-	// let activeSector = Object.keys(sectors)[0];
 
 	const CHART_UPDATE_DURATION = 500;
 
@@ -47,8 +44,6 @@
 	};
 
 	$: sectorSlug = slugify($activeSector);
-	$: sectorHeader = sectorsMicrocopy?.[sectorSlug]?.heading ?? $activeSector;
-	$: sectorDescription = sectorsMicrocopy?.[sectorSlug]?.description ?? "";
 
 	// Handle update will run any time these store values update
 	$: ($multipliers || $activeSector) && handleUpdate();
@@ -118,9 +113,8 @@
 	data-highlight-sector={$highlightSector}
 	data-highlight-industry={$highlightIndustry}>
 	<div class="sector-heading">
-		<h2 id="sector-heading" class="visually-hidden">About {sectorHeader}</h2>
-		<PickerSector {sectors} {sectorHeader} bind:value={$activeSector} />
-		<p>{@html sectorDescription}</p>
+		<h2 id="sector-heading" class="visually-hidden">About {$activeSector}</h2>
+		<PickerSector {sectors} bind:value={$activeSector} />
 	</div>
 	{#each Object.entries(charts) as [type, typeInfo], index}
 		<!-- For each type (target, baseline) ....-->

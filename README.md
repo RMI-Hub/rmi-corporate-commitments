@@ -23,6 +23,7 @@ Want to start from scratch? Use`make clean data build`.
 ## Running locally
 
 1. Be sure you have the app cloned (including the large data.csv with `git-lfs`) and fully installed with `make install`. 
+1. Make sure you have the firebase tools installed with `npm i -g firebase-tools`.
 1. Generate everything you need with `make clean data build`. This will result in the JS and css bundles as well as an html file all in the `/public/` subdirectory. This also will prep the data for the cloud function.
 1. Run the app locally with `npm run dev`. This will expose the app on `localhost:5000`
 1. In a new terminal window, run the cloud functions locally with `npm run firebase`. This exposes the function on `localhost:4000`.
