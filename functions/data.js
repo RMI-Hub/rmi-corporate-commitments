@@ -62,8 +62,6 @@ const data = throttle(
 				sectorData = sectorData.filter(d => d["Discloses to CDP"] != 1);
 			}
 
-			console.log(sectorData.length);
-
 			// These are all the unique companies in the sector
 			const companies = [...new Set(sectorData.map(s => s.Company))];
 
@@ -72,10 +70,10 @@ const data = throttle(
 				return {
 					name: row.Company,
 					year: row.Year,
+					estimated: row["Discloses to CDP"] != 1,
 					...getEmissionsValues({ row, multipliers }),
 				};
 			});
-
 			// Generate the cumulative figures, grouped by year
 			const grouped = groupBy(yearly, d => d["year"]);
 

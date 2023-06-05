@@ -5,6 +5,7 @@ src/config/sectors.json
 src/config/chart-overall.css
 src/config/sectorLookup.json
 src/config/sectorsMicrocopy.json
+src/config/estimated.json
 src/icons/chart-overall.svg
 
 # FIREBASE

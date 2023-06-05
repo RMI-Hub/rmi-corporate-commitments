@@ -11,7 +11,8 @@
 		"presetButtonLabel": "Activate scenario"
 	},
 	"overallMicrocopy": {
-		"header": "Emissions by All Sectors"
+		"header": "Emissions by All Sectors",
+		"estimated_explainer": "**Estimated values:** Some companies are assigned an estimated emissions value based on the average emissions intensity of the respective sector and company revenue. These values can be exluded for the figures, or changed in the toggles."
 	},
 	"charts": {
 		"baseline": {

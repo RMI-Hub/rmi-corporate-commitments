@@ -67,11 +67,27 @@ function getSectors(data = []) {
 		return accumulator;
 	}, {});
 
+	const estimated = Array.from(
+		data.reduce((acc, curr) => {
+			try {
+				const reports = parseInt(curr["Discloses to CDP"]);
+				console.log(reports);
+				if (reports !== 1) acc.add(curr.Company);
+			} catch (e) {}
+			return acc;
+		}, new Set())
+	);
+	console.log(estimated.length);
 	// Write our sector metadata files to the config
 	return Promise.all([
 		fs.writeFile(
 			path.join(__dirname, "../src/config/sectors.json"),
 			JSON.stringify(sectors),
+			"utf-8"
+		),
+		fs.writeFile(
+			path.join(__dirname, "../src/config/estimated.json"),
+			JSON.stringify(estimated),
 			"utf-8"
 		),
 		fs.writeFile(
