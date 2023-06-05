@@ -20,25 +20,7 @@ async function getCompanies(data) {
 }
 
 // Returns a lookup of lists for sectors and industries, mashed up with provided text if available.
-function getSectors(microcopy = {}, data = []) {
-	/*
-	sectorsAndIndustries = {
-		sectorOrIndustry:{
-			heading:"",
-			description:"",
-		}
-		sectorOrIndustry:{
-			heading:"",
-			description:"",
-		}
-		sectorOrIndustry:{
-			heading:"",
-			description:"",
-		}
-
-
-*/
-
+function getSectors(data = []) {
 	// Make an alphabetical list of sectors
 	/*
 [
@@ -60,15 +42,6 @@ function getSectors(microcopy = {}, data = []) {
 	sectors.sort((a, b) => {
 		return a[0] < b[0] ? -1 : 1;
 	});
-
-	// Make a flat lookup for all the sectors and industry
-	const sectorsMicrocopy = sectors.flat(2).reduce((acc, curr) => {
-		const slug = slugify(curr);
-		if (microcopy[slug]) {
-			acc[slug] = microcopy[slug];
-		}
-		return acc;
-	}, {});
 
 	// Craft a little stylesheet to help the overall chart along.
 	const sectorOverallStyles = sectors
@@ -94,11 +67,27 @@ function getSectors(microcopy = {}, data = []) {
 		return accumulator;
 	}, {});
 
+	const estimated = Array.from(
+		data.reduce((acc, curr) => {
+			try {
+				const reports = parseInt(curr["Discloses to CDP"]);
+				console.log(reports);
+				if (reports !== 1) acc.add(curr.Company);
+			} catch (e) {}
+			return acc;
+		}, new Set())
+	);
+	console.log(estimated.length);
 	// Write our sector metadata files to the config
 	return Promise.all([
 		fs.writeFile(
 			path.join(__dirname, "../src/config/sectors.json"),
 			JSON.stringify(sectors),
+			"utf-8"
+		),
+		fs.writeFile(
+			path.join(__dirname, "../src/config/estimated.json"),
+			JSON.stringify(estimated),
 			"utf-8"
 		),
 		fs.writeFile(
@@ -111,23 +100,14 @@ function getSectors(microcopy = {}, data = []) {
 			`${sectorOverallStyles},${industryOverallStyles}{--color:var(--color-accent);}`,
 			"utf-8"
 		),
-		fs.writeFile(
-			path.join(__dirname, "../src/config/sectorsMicrocopy.json"),
-			JSON.stringify(sectorsMicrocopy),
-			"utf-8"
-		),
 	]);
 }
 
 async function generateSectors() {
 	const { csvParse } = await import("d3");
 
-	let [data, sectorMicrocopy] = await Promise.all([
+	let [data] = await Promise.all([
 		fs.readFile(path.join(__dirname, "/data.csv"), "utf-8").then(csvParse),
-
-		fs
-			.readFile(path.join(__dirname, "../src/data/sectors.json"), "utf-8")
-			.then(JSON.parse),
 	]).catch(console.error);
 
 	console.log("++ Filtering out companies without specified names");
@@ -138,7 +118,7 @@ async function generateSectors() {
 	// Group by sector for outputting
 	const sectors = groupBy(data, d => d.Sector);
 
-	getSectors(sectorMicrocopy, data);
+	getSectors(data);
 
 	const industries = groupBy(data, d => d.Industry);
 

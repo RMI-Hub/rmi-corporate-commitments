@@ -11,7 +11,7 @@ import svg from "rollup-plugin-svg-import";
 
 const production = !process.env.ROLLUP_WATCH;
 const PROJECT_SLUG = path.basename(__dirname);
-
+console.log("rollup");
 export default {
 	input: "src/main.js",
 	output: {

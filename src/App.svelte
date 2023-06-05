@@ -19,6 +19,7 @@
 	} from "./stores.js";
 	import { fetchData } from "./utils/fetch-data.js";
 	import { slugify } from "./utils/slugify.js";
+	import { marked } from "marked";
 
 	import { afterUpdate, onMount } from "svelte";
 
@@ -27,13 +28,10 @@
 	export let overallMicrocopy = {};
 	export let togglesMicrocopy = {};
 	export let presetsMicrocopy = {};
-	export let sectorsMicrocopy = {};
 	export let sectors = [];
 	export let charts = {};
 	export let toggles = [];
 	export let presets = {};
-
-	// let activeSector = Object.keys(sectors)[0];
 
 	const CHART_UPDATE_DURATION = 500;
 
@@ -47,8 +45,6 @@
 	};
 
 	$: sectorSlug = slugify($activeSector);
-	$: sectorHeader = sectorsMicrocopy?.[sectorSlug]?.heading ?? $activeSector;
-	$: sectorDescription = sectorsMicrocopy?.[sectorSlug]?.description ?? "";
 
 	// Handle update will run any time these store values update
 	$: ($multipliers || $activeSector) && handleUpdate();
@@ -82,15 +78,32 @@
 		background: var(--color-background-controls);
 	}
 
+	.estimate {
+		padding: 0.5rem;
+		background-color: var(--color-gray-light);
+	}
+
+	.estimate :global(p) {
+		font: 12px/1.3em var(--sans-serif-fonts);
+	}
+
+	.estimate :global(strong) {
+		text-transform: uppercase;
+	}
+
 	@media all and (min-width: 1024px) {
 		.rmi-container {
 			--controls-width: 18rem;
 			height: 98vh;
 			min-height: 800px;
 			grid-template-columns: var(--controls-width) repeat(2, minmax(1px, 1fr));
-			grid-template-rows: auto minmax(1px, 6fr) minmax(1px, 4fr) auto;
+			grid-template-rows: auto minmax(1px, 6fr) auto minmax(1px, 4fr) auto;
 		}
 
+		.estimate {
+			grid-column: 2 / -1;
+			grid-row: 3;
+		}
 		.sector-heading {
 			position: relative;
 			grid-column: 2/-1;
@@ -103,7 +116,7 @@
 		}
 
 		.rmi-container :global(.chart--cumulative) {
-			grid-row: 3;
+			grid-row: 4;
 		}
 		.rmi-container :global(.chart--baseline) {
 			grid-column: 2;
@@ -118,9 +131,8 @@
 	data-highlight-sector={$highlightSector}
 	data-highlight-industry={$highlightIndustry}>
 	<div class="sector-heading">
-		<h2 id="sector-heading" class="visually-hidden">About {sectorHeader}</h2>
-		<PickerSector {sectors} {sectorHeader} bind:value={$activeSector} />
-		<p>{@html sectorDescription}</p>
+		<h2 id="sector-heading" class="visually-hidden">About {$activeSector}</h2>
+		<PickerSector {sectors} bind:value={$activeSector} />
 	</div>
 	{#each Object.entries(charts) as [type, typeInfo], index}
 		<!-- For each type (target, baseline) ....-->
@@ -133,6 +145,9 @@
 				{...chartInfo} />
 		{/each}
 	{/each}
+	<div class="estimate">
+		{@html marked.parse(overallMicrocopy.estimated_explainer)}
+	</div>
 	<div class="controls">
 		<Toggles
 			{overallMicrocopy}

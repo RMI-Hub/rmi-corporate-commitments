@@ -1,6 +1,6 @@
 <script>
 	// UTILS
-	import { tick } from "svelte";
+	import { onMount, tick } from "svelte";
 	import { fly, fade } from "svelte/transition";
 	import { emissionsNumberFormatter, yearFormatter } from "../utils/formatting.js";
 	import { chartData, isLoading } from "../stores.js";
@@ -17,6 +17,7 @@
 		curveCardinal,
 		stackOrderDescending,
 	} from "d3";
+	import estimated from "../config/estimated.json";
 
 	// COMPONENTS
 	import Tooltip from "./Tooltip.svelte";
@@ -33,7 +34,6 @@
 	export let DURATION = 500;
 
 	// La tooltip. Voila!
-	let tooltipHidden = true;
 	let tooltipX = 0;
 	let tooltipY = 0;
 	let tooltipCompany = null;
@@ -54,8 +54,7 @@
 
 	// CONFIG
 	const ENLARGE_DURATION = 200;
-	const tooltips = {};
-	$: tooltipText = tooltips[tooltipCompany] || "";
+
 	$: tickDimension = fullscreen ? 8 : 0;
 	$: MARGINS = fullscreen
 		? { top: 10, right: 10, bottom: 25, left: 60 }
@@ -232,7 +231,6 @@
 			if (hidden) {
 				let c = randomColor();
 				dict.set(c, node.key);
-
 				ctx.fillStyle = c;
 			} else {
 				ctx.fillStyle = colors[colorCounter];
@@ -271,9 +269,19 @@
 
 		const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
 		c = rgb; // For the debug
-		const name = dict.get(rgb);
-		tooltipCompany = name || null;
+
+		tooltipCompany = getName(rgb);
 	}
+
+	function getName(rgb = "") {
+		let name = dict.get(rgb);
+
+		if (estimated.includes(name)) {
+			name += "<strong>Estimated data</strong>";
+		}
+		return name || null;
+	}
+
 	function onMouseleave(e) {
 		tooltipCompany = null;
 		canvas.on("mousemove", null);
@@ -328,7 +336,12 @@
 		font-size: 1.2em;
 		margin-bottom: 0.25rem;
 	}
-
+	.tooltip__name :global(strong) {
+		font-size: 0.8em;
+		text-transform: uppercase;
+		display: block;
+		color: var(--color-gray);
+	}
 	.chart :global(.chart__canvas) {
 		position: absolute;
 		top: var(--canvas-top, 0);
@@ -444,7 +457,7 @@
 		{/if}
 	</div>
 	<Tooltip hidden={!tooltipCompany} flip={type === "target"} x={tooltipX} y={tooltipY}>
-		<span class="tooltip__name">{tooltipCompany}</span>
-		<span class="tooltip__commitments">{tooltipText}</span>
+		<span class="tooltip__name">{@html tooltipCompany}</span>
+		<!-- <span class="tooltip__commitments">{tooltipText}</span> -->
 	</Tooltip>
 </div>

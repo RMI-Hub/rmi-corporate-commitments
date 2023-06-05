@@ -5,7 +5,6 @@
 	import { fireEvent } from "../utils/analytics.js";
 
 	export let sectors = {};
-	export let sectorHeader;
 	export let value;
 
 	let buttonDescription = "Click/tap here to change industry or sector.";
@@ -243,7 +242,7 @@
 				visible = !visible;
 			}}>
 			<span class="picker__label">
-				{sectorHeader}
+				{$activeSector}
 			</span>
 			<p id="sector-industry-description" class="visually-hidden">
 				{buttonDescription}
