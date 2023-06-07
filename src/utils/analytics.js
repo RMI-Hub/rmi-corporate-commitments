@@ -10,7 +10,7 @@ export function fireEvent(event = "") {
 
 	// window.dataLayer.push({ event });
 
-	window.dataLayer.push({ event: event });
+	window.dataLayer.push({ "event": event });
 
 	if (window.location.hostname.includes("localhost")) console.log(event);
 }
