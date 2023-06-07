@@ -8,7 +8,9 @@ export function fireEvent(event = "") {
 	// Make sure we have someplace to put this.
 	window.dataLayer = window.dataLayer || [];
 
-	window.dataLayer.push({ event });
+	// window.dataLayer.push({ event });
+
+	window.dataLayer.push({ event: event });
 
 	if (window.location.hostname.includes("localhost")) console.log(event);
 }
