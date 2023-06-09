@@ -24,6 +24,10 @@
 		border-bottom: 1px solid var(--color-gray);
 	}
 
+	.toggle :global(small) {
+		display: block;
+	}
+
 	.toggle__label {
 		font-size: var(--font-size);
 		flex: 0 0 100%;
