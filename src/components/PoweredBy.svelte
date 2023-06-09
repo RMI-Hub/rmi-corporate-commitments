@@ -1,6 +1,6 @@
 <script>
 	import { marked } from "marked";
-	export let cta = `To report any misrepresented data or issues with the dashboard please contact [ambition@rmi.org](mailto:ambition@rmi.org)`;
+	export let cta = "";
 </script>
 
 <style>

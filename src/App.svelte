@@ -25,6 +25,7 @@
 
 	export let headline = "";
 	export let intro = "";
+	export let powered_by_cta = "";
 	export let overallMicrocopy = {};
 	export let togglesMicrocopy = {};
 	export let presetsMicrocopy = {};
@@ -62,6 +63,10 @@
 				$chartData,
 				$multipliers,
 			});
+			const est = $multipliers.use_estimated;
+			console.log(
+				`++ ${$activeSector} (use_estimated == ${est}) sector has ${$chartData.companies.length} companies`
+			);
 		}
 		window.dispatchEvent(new Event("renderCharts"));
 	}
@@ -158,4 +163,4 @@
 			{presetsMicrocopy} />
 	</div>
 </section>
-<PoweredBy />
+<PoweredBy cta={powered_by_cta} />

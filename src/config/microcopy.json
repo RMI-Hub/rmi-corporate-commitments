@@ -14,6 +14,7 @@
 		"header": "Emissions by All Sectors",
 		"estimated_explainer": "**Estimated values:** Some companies are assigned an estimated emissions value based on the average emissions intensity of the respective sector and company revenue. These values can be exluded for the figures, or changed in the toggles."
 	},
+	"powered_by_cta": "To report any misrepresented data or issues with the dashboard please contact [ambition@rmi.org](mailto:ambition@rmi.org)",
 	"charts": {
 		"baseline": {
 			"yearly": {
