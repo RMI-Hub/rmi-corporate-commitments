@@ -78,7 +78,7 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 	// S_AGR = "Revenue Growth (" + T_AGR + ")";
 	// df["S_AGR"] = df[S_AGR];
 
-	const adjustedGrossRevenue = row[`Revenue Growth (${agr})`];
+	const adjustedGrossRevenue = row[`Growth (${agr})`];
 	// START YEAR EMISSIONS
 	// df["Start Year Emissions"] =
 	// df["S_Emission_Intensity"] * df["Start Year Revenue (USD)"];

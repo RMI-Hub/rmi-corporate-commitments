@@ -5,7 +5,7 @@
 		"toggles": {
 			"scope": "Scope 1",
 			"sector_emission_intensity": "Min",
-			"agr": "S&P",
+			"agr": "WB GDP",
 			"end_target": "Current",
 			"interim_target": "Current",
 			"slowdown": 2022,
