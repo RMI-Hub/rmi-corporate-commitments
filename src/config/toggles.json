@@ -50,7 +50,7 @@
 	},
 	{
 		"id": "agr",
-		"label": "Annual revenue growth",
+		"label": "Annual growth rate",
 		"buttons": [
 			{
 				"text": "**GDP Constant:** Set the annual growth rate for each company to historical global GDP growth from the World Bank (2018-19). This value is the same for all sectors and industries. <small>Source: [World Bank](https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG)</small>",
