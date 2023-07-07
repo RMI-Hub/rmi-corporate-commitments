@@ -53,15 +53,15 @@
 		"label": "Annual revenue growth",
 		"buttons": [
 			{
-				"text": "**World Bank:** Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+				"text": "**GDP Constant:** Set the annual growth rate for each company to historical global GDP growth from the World Bank (2018-19). This value is the same for all sectors and industries. <small>Source: [World Bank](https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG)</small>",
 				"value": "WB GDP"
 			},
 			{
-				"text": "**S&P:** Set the annual revenue growth rate for each company to the historical sectoral growth rate of the S&P 500 Index (2018-19). <small>Source: Bloomberg</small>",
+				"text": "**Revenue by Sector:** Set the annual growth rate for each company to the historical revenue growth rate of each sector in the S&P 500 Index (2018-19). <small>Source: Bloomberg</small>",
 				"value": "S&P revenue"
 			},
 			{
-				"text": "**NYU:** Set the annual revenue growth rate for each company to the historical industry growth rate of companies (2015-19). <small>Source: [NYU Stern School of Business](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histgr.html)</small>",
+				"text": "**Revenue by Industry:** Set the annual growth rate for each company to the historical revenue growth rate of each industry (2015-19). <small>Source: [NYU Stern School of Business](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histgr.html)</small>",
 				"value": "NYU CAGR in revenue"
 			}
 		]
