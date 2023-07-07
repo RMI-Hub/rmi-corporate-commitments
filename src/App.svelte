@@ -58,16 +58,19 @@
 			multipliers: $multipliers,
 		}).catch(console.error);
 
+		const est = $multipliers.use_estimated;
+
 		if (window.location.href.includes("localhost")) {
-			console.log("NEW DATA", {
+				console.log("NEW DATA", {
 				$chartData,
-				$multipliers,
+				$multipliers
 			});
-			const est = $multipliers.use_estimated;
-			console.log(
-				`++ ${$activeSector} (use_estimated == ${est}) sector has ${$chartData.companies.length} companies`
-			);
-		}
+
+				console.log(
+					`++ ${$activeSector} (use_estimated == ${est}) sector has ${$chartData.companies.length} companies`
+				);
+			}
+		
 		window.dispatchEvent(new Event("renderCharts"));
 	}
 </script>
