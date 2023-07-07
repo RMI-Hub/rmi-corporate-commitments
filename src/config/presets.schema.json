@@ -21,7 +21,10 @@
 					"type": "string",
 					"enum": ["Min", "Max", "Median"]
 				},
-				"agr": { "type": "string", "enum": ["S&P", "NYU CAGR"] },
+				"agr": {
+					"type": "string",
+					"enum": ["WB GDP", "S&P revenue", "NYU CAGR in revenue"]
+				},
 				"end_target": {
 					"type": "string",
 					"enum": ["Current", "None to NZT", "Top 50 None to NZT"]
