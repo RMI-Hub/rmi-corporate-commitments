@@ -71,13 +71,11 @@ function getSectors(data = []) {
 		data.reduce((acc, curr) => {
 			try {
 				const reports = parseInt(curr["Discloses to CDP"]);
-				console.log(reports);
 				if (reports !== 1) acc.add(curr.Company);
 			} catch (e) {}
 			return acc;
 		}, new Set())
 	);
-	console.log(estimated.length);
 	// Write our sector metadata files to the config
 	return Promise.all([
 		fs.writeFile(

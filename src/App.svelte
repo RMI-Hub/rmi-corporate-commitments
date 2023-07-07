@@ -25,6 +25,7 @@
 
 	export let headline = "";
 	export let intro = "";
+	export let powered_by_cta = "";
 	export let overallMicrocopy = {};
 	export let togglesMicrocopy = {};
 	export let presetsMicrocopy = {};
@@ -57,12 +58,19 @@
 			multipliers: $multipliers,
 		}).catch(console.error);
 
+		const est = $multipliers.use_estimated;
+
 		if (window.location.href.includes("localhost")) {
-			console.log("NEW DATA", {
+				console.log("NEW DATA", {
 				$chartData,
-				$multipliers,
+				$multipliers
 			});
-		}
+
+				console.log(
+					`++ ${$activeSector} (use_estimated == ${est}) sector has ${$chartData.companies.length} companies`
+				);
+			}
+		
 		window.dispatchEvent(new Event("renderCharts"));
 	}
 </script>
@@ -158,4 +166,4 @@
 			{presetsMicrocopy} />
 	</div>
 </section>
-<PoweredBy />
+<PoweredBy cta={powered_by_cta} />

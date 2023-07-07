@@ -55,11 +55,11 @@ const data = throttle(
 					});
 				sectors.set(activeSector, sectorData);
 			}
-			const { use_estimated = null } = multipliers;
+			const { use_estimated = true } = multipliers;
 
 			// If the user only wants to see non-estimated data
 			if (!use_estimated) {
-				sectorData = sectorData.filter(d => d["Discloses to CDP"] != 1);
+				sectorData = sectorData.filter(d => d["Discloses to CDP"]);
 			}
 
 			// These are all the unique companies in the sector
