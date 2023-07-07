@@ -65,8 +65,6 @@ const data = throttle(
 			// These are all the unique companies in the sector
 			const companies = [...new Set(sectorData.map(s => s.Company))];
 
-			console.log(companies.length);
-
 			// Split out the yearly figures
 			const yearly = sectorData.map(row => {
 				return {

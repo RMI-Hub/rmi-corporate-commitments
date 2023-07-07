@@ -79,6 +79,7 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 	// df["S_AGR"] = df[S_AGR];
 
 	const adjustedGrossRevenue = row[`Growth (${agr})`];
+
 	// START YEAR EMISSIONS
 	// df["Start Year Emissions"] =
 	// df["S_Emission_Intensity"] * df["Start Year Revenue (USD)"];
@@ -201,7 +202,6 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 	// 	df["Start Year Emissions"] * df["Multiplier (Scenario)"];
 
 	const target = startYearEmissions * multiplierScenario;
-
 	return { baseline, target };
 }
 module.exports = { getEmissionsValues };
