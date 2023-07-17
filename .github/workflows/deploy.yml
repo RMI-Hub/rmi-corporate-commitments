@@ -65,3 +65,17 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          # workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
+          service_account: ${{ secrets.GCP_SVC_ACCT }}
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      - name: "Deploy functions"
+        uses: "google-github-actions/deploy-cloud-functions@v1"
+        with:
+          name: data
+          runtime: nodejs16
+          source_dir: functions
