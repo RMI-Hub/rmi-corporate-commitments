@@ -132,7 +132,7 @@
 	}
 </style>
 
-<Intro {headline} {intro} />
+<!-- <Intro {headline} {intro} /> -->
 <section
 	class="rmi-container"
 	aria-labelledby="sector-heading"
@@ -166,4 +166,4 @@
 			{presetsMicrocopy} />
 	</div>
 </section>
-<PoweredBy cta={powered_by_cta} />
+<!-- <PoweredBy cta={powered_by_cta} /> -->
