@@ -76,6 +76,11 @@
 </script>
 
 <style>
+
+	:global(.modal.donate-modal.is-active){
+		z-index: 1001;
+	}
+
 	.rmi-container {
 		--controls-width: 100%;
 		display: grid;
