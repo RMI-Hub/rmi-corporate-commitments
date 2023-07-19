@@ -1,6 +1,6 @@
 {
 	"headline": "Corporate Commitments and Emissions Explorer",
-	"intro": "Use this tool to see how nearly 7,000 companies across 14 sectors can help drive climate transitions. This visual uses data derived from self-reported emissions data provided by CDP and publicly accessible data on commitments and economic indicators. \n For further information about our methods please see [documentation here](https://climatewayfinder.org/commitments-dashboard/documentation/).",
+	"intro": "Use this tool to see how nearly 7,000 companies across 14 sectors can help drive climate transitions. This visual uses data derived from self-reported emissions data provided by CDP and publicly accessible data on commitments and economic indicators. \n For further information about our methods please see [documentation here](https://rmi.org/wp-content/uploads/2023/07/documentation_for_corporate_commitments_and_emissions_explorer.pdf).",
 	"togglesMicrocopy": {
 		"dataLabel": "Data sources",
 		"togglesLabel": "Explore",
