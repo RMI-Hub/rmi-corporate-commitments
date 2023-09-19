@@ -63,11 +63,12 @@
 	let c = "#eee";
 
 	async function forceRender() {
-		chartHidden = true;
+		console.log("force rerender")
+		// chartHidden = true;
 		await tick();
 		render({}, true);
 		setTimeout(() => {
-			chartHidden = false;
+			// chartHidden = false;
 		}, ENLARGE_DURATION);
 	}
 
@@ -99,9 +100,11 @@
 			// Clear out the lookup
 			dict = new Map();
 
-			const { height, width } = container.getBoundingClientRect();
-			canvasHeight = height - MARGINS.top - MARGINS.bottom;
+			let { height, width } = container.getBoundingClientRect();
+			console.log({container, height, width})
+			canvasHeight = height - MARGINS.top - MARGINS.bottom ;
 			canvasWidth = width - MARGINS.left - MARGINS.right;
+
 
 			svg = select(container)
 				.append("svg")
