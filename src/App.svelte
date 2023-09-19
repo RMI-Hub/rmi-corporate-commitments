@@ -81,6 +81,10 @@
 		z-index: 1001;
 	}
 
+	:global(#rmi :is(h1, h2)){
+		letter-spacing: unset;
+	}
+
 	.rmi-container {
 		--controls-width: 100%;
 		display: grid;

@@ -64,42 +64,42 @@
 </script>
 
 <style>
-	.header {
+ .rmi-header {
 		--controls-width: 100px;
 		display: grid;
 		gap: 0.25rem;
 		grid-template: auto / minmax(1px, 1fr) var(--controls-width);
 		position: relative;
 	}
-	.header__text {
+		.rmi-header__text {
 		font: bold var(--font-size) / 1.3em var(--sans-serif-fonts);
 		margin: 0;
 	}
 
-	.header__subhead {
+	.rmi-header__subhead {
 		margin-top: 0.25rem;
 		display: block;
 	}
 
-	.header__controls {
+	.rmi-header__controls {
 		display: flex;
 		flex-flow: row-reverse nowrap;
 	}
 </style>
 
-<div class="header">
+<div class="rmi-header">
 	{#if header}
-		<h2 {id} class="header__text">
+		<h2 {id} class="rmi-header__text">
 			{@html header}
 			{#if definition}
 				<Toggletip text={definition} {id} {flip} />
 			{/if}
 			{#if subheader}
-				<span class="sans-serif header__subhead">{@html subheader}</span>
+				<span class="sans-serif rmi-header__subhead">{@html subheader}</span>
 			{/if}
 		</h2>
 	{/if}
-	<div class="header__controls">
+	<div class="rmi-header__controls">
 		<button class="control" on:click={onEnlarge}>
 			<span class="visually-hidden">Expand this chart</span>
 			<Expand />
