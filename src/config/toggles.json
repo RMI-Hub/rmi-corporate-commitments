@@ -58,11 +58,11 @@
 			},
 			{
 				"text": "**Revenue by Sector:** Set the annual growth rate for each company to the historical revenue growth rate of each sector in the S&P 500 Index (2018-19). <small>Source: Bloomberg</small>",
-				"value": "S&P revenue"
+				"value": "S&P"
 			},
 			{
 				"text": "**Revenue by Industry:** Set the annual growth rate for each company to the historical revenue growth rate of each industry (2015-19). <small>Source: [NYU Stern School of Business](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histgr.html)</small>",
-				"value": "NYU CAGR in revenue"
+				"value": "NYU CAGR"
 			}
 		]
 	},
