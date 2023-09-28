@@ -5,14 +5,8 @@
  * @param {*} companies
  * @returns
  */
-async function getYearlyMax(
-	target,
-	baseline,
-	companies,
-	stack,
-	max,
-	isOverallChart = false
-) {
+async function getYearlyMax(target, baseline, companies, d3, isOverallChart = false) {
+	const { stack, max } = d3;
 	let maxValue = 0;
 	const stacker = stack().keys(companies);
 	for (let d of [target.yearly, baseline.yearly]) {

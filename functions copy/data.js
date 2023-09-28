@@ -20,17 +20,8 @@ const data = throttle(
 	async ({ activeSector, multipliers = DEFAULT_MULTIPLIERS }) => {
 		return new Promise(async (resolve, reject) => {
 			// Get D3
-			// const d3 = await import("d3");
-
-			// const { csvParse } = await import("d3-dsv");
-			// const { max } = await import("d3-array");
-			// const { stack } = await import("d3-shape");
-
-			const [{ csvParse }, { max }, { stack }] = await Promise.all([
-				import("d3-dsv"),
-				import("d3-array"),
-				import("d3-shape"),
-			]);
+			const d3 = await import("d3");
+			const { csvParse } = d3;
 
 			// Check the cache for our data, or fetch it.
 			let sectorData;
@@ -86,7 +77,7 @@ const data = throttle(
 			// Generate the cumulative figures, grouped by year
 			const grouped = groupBy(yearly, d => d["year"]);
 
-			const stackData = Object.entries(grouped).map(([year, data]) => {
+			const stack = Object.entries(grouped).map(([year, data]) => {
 				const datum = { year: new Date(year, 0, 1), baseline: {}, target: {} };
 				for (const { name, baseline, target } of data) {
 					datum.baseline[name] = baseline;
@@ -141,7 +132,7 @@ const data = throttle(
 			cumulative_domain[1] = cumulative_domain[1] * 1.1;
 
 			const baseline = {
-				yearly: stackData.map(a => {
+				yearly: stack.map(a => {
 					const { baseline, year } = a;
 					return {
 						year,
@@ -158,7 +149,7 @@ const data = throttle(
 			};
 
 			const target = {
-				yearly: stackData.map(a => {
+				yearly: stack.map(a => {
 					const { target, year } = a;
 					return {
 						year,
@@ -174,14 +165,7 @@ const data = throttle(
 				}),
 			};
 
-			const yearly_max = await getYearlyMax(
-				target,
-				baseline,
-				companies,
-				stack,
-				max,
-				false
-			);
+			const yearly_max = await getYearlyMax(target, baseline, companies, d3, false);
 
 			resolve({
 				cumulative_domain,
