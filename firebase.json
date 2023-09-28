@@ -6,6 +6,9 @@
 			"ignore": [
 				"**/data.csv",
 				"**/node_modules/**",
+				"functions/node_modules/**",
+				"functions/node_modules/**/*",
+				"functions/node_modules",
 				"**/.git",
 				"**/firebase-debug.log",
 				"**/firebase-debug.*.log"
