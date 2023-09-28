@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   build_and_deploy:
-    runs-on: [macos-latest]
+    runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -78,4 +78,4 @@ jobs:
         with:
           name: data
           runtime: nodejs16
-          source_dir: functions
+          source_dir: ./functions
