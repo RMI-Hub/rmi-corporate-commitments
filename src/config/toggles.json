@@ -125,7 +125,7 @@
 	{
 		"id": "partial_target",
 		"label": "Percentage of targets met",
-		"definition": "Set the percent of emission reduction targets met by each company. Without specific roadmaps and strategy, companies will be unable to meet 100% of their emission reduction targets. This illustrates what happens to sectoral emissions if companies fail to meet their climate goals.",
+		"definition": "Set the percent of emission reduction targets met by each company. Without specific roadmaps and strategy, companies will be unable to meet 100% of their emission reduction targets. This illustrates what happens to sectoral emissions if companies fail to meet their climate goals in 2050.",
 		"buttons": [
 			{ "text": "Zero", "value": 0 },
 			{ "text": "25%", "value": 0.25 },
@@ -142,15 +142,15 @@
 	{
 		"id": "offsets",
 		"label": "Targets met with offset",
-		"_definition": "Set the percent of companies in this sector that meet their voluntary emissions target by using carbon offsets. For example, \"50%\" results in companies only reducing real emissions by 50% and relying on offsets to account for the other 50% of emissions to reach the climate commitments displayed in the Target Scenario.",
+		"_definition": "Set the percent of companies in this sector that meet their voluntary emissions target by increasing their usage of carbon offsets. For example, \"50%\" results in companies only reducing real emissions by 50% in 2050 and relying on offsets to account for the other 50% of emissions to reach the climate commitments displayed in the Target Scenario.",
 		"buttons": [
 			{ "text": "**Zero:** Companies meet all goals without offsets.", "value": 0 },
 			{
-				"text": "**25%:** Companies only reduce real emissions by 75% and rely on offsets for the rest.",
+				"text": "**25%:** Companies only reduce real emissions by 75% by 2050 and rely on offsets for the rest.",
 				"value": 0.25
 			},
 			{
-				"text": "**50%:** Companies only reduce real emissions by 50% and rely on offsets for the rest.",
+				"text": "**50%:** Companies only reduce real emissions by 50% by 2050 and rely on offsets for the rest.",
 				"value": 0.5
 			}
 		]
