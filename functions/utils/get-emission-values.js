@@ -175,7 +175,7 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 	// 	1
 	// );
 
-	const multiplierPartialTarget = multiplierTarget < 1 ? 1 + partial_target : 1;
+	const multiplierPartialTarget = multiplierTarget < 1 ? 1 + (partial_target * (year - 2021) / 29 ) : 1;
 
 	// OFFSETS MULTIPLIER
 	// df["Multiplier (Offsets)"] = np.where(
