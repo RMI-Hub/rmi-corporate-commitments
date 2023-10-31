@@ -184,7 +184,7 @@ function getEmissionsValues({ row = {}, multipliers = {} }) {
 	// 	1
 	// );
 
-	const multiplierOffsets = multiplierTarget < 1 ? 1 + offsets : 1;
+	const multiplierOffsets = multiplierTarget < 1 ? 1 + (offsets * (year - 2021) / 29 ) : 1;
 
 	//// FINAL SCENARIO
 
