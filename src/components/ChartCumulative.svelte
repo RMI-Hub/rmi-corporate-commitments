@@ -170,7 +170,7 @@
 		const value = d.target || d.baseline;
 		tooltipText = `<strong>${d.year.getFullYear()}:</strong> ${format(",.0f")(
 			value
-		)} (MMTCO&#8322;e/year)`;
+		)} (tCO&#8322;e/year)`;
 
 		// Style it
 		this.classList.add("highlight");

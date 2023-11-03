@@ -32,7 +32,7 @@
 	{
 		"id": "sector_emission_intensity",
 		"label": "Sector emission intensity",
-		"definition": "Emissions intensity is equal to MMTCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
+		"definition": "Emissions intensity is equal to tCO&#8322;/annual revenue. Revenue data are sourced from Yahoo Finance.",
 		"buttons": [
 			{
 				"text": "**Minimum:** Set an emissions intensity equal to the sector minimum for companies that do not volunarily self-report emissions data to CDP.",
