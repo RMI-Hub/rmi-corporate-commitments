@@ -50,6 +50,8 @@ jobs:
 
       - name: Update and process data
         run: make data
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
 
       - run: make build
 
